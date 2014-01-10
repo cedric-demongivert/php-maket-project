@@ -1,6 +1,7 @@
 <?php
 
 class ProductCategory {
+	
 	private $id;
 	private $name;
 	
@@ -13,6 +14,7 @@ class ProductCategory {
 		$result->bindParam(":id",$id);
 		$result->execute() or die("Erreur SQL ligne 14 ProductCategory");
 	}
+	
 }
 
 ?>

@@ -2,13 +2,28 @@
 
 abstract class Controller {
 	
+	/* ------------------------------------ */
+	/*		ATTRIBUT(S) :					*/
+	/* ------------------------------------ */
 	protected $bdd;
-
-	public function __construct($bdd) {
+	protected $post;
+	protected $session;
+	protected $get;
+	
+	/* ------------------------------------ */
+	/*		CONSTRUCTEUR(S) :				*/
+	/* ------------------------------------ */
+	public function __construct($bdd, $post, $session, $get) {
 		$this->bdd = $bdd;
+		$this->post = $post;
+		$this->session = $session;
+		$this->get = $get;
 	}
 	
-	abstract public function getData();
+	/* ------------------------------------ */
+	/*		METHODE(S) :					*/
+	/* ------------------------------------ */
+	abstract public function getWebPageData();
 	
 }
 

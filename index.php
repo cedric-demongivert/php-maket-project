@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 /* Connexion bdd */
 require_once './src/bdd.php';
@@ -15,7 +16,7 @@ if(isset($_GET) && isset($_GET['service'])) {
 /* Instanciation du controleur : */
 require_once "./controllers/$controller_name.class.php";
 
-$controller = new $controller_name(bdd_connect());
+$controller = new $controller_name(bdd_connect(), $_POST, $_SESSION, $_GET);
 
 /* Vues : */
 require_once './lib/Twig/Autoloader.php';
@@ -33,6 +34,6 @@ $twig = new Twig_Environment($loader, array(
 
 /* Affichage de la page */
 echo $twig->render("$controller_name.template.html", 
-$controller->getData());
+$controller->getWebPageData());
 
 ?>

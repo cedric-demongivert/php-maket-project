@@ -24,10 +24,17 @@ class Product {
 	}
 
 	public static function get($bdd, $id) {
+		$product = new Product();
+		
 		$product->id = $id;
 		$result = $bdd->prepare("SELECT * FROM Product WHERE num_produit = :id");
 		$result->bindParam(":id",$id);
-		$result->execute() or die("Erreur SQL Ligne 27 Product");
+		
+		if(!$result->execute()) {
+			print_r($result->errorInfo()); 
+			die("Erreur SQL Ligne 34 Product");
+		}
+		
 		if ($data = $result->fetch()) {
 			$product->name = $data['nom_produit'];
 			$product->cost = $data['prix'];
@@ -38,6 +45,7 @@ class Product {
 		} else {
 			die("Le produit qui possède l'id ".$id." n'existe pas.");
 		}
+		
 		return $product;
 	}
 	

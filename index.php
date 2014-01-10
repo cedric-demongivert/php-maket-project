@@ -3,6 +3,7 @@ session_start();
 
 /* Connexion bdd */
 require_once './src/bdd.php';
+require_once "./src/Controller.class.php";
 
 /* Récupération du controleur : */
 $controller_name = "Categories"; /* Controleur par défaut */
@@ -16,7 +17,8 @@ if(isset($_GET) && isset($_GET['service'])) {
 /* Instanciation du controleur : */
 require_once "./controllers/$controller_name.class.php";
 
-$controller = new $controller_name(bdd_connect(), $_POST, $_SESSION, $_GET);
+$controller = new $controller_name(bdd_connect());
+$controller->init();
 
 /* Vues : */
 require_once './lib/Twig/Autoloader.php';
@@ -34,6 +36,6 @@ $twig = new Twig_Environment($loader, array(
 
 /* Affichage de la page */
 echo $twig->render("$controller_name.template.html", 
-$controller->getWebPageData());
+$controller);
 
 ?>

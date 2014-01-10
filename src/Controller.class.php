@@ -6,24 +6,28 @@ abstract class Controller {
 	/*		ATTRIBUT(S) :					*/
 	/* ------------------------------------ */
 	protected $bdd;
-	protected $post;
-	protected $session;
-	protected $get;
+	protected $title;
+	protected $error;
+	protected $info;
+	protected $meta;
+	protected $import;
 	
 	/* ------------------------------------ */
 	/*		CONSTRUCTEUR(S) :				*/
 	/* ------------------------------------ */
-	public function __construct($bdd, $post, $session, $get) {
+	public function __construct($bdd) {
 		$this->bdd = $bdd;
-		$this->post = $post;
-		$this->session = $session;
-		$this->get = $get;
+		$this->title = "untitled";
+		$this->error = null;
+		$this->info = null;
+		$this->meta = null;
+		$this->import = null;
 	}
 	
 	/* ------------------------------------ */
 	/*		METHODE(S) :					*/
 	/* ------------------------------------ */
-	abstract public function getWebPageData();
+	public abstract function init();
 	
 }
 

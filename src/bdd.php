@@ -1,5 +1,5 @@
 <?php
 
 function bdd_connect() {
-	return new PDO(new PDO("mysql:host=localhost;dbname=catalogue","root","rHoofyy7"););
+	return new PDO("mysql:host=localhost;dbname=catalogue","root","rHoofyy7");
 }

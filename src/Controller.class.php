@@ -8,7 +8,7 @@ class Controller {
 		$this->bdd = $bdd;
 	}
 	
-	public abstract function getData();
+	abstract public function getData();
 	
 }
 

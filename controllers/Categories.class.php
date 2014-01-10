@@ -3,7 +3,7 @@ require_once "../src/Controller.class.php"
 
 class Categories extends Controller {
 	
-	function getData() {
+	public function getData() {
 		
 		return array();
 		

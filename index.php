@@ -36,6 +36,6 @@ $twig = new Twig_Environment($loader, array(
 
 /* Affichage de la page */
 echo $twig->render("$controller_name.template.html", 
-$controller);
+array("controller" => $controller));
 
 ?>

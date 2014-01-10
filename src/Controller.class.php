@@ -29,6 +29,29 @@ abstract class Controller {
 	/* ------------------------------------ */
 	public abstract function init();
 	
+	/* ------------------------------------ */
+	/*		GETTER(S) :						*/
+	/* ------------------------------------ */
+	public function getTitle() {
+		return $this->title;	
+	}
+	
+	public function getError() {
+		return $this->error;
+	}
+	
+	public function getInfo() {
+		return $this->info;
+	}
+	
+	public function getMeta() {
+		return $this->meta;
+	}
+	
+	public function getImport() {
+		return $this->import;
+	}	
+	
 }
 
 ?>

@@ -9,90 +9,110 @@ class Product {
 	private $category;
 	private $loaded;
 	
-	function __construct($name,$cost,$promo,$image,$category) {
-		$this->name = $name;
-		$this->cost = $cost;
-		$this->promo = $promo;
-		$this->image = $image;
-		$this->category = $category;
-		$this->loaded = false;
+	public static function create($name,$cost,$promo,$image,$category) {
+		
+		$product = new Product();
+		$product->name = $name;
+		$product->cost = $cost;
+		$product->promo = $promo;
+		$product->image = $image;
+		$product->category = $category;
+		$product->loaded = false;
+		
+		return $product;
+		
 	}
-	
-	function __construct($bdd, $id) {
-		$this->id = $id;
+
+	public static function get($bdd, $id) {
+		$product->id = $id;
 		$result = $bdd->prepare("SELECT * FROM Product WHERE num_produit = :id");
 		$result->bindParam(":id",$id);
 		$result->execute() or die("Erreur SQL Ligne 27 Product");
 		if ($data = $result->fetch()) {
-			$this->name = $data['nom_produit'];
-			$this->cost = $data['prix'];
-			$this->promo = $data['promo'];
-			$this->image = $data['photo'];
-			$this->category = $data['num_categorie'];
-			$this->loaded = true;
+			$product->name = $data['nom_produit'];
+			$product->cost = $data['prix'];
+			$product->promo = $data['promo'];
+			$product->image = $data['photo'];
+			$product->category = $data['num_categorie'];
+			$product->loaded = true;
 		} else {
-			die("Le produit qui possède l'id ".$id." n'existe pas.");
+			die("Le produit qui possÃ¨de l'id ".$id." n'existe pas.");
 		}
+		return $product;
 	}
 	
-	function getName() {
+	private function __construct() {
+		
+	}
+	
+	public function getName() {
 		return $this->name;
 	}
 	
-	function setName($name) {
+	public function setName($name) {
 		$this->name = $name;
 	}
 	
-	function getCost() {
+	public function getCost() {
 		return $this->cost;
 	}
 	
-	function setCost($cost) {
+	public function setCost($cost) {
 		$this->cost = $cost;
 	}
 	
-	function getPromo() {
+	public function getPromo() {
 		return $this->promo;
 	}
 	
-	function setPromo($promo) {
+	public function setPromo($promo) {
 		$this->promo = $promo;
 	}
 	
-	function getImage() {
+	public function getImage() {
 		return $this->image;
 	}
 	
-	function setImage($image) {
+	public function setImage($image) {
 		$this->image = $image;
 	}
 	
-	function getCategory() {
+	public function getCategory() {
 		return $this->category;
 	}
 	
-	function setCategory($category) {
+	public function setCategory($category) {
 		$this->category = $category;
 	}
 	
-	function save($bdd) {
+	public function save($bdd) {
 		if (!($this->loaded)) {
-			$insert = $bdd->prepare("INSERT INTO produit (nom_produit, prix, promo, photo, num_categorie) VALUES (:name, :cost, :promo, :photo, :category)");
-			$insert->bindParam(":name",$name);
-			$insert->bindParam(":cost",$cost);
-			$insert->bindParam(":promo",$promo);
-			$insert->bindParam(":photo",$image);
-			$insert->bindParam(":category",$category);
-			$insert->execute() or die("Erreur lors de l'insertion d'un nouveau produit.");
+			$insert = $bdd->prepare("INSERT INTO produit (nom, prix, promo, photo, id_categorie) VALUES (:name, :cost, :promo, :photo, :category)");
+			$insert->bindParam(":name",$this->name);
+			$insert->bindParam(":cost",$this->cost);
+			$insert->bindParam(":promo",$this->promo);
+			$insert->bindParam(":photo",$this->image);
+			$insert->bindParam(":category",$this->category);
+			
+			if(!$insert->execute()) {
+				print_r($insert->errorInfo()); 
+				die("Erreur lors de l'insertion d'un nouveau produit.");
+			}
+			
 		} else {
-			$insert = $bdd->prepare("UPDATE produit SET nom_produit = :name, prix = :cost, promo = :promo, photo = :photo, num_categorie = :category WHERE num_produit = :id");
+			$insert = $bdd->prepare("UPDATE produit SET nom = :name, prix = :cost, promo = :promo, photo = :photo, id_categorie = :category WHERE id = :id");
 			$insert->bindParam(":id",$this->id);
-			$insert->bindParam(":name",$name);
-			$insert->bindParam(":cost",$cost);
-			$insert->bindParam(":promo",$promo);
-			$insert->bindParam(":photo",$image);
-			$insert->bindParam(":category",$category);
-			$insert->execute() or die("Erreur lors de l'insertion d'un nouveau produit.");
+			$insert->bindParam(":name",$this->name);
+			$insert->bindParam(":cost",$this->cost);
+			$insert->bindParam(":promo",$this->promo);
+			$insert->bindParam(":photo",$this->image);
+			$insert->bindParam(":category",$this->category);
+			
+			if($insert->execute()) {
+				print_r($insert->errorInfo()); 
+				die("Erreur lors de l'insertion d'un nouveau produit.");
+			}
+			
 		}
 	}
 }

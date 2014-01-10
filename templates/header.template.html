@@ -2,11 +2,11 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		{% if not controller.meta is empty %}
+		{% if controller.meta is not empty %}
 			{{ controller.meta }}
 		{% endif %}
 		<title>{{ controller.title }}</title>
-		{% if not controller.import is empty %}
+		{% if controller.import is not empty %}
 			{{ controller.import }}
 		{% endif %}
 	</head>

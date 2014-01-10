@@ -1,4 +1,4 @@
-{% include 'header.template.html' %}
+{% include "header.template.html" %}
 
 <form id="userForm" method="post" action="index.php?service=UserModify">
 
@@ -8,8 +8,8 @@
 			<td class="formLabel">
 				Login :
 			</td>
-			<td class="formField {{ loginClass }}">
-				<input type="text" name="login" id="login" value="{{ login }}"/>
+			<td class="formField">
+				<input type="text" name="login" id="login" value=""/>
 			</td>
 		</tr>
 		
@@ -17,7 +17,7 @@
 			<td class="formLabel">
 				Mot de passe :
 			</td>
-			<td class="formField {{ passClass }}">
+			<td class="formField">
 				<input type="password" name="pass" id="pass" />
 			</td>
 		</tr>
@@ -26,19 +26,16 @@
 			<td class="formLabel">
 				Administrateur :
 			</td>
-			<td class="formField {{ adminClass }}">
+			<td class="formField">
 				<input type="checkbox" name="admin" id="admin" 
-					{% if admin is not empty %}
-						checked="checked"
-					{% endif %}
 				/>
 			</td>
 		</tr>
 		
 	</table>
-	{{ controller.title|escape }}
-	<input type="submit" value="{{ controller.actionType|escape }}"/>
+
+	<input type="submit" value="{{ controller.form.actionType|escape }}"/>
 
 </form>
 
-{% include 'footer.template.html' %}
+{% include "footer.template.html" %}

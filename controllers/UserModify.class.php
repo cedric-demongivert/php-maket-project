@@ -2,25 +2,30 @@
 
 class UserModify extends Controller {
 	
-	public $actionType;
+	private $form;
 	
 	public function init() {
+		
+		/* données passées en paramètres */
+		if(isset($_POST)) {
+			$this->verifyPost();
+		}
 		
 		/* modifier un utilisateur */
 		if(isset($_GET) && isset($_GET['modify'])) {
 			$this->title = "Modifier un utilisateur";
-			$this->actionType = "Modifier";
+			$this->form['actionType'] = "Modifier";
 		}
 		/* créer un utilisateur */
 		else {
 			$this->title = "Créer un utilisateur";
-			$this->actionType = "Créer";
+			$this->form['actionType'] = "Créer";
 		}
 		
 	}
 	
-	public function getActionType() {
-		return $this->actionType;
+	public function getForm() {
+		return $this->form;
 	}
 	
 }

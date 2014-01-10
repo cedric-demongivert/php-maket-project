@@ -1,18 +1,31 @@
-<?php 
+<?php
 
 include_once 'src/bdd.php';
 
-	$controller_name;
+/* Récupération du controleur : */
+$controller_name = "categories"; /* Controleur par défaut : */
 
-	if(!isset($_GET) || !isset($_GET['service'])) {
-		
-		$controller_name = "categories";
-		
-	}
-	else {
-		
-		$controller_name = $_GET['service'];
-		
-	}
-	
-	$controller = new $controller_name(bdd_connect());
+if(isset($_GET) && isset($_GET['service'])) {
+
+	$controller_name = $_GET['service'];
+
+}
+
+/* Instanciation du controleur : */
+require_once "controllers/$controller_name.class.php";
+
+$controller = new $controller_name(bdd_connect());
+
+/* Vues : */
+require_once 'lib/Twig/Autoloader.php';
+
+Twig_Autoloader::register();
+
+$loader = new Twig_Loader_Filesystem('templates');
+$twig = new Twig_Environment($loader, array(
+    'cache' => 'cache',
+));
+
+$template = $twig->loadTemplate("$controller_name.template.html");
+
+echo $template->render($controller->getData());

@@ -14,8 +14,6 @@ if(isset($_GET) && isset($_GET['service'])) {
 /* Instanciation du controleur : */
 require_once "./controllers/$controller_name.class.php";
 
-die("test");
-
 $controller = new $controller_name(bdd_connect());
 
 /* Vues : */

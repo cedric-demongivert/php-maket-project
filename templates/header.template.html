@@ -12,15 +12,15 @@
 	</head>
 	<body>
 
-	{% if not controller.error is empty %}
+	{% if controller.error is not empty %}
 		<div class="errorBlock">
-			{{ controller.error }}
+			{{ controller.error|escape }}
 		</div>
 	{% endif %}
 	
 	{% if controller.info is not empty %}
 		<div class="infoBlock">
-			{{ controller.info }}
+			{{ controller.info|escape }}
 		</div>
 	{% endif %}
 

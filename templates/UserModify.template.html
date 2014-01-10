@@ -36,8 +36,8 @@
 		</tr>
 		
 	</table>
-	
-	<input type="submit" value="{{ actionType|default('valider') }}"/>
+	{{ controller.title|escape }}
+	<input type="submit" value="{{ controller.actionType|escape }}"/>
 
 </form>
 

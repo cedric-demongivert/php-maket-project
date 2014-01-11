@@ -81,7 +81,7 @@ class User {
 			$user->loaded = true;
 			$users[] = $user;
 		} 
-		
+
 		return $users;
 		
 	}

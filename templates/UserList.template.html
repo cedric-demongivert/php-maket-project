@@ -10,7 +10,11 @@
 	<tr>
 		<td class="dataLine">{{ user.login }}</td>
 		<td class="dataLine">{{ user.admin }}</td>
-		<td class="dataLine"><a href="index.php?service=UserModify&modify={{ user.id|escape }}">+ Modifier</a> <br/> <a href="index.php?service=UserModify&delete={{ user.id|escape }}">- Supprimer</a></td>
+		<td class="dataLine">
+			<a href="index.php?service=UserModify&modify={{ user.id }}">+ Modifier</a> 
+			<br/> 
+			<a href="index.php?service=UserModify&delete={{ user.id }}">- Supprimer</a>
+		</td>
 	</tr>
 {% endfor %}
 </table>

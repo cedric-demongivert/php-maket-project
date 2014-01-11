@@ -3,8 +3,13 @@ require_once "./src/data/Category.class.php";
 
 class Categories extends Controller {
 	
+	public function __construct() {
+		parent::__construct("categoriesList");
+		$this->title = "Navigation";
+	}
+	
 	public function init() {
-		$this->title = "Accueil";
+		
 	}
 	
 	public function getCategories() {

@@ -24,7 +24,7 @@ $controller = new $controller_name();
 $controller->init();
 
 /* Vues : */
-require_once './lib/Twig/Autoloader.php';
+require_once '../lib/Twig/Autoloader.php';
 
 /* Paramétrage Twig (moteur de templates) */
 Twig_Autoloader::register();

@@ -2,38 +2,37 @@
 
 abstract class Controller {
 	
-	/* ------------------------------------ */
-	/*		ATTRIBUT(S) :					*/
-	/* ------------------------------------ */
+	/* -------------------------------------------------------- */
+	/*			FIELD(S)										*/
+	/* -------------------------------------------------------- */
 	protected $title;
 	protected $error;
 	protected $info;
-	protected $meta;
-	protected $import;
+	
 	protected $controllers;
 	protected $controllerName;
 	
-	/* ------------------------------------ */
-	/*		CONSTRUCTEUR(S) :				*/
-	/* ------------------------------------ */
-	public function __construct() {
+	/* -------------------------------------------------------- */
+	/*			CONSTRUCTOR(S)									*/
+	/* -------------------------------------------------------- */
+	public function __construct($controllerName) {
 		$this->title = "untitled";
 		$this->error = null;
 		$this->info = null;
-		$this->meta = null;
-		$this->import = null;
 		$this->controllers = array();
-		$this->controllerName = "controller";
+		$this->controllerName = $controllerName;
 	}
 	
-	/* ------------------------------------ */
-	/*		METHODE(S) :					*/
-	/* ------------------------------------ */
-	public abstract function init();
+	/* -------------------------------------------------------- */
+	/*			METHOD(S)										*/
+	/* -------------------------------------------------------- */
+	public function includeController($controllerName, $controller) {
+		$this->controllers[$controllerName] = $controller;
+	}
 	
-	/* ------------------------------------ */
-	/*		GETTER(S) :						*/
-	/* ------------------------------------ */
+	/* -------------------------------------------------------- */
+	/*			GETTER(S) & SETTER(S)							*/
+	/* -------------------------------------------------------- */
 	public function getTitle() {
 		return $this->title;	
 	}
@@ -46,23 +45,11 @@ abstract class Controller {
 		return $this->info;
 	}
 	
-	public function getMeta() {
-		return $this->meta;
-	}
-	
-	public function getImport() {
-		return $this->import;
-	}	
-	
-	public function includeController($controllerName, $controller) {
-		$this->controllers[$controllerName] = $controller;
-	}
-	
 	public function getIncludedControllers() {
 		return $this->controllers;
 	}
 	
-	public function getControllerName() {
+	public function getName() {
 		return $this->controllerName;
 	}
 	

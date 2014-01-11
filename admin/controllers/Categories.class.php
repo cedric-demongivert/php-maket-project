@@ -14,6 +14,10 @@ class Categories extends Controller {
 		
 	}
 	
+	public function listCategories() {
+		
+	}
+	
 	public function getCategory() {
 		
 	}

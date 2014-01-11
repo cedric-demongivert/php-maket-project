@@ -28,7 +28,7 @@ class Category extends Model {
 		$results = $articleFact->select("id_categorie = ".$this->getId());
 		
 		/* Et les articles des sous catégories */
-		for($category : $this->getSubCategories) {
+		foreach($category as $this->getSubCategories) {
 			
 			$articles = $category->getArticles();
 			

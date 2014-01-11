@@ -1,7 +1,21 @@
 {% include 'header.template.html' %}
 
-{% for category in controller.categories %}
-	{{ category.nom }}
-{% endfor %}
+<table id="mainBlock">
+	<tr>
+		<td id="leftBlock"> 
+		
+			{% include 'Panier.template.html' %}
+		
+		</td>
+				
+		<td id="rightBlock"> 
+
+			{% for category in controller.categories %}
+				{{ category.nom }}
+			{% endfor %}
+		</td>
+		
+	</tr>
+</table>
 
 {% include 'footer.template.html' %}

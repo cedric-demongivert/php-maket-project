@@ -3,72 +3,70 @@
 body {
 
 	background-color: #eeeeee;
-	text-align:center;	
+	text-align:center;
 	
+	padding-top:80px;	
+	
+}
+
+#header {
+	top: 0px;
+	left: 0px;
+	width: 100%;
+
+	background-color: #5d5d5d;
+	position:absolute;	
+	text-align:center;
+	border-bottom:solid 1px #ffffff;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	
+	color: #aeaeae;
+	font-size:40px;
 }
 
 #bodyData {
 
 	background-color: #ffffff;
-	width:60%;
-	margin:auto;	
-	margin-top: 10px;
-	padding:20px;
-	border-radius:10px;
-	border:solid 1px #dedede;
-	
-}
-
-.formTable {
-	
 	width:100%;
-	border:solid 1px #dedede;
+	padding-top:20px;
+	padding-bottom:20px;
+	margin-right:5%;	
+	margin-top: 10px;
 	border-radius:10px;
-	background-color: #eeeeee;
+	border:solid 1px #aeaeae;
 	
 }
 
-.formLabel {
-	border-right:solid 1px #cdcdcd;
-	padding:5px;
-}
-
-.formField {
-
-}
-
-.dataLine {
-	border-top:solid 1px #cdcdcd;
-}
-
-.errorBlock {
+h1 {
 	
-	background-color: #ffcccc;
-	width:60%;
-	margin:auto;	
-	margin-top: 5px;
-	padding:20px;
-	border-radius:10px;
-	border-top:solid 1px #ff6666;
-	border-left:solid 1px #ff6666;
-	border-right:solid 1px #ff6666;
-	border-bottom:solid 3px #ff6666;
-	color:#bb5050;
+	color:#aeaeae;
+	font-size: x-large;
+	border-bottom: solid 1px #aeaeae;
+	margin-left : 10px;
+	margin-right: 10px;
+	margin-top:5px;
+	margin-bottom:5px;
+	padding-bottom : 3px;
 	
 }
 
-.infoBlock {
+#leftBlock {
 	
-	background-color: #ccccff;
-	width:60%;
-	margin:auto;	
-	margin-top: 5px;
-	padding:20px;
-	border-radius:10px;
-	border-top:solid 1px #6666ff;
-	border-left:solid 1px #6666ff;
-	border-right:solid 1px #6666ff;
-	border-bottom:solid 3px #6666ff;
-	color:#5050bb;
+	width:25%;
+	border-right:solid 1px #aeaeae;
 	
 }
+
+#rightBlock {
+	
+	width:75%;
+	
+}
+
+#mainBlock {
+
+	width:100%;	
+	
+}
+	

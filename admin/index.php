@@ -18,10 +18,17 @@ if(isset($_GET) && isset($_GET['service'])) {
 }
 
 /* Instanciation du controleur : */
-require_once "./controllers/$controller_name.class.php";
+require_once "../controllers/$controller_name.class.php";
 
 $controller = new $controller_name();
-$controller->init();
+
+if(isset($_GET) && isset($_GET["function"])) {
+
+		$functionName = $_GET["function"];
+		$controller->$functionName();
+	
+}
+
 
 /* Vues : */
 require_once '../lib/Twig/Autoloader.php';
@@ -40,13 +47,13 @@ $twig = new Twig_Environment($loader, array(
 /* Tableau de controllers */
 $data = array();
 $data['controller'] = $controller;
-$data[$controller->getControllerName()] = $controller;
+$data[$controller->getName()] = $controller;
 
-foreach ($controller->getIncludedControllers() as $includedName => $included) {
-	$data[$includedName] = $included;
+foreach ($controller->getIncludedControllers() as $includedController) {
+	$data[$includedController->getName()] = $includedController;
 }
 
 /* Affichage de la page */
-echo $twig->render("$controller_name.template.html", $data);
+echo $twig->render($controller->getTemplate(), $data);
 
 ?>

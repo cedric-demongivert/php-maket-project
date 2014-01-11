@@ -22,12 +22,10 @@ require_once "./controllers/$controller_name.class.php";
 
 $controller = new $controller_name();
 
-if(isset($_GET) && sizeof($_GET) > 1) {
-	
-	for($i = 1; $i < sizeof($_GET); $i++) {
-		$functionName = $_GET[$i];
+if(isset($_GET) && isset($_GET["function"])) {
+
+		$functionName = $_GET["function"];
 		$controller->$functionName();
-	}
 	
 }
 
@@ -56,6 +54,6 @@ foreach ($controller->getIncludedControllers() as $includedController) {
 }
 
 /* Affichage de la page */
-echo $twig->render("$controller_name.template.html", $data);
+echo $twig->render($controller->getTemplate(), $data);
 
 ?>

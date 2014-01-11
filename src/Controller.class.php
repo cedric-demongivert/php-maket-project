@@ -11,16 +11,18 @@ abstract class Controller {
 	
 	protected $controllers;
 	protected $controllerName;
+	protected $controllerTemplate;
 	
 	/* -------------------------------------------------------- */
 	/*			CONSTRUCTOR(S)									*/
 	/* -------------------------------------------------------- */
-	public function __construct($controllerName) {
+	public function __construct($controllerName, $controllerTemplate) {
 		$this->title = "untitled";
 		$this->error = null;
 		$this->info = null;
 		$this->controllers = array();
 		$this->controllerName = $controllerName;
+		$this->controllerTemplate = $controllerTemplate;
 	}
 	
 	/* -------------------------------------------------------- */
@@ -51,6 +53,10 @@ abstract class Controller {
 	
 	public function getName() {
 		return $this->controllerName;
+	}
+	
+	public function getTemplate() {
+		return $this->controllerTemplate;
 	}
 	
 }

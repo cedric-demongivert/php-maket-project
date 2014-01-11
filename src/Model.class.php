@@ -54,10 +54,10 @@ abstract class Model {
 	public function select($where) {
 		
 		if(empty($where)) {
-			$statement = $bdd->prepare("SELECT * FROM {$this->tableName}");
+			$statement = Model::$bdd->prepare("SELECT * FROM {$this->tableName}");
 		}
 		else {
-			$statement = $bdd->prepare("SELECT * FROM {$this->tableName} WHERE ".$where);
+			$statement = Model::$bdd->prepare("SELECT * FROM {$this->tableName} WHERE ".$where);
 		}
 		
 		$resultSet = array();
@@ -104,7 +104,7 @@ abstract class Model {
 		
 		$query .= $set." WHERE id = :id";
 		
-		$statement = $bdd->prepare($query);
+		$statement = Model::$bdd->prepare($query);
 		
 		/* Ajout des paramètres */
 		foreach($this->fields as $field) {
@@ -126,7 +126,7 @@ abstract class Model {
 	
 	public function exec($query) {
 		
-		$statement = $bdd->prepare($query);
+		$statement = Model::$bdd->prepare($query);
 		
 		/* éxecution */
 		if(!$statement->execute()) {
@@ -139,7 +139,7 @@ abstract class Model {
 	
 	public function get($query) {
 		
-		$statement = $bdd->prepare($query);
+		$statement = Model::$bdd->prepare($query);
 		
 		$resultSet = array();
 		
@@ -205,7 +205,7 @@ abstract class Model {
 		
 		$query .= ")";
 		
-		$statement = $bdd->prepare($query);
+		$statement = Model::$bdd->prepare($query);
 		
 		/* maintenant les paramètres... */
 		foreach($this->fields as $field) {
@@ -236,7 +236,9 @@ abstract class Model {
 			
 			/* on parcourt les champs et ont les set */
 			foreach($line as $field => $value) {
-				$data->__set($field, $value);
+				if(!is_int($field)) {
+					$data->__set($field, $value);
+				}
 			}
 			
 			/* on déclare que l'objet n'a pas été modifié */
@@ -286,13 +288,13 @@ abstract class Model {
 	
 	/* Getters : */
 	public function __get($name) {
-		
+
 		/* Si la propriétée existe alors on la retourne */
 		if(array_key_exists($name, $this->data)) {
 			return $this->data[$name];
 		}
 		else {
-			
+
 			/* Sinon erreur : */
 			$trace = debug_backtrace();
 	        trigger_error(
@@ -323,8 +325,24 @@ abstract class Model {
 		
 	}
 	
+	/* -------------------------------------------------------- */
+	/*			GETTER(S) & SETTER(S)							*/
+	/* -------------------------------------------------------- */
+	public function getData() {
+		return $this->data;
+	}
 	
-	
+	public static function toData($models) {
+		
+		$return = array();
+		
+		foreach($models as $model) {
+			$return[] = $model->getData();
+		}
+		
+		return $return;
+		
+	}
 	
 }
 

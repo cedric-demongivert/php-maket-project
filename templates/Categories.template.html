@@ -1,5 +1,7 @@
 {% include 'header.template.html' %}
 
-GOOOOGOL
+{% for category in controller.categories %}
+	{{ category.nom }}
+{% endfor %}
 
 {% include 'footer.template.html' %}

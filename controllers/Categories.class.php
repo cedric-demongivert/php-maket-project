@@ -9,7 +9,7 @@ class Categories extends Controller {
 	
 	public function getCategories() {
 		$category = new Category();
-		return $category->selectAll();
+		return Model::toData($category->selectAll());
 	}
 	
 }

@@ -10,10 +10,32 @@
 				
 		<td id="rightBlock"> 
 
-			{% for category in controllerC.categories %}
-				{{ category.nom }}
-			{% endfor %}
+			<h1> Liste des catégories du site : </h1>
 			
+			<br/>
+			
+			<table class="dataTable">
+					<tr>
+						<th>ID</th>
+						<th>NOM</th>
+						<th>ACTIONS</th>
+					</tr>
+				{% for category in categoriesController.categories %}
+					<tr>
+						<td>{{ category.id }}</td>
+						<td>{{ category.nom }}</td>
+						<td> 
+							<a href="index.php?service=Categories&function=modify&id={{ category.id }}"> + modifier </a> <br/> 
+							+ supprimer <br/> 
+							+ informations 
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+			
+			<br/>
+			
+			<a href="index.php?service=Categories&function=create">+ Ajouter une nouvelle catégorie</a>
 		</td>
 		
 	</tr>

@@ -1,0 +1,56 @@
+{% include 'header.template.html' %}
+
+<table id="mainBlock">
+	<tr>
+		<td id="leftBlock"> 
+		
+			{% include 'menu.template.html' %}
+		
+		</td>
+				
+		<td id="rightBlock"> 
+
+			<h1> Creer une nouvelle catégorie : </h1>
+			
+			<br/>
+			
+			<form id="create_category" method="post" action="index.php?service=Categories&function=modify">
+			
+				<table class="formTable">
+					<tr>
+						<td>Nom de la nouvelle catégorie : </td>	
+						<td>
+							<input type="text" name="name" id="name" value="{{ categoriesController.category.nom }}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Catégorie parente : </td>	
+						<td>
+							<select name="parent" id="parent">
+								<option value="-1" 
+									{% if categoriesController.category.idParent == -1 %} 
+										selected="selected"
+									{% endif %}
+								 > Pas de catégorie parente </option>
+							{% for category in categoriesController.categories %}
+								<option value="{{ category.id }}" 
+									{% if categoriesController.category.idParent == category.id %} 
+										selected="selected"
+									{% endif %}"
+									>{{ category.nom }}</option>
+							{% endfor %}
+							</select>
+						</td>
+					</tr> 
+				</table>
+			
+				<input type="submit" value="modifier" />
+			
+			</form>
+			
+		</td>
+		
+	</tr>
+</table>
+
+{% include 'footer.template.html' %}

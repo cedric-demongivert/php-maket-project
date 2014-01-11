@@ -334,6 +334,10 @@ abstract class Model {
 	
 	public static function toData($models) {
 		
+		if(!is_array($models)) {
+			return $models->getData();
+		}
+		
 		$return = array();
 		
 		foreach($models as $model) {

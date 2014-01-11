@@ -8,6 +8,15 @@ require_once "../src/Model.class.php";
 
 Model::$bdd = bdd_connect();
 
+/* Importation models */
+$dir = opendir("../src/data");
+
+while(($file = readdir($dir)) !== false) {
+	if(!($file == ".") || !($file == "..")) {
+		require_once "../src/data/$file";
+	}
+}
+
 /* Récupération du controleur : */
 $controller_name = "Categories"; /* Controleur par défaut */
 
@@ -18,7 +27,7 @@ if(isset($_GET) && isset($_GET['service'])) {
 }
 
 /* Instanciation du controleur : */
-require_once "../controllers/$controller_name.class.php";
+require_once "./controllers/$controller_name.class.php";
 
 $controller = new $controller_name();
 

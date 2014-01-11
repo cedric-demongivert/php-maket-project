@@ -4,15 +4,16 @@
 	<tr>
 		<td id="leftBlock"> 
 		
-			{% include 'Panier.template.html' %}
+			{% include 'menu.template.html' %}
 		
 		</td>
 				
 		<td id="rightBlock"> 
 
-			{% for category in controller.categories %}
+			{% for category in controllerC.categories %}
 				{{ category.nom }}
 			{% endfor %}
+			
 		</td>
 		
 	</tr>

@@ -1,5 +1,4 @@
 <?php
-require_once './src/data/Category.class.php';
 
 class Article extends Model {
 	

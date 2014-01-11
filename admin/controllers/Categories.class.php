@@ -3,7 +3,7 @@
 class Categories extends Controller {
 	
 	public function __construct() {
-		parent::__construct("categoriesController");
+		parent::__construct("categoriesController","Categories.template.html");
 	}
 	
 	public function create() {
@@ -15,6 +15,13 @@ class Categories extends Controller {
 	}
 	
 	public function listCategories() {
+		
+	}
+	
+	public function getCategories() {
+		
+		$categories = new Category();
+		return $categories->selectAll();
 		
 	}
 	

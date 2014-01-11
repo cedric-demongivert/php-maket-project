@@ -40,7 +40,7 @@
 	<br/>
 	
 	{% if user.form.args is not empty %}
-		<input type="hidden" name="modify" value="{{ user.form.id }}" />
+		<input type="hidden" name="modify" value="{{ user.form.id|escape }}" />
 	{% endif %}
 	
 	<input type="submit" value="{{ user.form.actionType|escape }}"/>

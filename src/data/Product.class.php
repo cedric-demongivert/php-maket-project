@@ -43,7 +43,7 @@ class Product {
 			$product->category = $data['num_categorie'];
 			$product->loaded = true;
 		} else {
-			die("Le produit qui possède l'id ".$id." n'existe pas.");
+			die("Le produit qui possède l'id $id n'existe pas.");
 		}
 		
 		return $product;
@@ -111,6 +111,7 @@ class Product {
 			$this->id = $bdd->lastInsertId(); 
 			
 		} else {
+			
 			$insert = $bdd->prepare("UPDATE produit SET nom = :name, prix = :cost, promo = :promo, photo = :photo, id_categorie = :category WHERE id = :id");
 			$insert->bindParam(":id",$this->id);
 			$insert->bindParam(":name",$this->name);

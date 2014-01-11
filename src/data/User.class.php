@@ -22,11 +22,11 @@ class User {
 		$user->admin = $admin;
 		$user->loaded = false;
 		
-		if(User::exist($login, $pass, $bdd) < 0) {
-			return $user;
+		if(User::existLogin($login, $bdd) > 0) {
+			return false;
 		}
 		else {
-			return false;
+			return $user;
 		}
 		
 	}
@@ -63,6 +63,25 @@ class User {
 		$result = $bdd->prepare("SELECT * FROM user WHERE login = :login AND pass = :pass");
 		$result->bindParam(":login",$login);
 		$result->bindParam(":pass",crypt($pass));
+		
+		if(!$result->execute()) {
+			print_r($result->errorInfo());
+			die("Erreur SQL get User");
+		}
+		
+		if($result->rowCount() >= 1) {
+			$data = $result->fetch();
+			return $data["id"];
+		}
+		
+		return -1;
+		
+	}
+	
+	public static function existLogin($login, $bdd) {
+		
+		$result = $bdd->prepare("SELECT * FROM user WHERE login = :login");
+		$result->bindParam(":login",$login);
 		
 		if(!$result->execute()) {
 			print_r($result->errorInfo());
@@ -142,7 +161,7 @@ class User {
 	}
 	
 	public function setLogin($login) {
-		$this->login = $login;
+		$this->login = crypt($login);
 	}
 	
 	public function setPass($pass) {

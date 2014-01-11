@@ -43,8 +43,8 @@ class UserModify extends Controller {
 			$this->error = "Veuillez préciser un login ET un mot de passe";
 
 		}
-		/* Sinon on tente de créer l'utilisateur */
-		else {
+		/* Sinon si on tente de créer l'utilisateur */
+		else if (!isset($_POST["modify"])){
 			
 			$user = User::create($_POST["login"], $_POST["pass"], isset($_POST["admin"]), $this->bdd);
 			
@@ -58,6 +58,18 @@ class UserModify extends Controller {
 				$this->info = "L'utilisateur {$user->getLogin()} a bien été crée en base.";
 				$_GET['modify'] = $user->getId();
 			}
+			
+		}
+		/* Sinon modification */
+		else {
+
+			$user = User::get($_POST["modify"], $this->bdd);
+			$user->setLogin($_POST["login"]);
+			$user->setPass($_POST["pass"]);
+			$user->setAdmin(isset($_POST["admin"]));
+			$user->sav($this->bdd);
+			
+			$this->info = "L'utilisateur {$user->getLogin()} a bien été modifié en base.";
 			
 		}
 		

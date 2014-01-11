@@ -16,7 +16,7 @@ class UserModify extends Controller {
 		$this->controllerName = "user";
 		
 		/* données passées en paramètres */
-		if(isset($_POST)) {
+		if(isset($_POST) && !empty($_POST)) {
 			$this->verifyPost();
 		}
 		

@@ -14,6 +14,7 @@ class User {
 	/* ------------------------------------ */
 	/*		CONSTRUCTEUR(S) :				*/
 	/* ------------------------------------ */
+	/* Créer un utilisateur */
 	public static function create($login, $pass, $admin, $bdd) {
 		
 		$user = new User();
@@ -31,6 +32,7 @@ class User {
 		
 	}
 	
+	/* Récupérer un utilisateur par son id (false sinon) */
 	public static function get($id, $bdd) {
 		
 		$user = new User();
@@ -51,13 +53,40 @@ class User {
 			$user->admin = $data["admin"];
 			$user->loaded = true;
 		} else {
-			die("L'utilisateur qui possède l'id $id n'existe pas.");
+			return false;
 		}
 		
 		return $user;
 		
 	}
 	
+	/* Récupérer TOUT les utilisateurs */
+	public static function getAll($bdd) {
+		
+		$users = array();
+		
+		$result = $bdd->prepare("SELECT * FROM user");
+		
+		if(!$result->execute()) {
+			print_r($result->errorInfo());
+			die("Erreur SQL get User");
+		}
+		
+		while ($data = $result->fetch()) {
+			$user = new User();
+			$user->id = $data["id"];
+			$user->login = $data["login"];
+			$user->pass = $data["pass"];
+			$user->admin = $data["admin"];
+			$user->loaded = true;
+			$users[] = $user;
+		} 
+		
+		return $users;
+		
+	}
+	
+	/* Vérifier l'existence d'un utilisateur login + pass */
 	public static function exist($login, $pass, $bdd) {
 		
 		$result = $bdd->prepare("SELECT * FROM user WHERE login = :login AND pass = :pass");
@@ -78,6 +107,7 @@ class User {
 		
 	}
 	
+	/* Vérifier l'existence d'un utilisateur par login */
 	public static function existLogin($login, $bdd) {
 		
 		$result = $bdd->prepare("SELECT * FROM user WHERE login = :login");

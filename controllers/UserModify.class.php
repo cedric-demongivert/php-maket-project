@@ -24,6 +24,30 @@ class UserModify extends Controller {
 		
 	}
 	
+	private function verifyPost() {
+		
+		if(empty($_POST["login"]) || empty($_POST["pass"])) {
+			
+			$this->error = "Veuillez préciser un login ET un mot de passe";
+
+		}
+		
+		if(empty($_POST["login"])) {
+			$this->form['loginClass'] = "errorField";
+		}
+		else {
+			$this->form['login'] = $_POST['login'];
+		}
+			
+		if(empty($_POST["pass"])) {
+			$this->form['passClass'] = "errorField";
+		}
+		else {
+			$this->form['pass'] = $_POST['pass'];
+		}
+			
+	}
+	
 	public function getForm() {
 		return $this->form;
 	}

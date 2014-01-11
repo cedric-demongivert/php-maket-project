@@ -12,7 +12,7 @@ Model::$bdd = bdd_connect();
 $dir = opendir("./src/data");
 
 while(($file = readdir($dir)) !== false) {
-	if(!($file == ".") || !($file == "..")) {
+	if(!($file == ".") && !($file == "..")) {
 		require_once "./src/data/$file";
 	}
 }

@@ -1,6 +1,6 @@
 {% include "header.template.html" %}
 
-<form id="userForm" method="post" action="index.php?service=UserModify">
+<form id="userForm" method="post" action="index.php?service=UserModify{{ user.form.args }}">
 
 	<table class="formTable">
 	
@@ -9,7 +9,7 @@
 				Login :
 			</td>
 			<td class="formField">
-				<input type="text" name="login" id="login" value="{{ controller.form.login|escape }}"/>
+				<input type="text" name="login" id="login" value="{{ user.form.login|escape }}"/>
 			</td>
 		</tr>
 		
@@ -18,7 +18,7 @@
 				Mot de passe :
 			</td>
 			<td class="formField">
-				<input type="password" name="pass" id="pass" value="{{ controller.form.pass|escape }}"/>
+				<input type="password" name="pass" id="pass" value="{{ user.form.pass|escape }}"/>
 			</td>
 		</tr>
 		
@@ -28,6 +28,9 @@
 			</td>
 			<td class="formField">
 				<input type="checkbox" name="admin" id="admin" 
+					{% if user.form.admin is not empty %}
+						checked="checked"
+					{% endif %}
 				/>
 			</td>
 		</tr>
@@ -36,7 +39,11 @@
 
 	<br/>
 	
-	<input type="submit" value="{{ controller.form.actionType|escape }}"/>
+	{% if user.form.args is not empty %}
+		<input type="hidden" name="modify" value="{{ user.form.id }}" />
+	{% endif %}
+	
+	<input type="submit" value="{{ user.form.actionType|escape }}"/>
 
 </form>
 

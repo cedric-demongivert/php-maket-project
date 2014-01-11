@@ -95,6 +95,7 @@ class Product {
 	
 	public function save($bdd) {
 		if (!($this->loaded)) {
+			
 			$insert = $bdd->prepare("INSERT INTO produit (nom, prix, promo, photo, id_categorie) VALUES (:name, :cost, :promo, :photo, :category)");
 			$insert->bindParam(":name",$this->name);
 			$insert->bindParam(":cost",$this->cost);
@@ -106,6 +107,8 @@ class Product {
 				print_r($insert->errorInfo()); 
 				die("Erreur lors de l'insertion d'un nouveau produit.");
 			}
+			
+			$this->id = $bdd->lastInsertId(); 
 			
 		} else {
 			$insert = $bdd->prepare("UPDATE produit SET nom = :name, prix = :cost, promo = :promo, photo = :photo, id_categorie = :category WHERE id = :id");

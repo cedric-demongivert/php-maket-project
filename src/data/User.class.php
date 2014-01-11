@@ -2,18 +2,33 @@
 
 class User {
 	
+	/* ------------------------------------ */
+	/*		ATTRIBUT(S) :					*/
+	/* ------------------------------------ */
 	private $id;
 	private $login;
 	private $pass;
 	private $admin;
 	private $loaded;
 	
-	public static function create($login, $pass, $admin) {
+	/* ------------------------------------ */
+	/*		CONSTRUCTEUR(S) :				*/
+	/* ------------------------------------ */
+	public static function create($login, $pass, $admin, $bdd) {
+		
 		$user = new User();
 		$user->login = $login;
 		$user->pass = crypt($pass);
 		$user->admin = $admin;
 		$user->loaded = false;
+		
+		if(User::exist($login, $pass, $bdd) < 0) {
+			return $user;
+		}
+		else {
+			return false;
+		}
+		
 	}
 	
 	public static function get($id, $bdd) {
@@ -67,6 +82,45 @@ class User {
 		
 	}
 	
+	/* ------------------------------------ */
+	/*		METHODE(S) :					*/
+	/* ------------------------------------ */
+	public function sav($bdd) {
+
+		if (!($this->loaded)) {
+			
+			$insert = $bdd->prepare("INSERT INTO user (login, pass, admin) VALUES (:login, :pass, :admin)");
+			$insert->bindParam(":login",$this->login);
+			$insert->bindParam(":pass",$this->pass);
+			$insert->bindParam(":admin",$this->admin);
+			
+			if(!$insert->execute()) {
+				print_r($insert->errorInfo()); 
+				die("Erreur lors de l'insertion d'un nouvel utilisateur.");
+			}
+			
+			$this->id = $bdd->lastInsertId();
+			
+		} else {
+			
+			$insert = $bdd->prepare("UPDATE user SET login = :login, pass = :pass, admin = :admin WHERE id = :id");
+			$insert->bindParam(":id",$this->id);
+			$insert->bindParam(":login",$this->login);
+			$insert->bindParam(":pass",$this->pass);
+			$insert->bindParam(":admin",$this->admin);
+			
+			if($insert->execute()) {
+				print_r($insert->errorInfo()); 
+				die("Erreur lors de l'insertion d'un nouvel utilisateur.");
+			}
+			
+		}
+		
+	}
+	
+	/* ------------------------------------ */
+	/*		GETTER(S) :						*/
+	/* ------------------------------------ */
 	public function isAdmin() {
 		return $this->admin;
 	}
@@ -75,7 +129,7 @@ class User {
 		return $this->login;
 	}
 	
-	public function getPass() {
+	public function getPass() {
 		return $this->pass;
 	}
 	

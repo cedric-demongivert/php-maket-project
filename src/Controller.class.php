@@ -11,6 +11,8 @@ abstract class Controller {
 	protected $info;
 	protected $meta;
 	protected $import;
+	protected $controllers;
+	protected $controllerName;
 	
 	/* ------------------------------------ */
 	/*		CONSTRUCTEUR(S) :				*/
@@ -22,6 +24,8 @@ abstract class Controller {
 		$this->info = null;
 		$this->meta = null;
 		$this->import = null;
+		$this->controllers = array();
+		$this->controllerName = "controller";
 	}
 	
 	/* ------------------------------------ */
@@ -51,6 +55,18 @@ abstract class Controller {
 	public function getImport() {
 		return $this->import;
 	}	
+	
+	public function includeController($controllerName, $controller) {
+		$this->controllers[$controllerName] = $controller;
+	}
+	
+	public function getIncludedControllers() {
+		return $this->controllers;
+	}
+	
+	public function getControllerName() {
+		return $this->controllerName;
+	}
 	
 }
 

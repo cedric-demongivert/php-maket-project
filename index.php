@@ -34,8 +34,16 @@ $twig = new Twig_Environment($loader, array(
    'debug' => true
 ));
 
+/* Tableau de controllers */
+$data = array();
+$data['controller'] = $controller;
+$data[$controller->getControllerName()] = $controller;
+
+foreach ($controller->getIncludedControllers() as $includedName => $included) {
+	$data[$includedName] = $included;
+}
+
 /* Affichage de la page */
-echo $twig->render("$controller_name.template.html", 
-array("controller" => $controller));
+echo $twig->render("$controller_name.template.html", $data);
 
 ?>

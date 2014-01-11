@@ -44,6 +44,7 @@ class Categories extends Controller {
 			/* C'est partit : */
 			$category = new Category();
 			$category = $category->select("id = {$_GET['id']}");
+			$category = $category[0];
 			
 			$this->modifiedCategory = $category;
 			
@@ -55,12 +56,11 @@ class Categories extends Controller {
 					return;
 				}
 				
-				$category = new Category();
 				$category->setNom($_POST['name']);
 				$category->setIdParent($_POST['parent']);
-				$category->insert();
+				$category->update();
 				
-				$this->info = "La catégorie {$_POST['name']} a été créée avec succès !";
+				$this->info = "La catégorie {$_POST['name']} a été mise à jour !";
 				$this->controllerTemplate = "Categories.template.html";
 				
 			}
@@ -71,11 +71,7 @@ class Categories extends Controller {
 		}
 		
 	}
-	
-	public function listCategories() {
-		
-	}
-	
+
 	public function getCategories() {
 		
 		$categories = new Category();

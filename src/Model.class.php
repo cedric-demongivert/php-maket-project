@@ -94,7 +94,7 @@ abstract class Model {
 					$set .= ", ";
 				}
 				else {
-					$singleton = true;
+					$singleton = false;
 				}
 				
 				$set .= "$field = :$field";

@@ -14,13 +14,15 @@
 			
 			<br/>
 			
-			<form id="create_category" method="post" action="index.php?service=Categories&function=modify">
+			{% set modified = categoriesController.category %}
+			
+			<form id="create_category" method="post" action="index.php?service=Categories&function=modify&id={{ modified.id }}">
 			
 				<table class="formTable">
 					<tr>
 						<td>Nom de la nouvelle catégorie : </td>	
 						<td>
-							<input type="text" name="name" id="name" value="{{ categoriesController.category.nom }}"/>
+							<input type="text" name="name" id="name" value="{{ modified.nom }}"/>
 						</td>
 					</tr>
 					<tr>
@@ -28,15 +30,15 @@
 						<td>
 							<select name="parent" id="parent">
 								<option value="-1" 
-									{% if categoriesController.category.idParent == -1 %} 
+									{% if modified.idParent == -1 %}
 										selected="selected"
 									{% endif %}
 								 > Pas de catégorie parente </option>
 							{% for category in categoriesController.categories %}
 								<option value="{{ category.id }}" 
-									{% if categoriesController.category.idParent == category.id %} 
+									{% if modified.idParent == category.id %}
 										selected="selected"
-									{% endif %}"
+									{% endif %}
 									>{{ category.nom }}</option>
 							{% endfor %}
 							</select>

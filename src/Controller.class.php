@@ -5,7 +5,6 @@ abstract class Controller {
 	/* ------------------------------------ */
 	/*		ATTRIBUT(S) :					*/
 	/* ------------------------------------ */
-	protected $bdd;
 	protected $title;
 	protected $error;
 	protected $info;
@@ -17,8 +16,7 @@ abstract class Controller {
 	/* ------------------------------------ */
 	/*		CONSTRUCTEUR(S) :				*/
 	/* ------------------------------------ */
-	public function __construct($bdd) {
-		$this->bdd = $bdd;
+	public function __construct() {
 		$this->title = "untitled";
 		$this->error = null;
 		$this->info = null;

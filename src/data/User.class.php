@@ -158,7 +158,7 @@ class User {
 			$insert->bindParam(":pass",$this->pass);
 			$insert->bindParam(":admin",$this->admin);
 			
-			if($insert->execute()) {
+			if(!$insert->execute()) {
 				print_r($insert->errorInfo()); 
 				die("Erreur lors de l'insertion d'un nouvel utilisateur.");
 			}
@@ -191,11 +191,11 @@ class User {
 	}
 	
 	public function setLogin($login) {
-		$this->login = crypt($login);
+		$this->login = $login;
 	}
 	
 	public function setPass($pass) {
-		$this->pass = $pass;
+		$this->pass = crypt($pass);
 	}
 	
 }

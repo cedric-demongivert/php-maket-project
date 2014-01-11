@@ -4,16 +4,16 @@
 	<tr>
 		<th> login </th>
 		<th> administrateur </th>
-		<td> </td>
+		<th> opérations </th>
 	</tr>
 {% for user in usersController.users %}
 	<tr>
 		<td class="dataLine">{{ user.login }}</td>
 		<td class="dataLine">{{ user.admin }}</td>
 		<td class="dataLine">
-			<a href="index.php?service=UserModify&modify={{ user.id }}">+ Modifier</a> 
+			<a href="index.php?service=UserModify&modify={{ user.id }}">+ Modifier</a> 
 			<br/> 
-			<a href="index.php?service=UserModify&delete={{ user.id }}">- Supprimer</a>
+			<a href="index.php?service=UserModify&delete={{ user.id }}">- Supprimer</a>
 		</td>
 	</tr>
 {% endfor %}

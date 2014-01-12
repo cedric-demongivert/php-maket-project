@@ -125,13 +125,13 @@ class Articles extends Controller {
 		$datas = Model::toData($articles->selectAll());
 		
 		$categories = new Category();
-		foreach($datas as $data) {
-			if($data["idCategorie"] >= 0) {
-				$categoryData = Model::toData($categories->selectById($data["idCategorie"]));
-				$data["categorie"] = $categoryData["nom"];
+		for($i = 0; $i < sizeof($datas); $i++) {
+			if($datas[$i]["idCategorie"] >= 0) {
+				$categoryData = Model::toData($categories->selectById($datas[$i]["idCategorie"]));
+				$datas[$i]["categorie"] = $categoryData["nom"];
 			}
 			else {
-				$data["categorie"] = "Aucune catégorie";
+				$datas[$i]["categorie"] = "Aucune catégorie";
 			}
 		}
 

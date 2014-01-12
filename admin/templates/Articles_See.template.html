@@ -8,15 +8,15 @@
 		
 		</td>
 				
-		{% set category = categoriesController.category %}
+		{% set article = articlesController.article.data %}
 				
 		<td id="rightBlock"> 
 
-			<h1> Catégorie [{{ category.id }}] {{ category.nom }} : </h1>
+			<h1> Article [{{ article.id }}] {{ article.nom }} : </h1>
 
 			<h2> Catégorie parente : </h2>
 
-			{% set parentCategory = categoriesController.parentCategory %}
+			{% set parentCategory = articlesController.article.category.data %}
 			
 			{% if parentCategory is not empty %}
 			
@@ -24,72 +24,34 @@
 			
 			{% else %}
 			
-				<i>Cette catégorie n'a pas de catégorie parente.</i>
+				<i>Cette article n'a pas de catégorie parente.</i>
 			
 			{% endif %}
 			
 			<br/>
 			
-			<h2> Sous-catégories : </h2>
-			
-			{% set subCategories = categoriesController.subCategories %}
-			
-			{% if subCategories is empty %}
-			
-				<i>Cette catégorie ne possède pas de sous-catégories.</i>
-			
-			{% else %}
-			<table class="dataTable">
-					<tr>
-						<th>ID</th>
-						<th>NOM</th>
-						<th>ACTIONS</th>
-					</tr>
-				{% for subCategory in subCategories %}
-					<tr>
-						<td>{{ subCategory.id }}</td>
-						<td>{{ subCategory.nom }}</td>
-						<td> 
-							<a href="index.php?service=Categories&function=modify&id={{ subCategory.id }}"> + modifier </a> <br/> 
-							<a href="index.php?service=Categories&function=delete&id={{ subCategory.id }}">+ supprimer </a><br/> 
-							<a href="index.php?service=Categories&function=see&id={{ subCategory.id }}">+ informations </a>
-						</td>
-					</tr>
-				{% endfor %}
-			</table>
-			{% endif %}
-			
-			<br/>
-			
-			<h2> Articles dans la catégorie : </h2>
+			<h2> Informations : </h2>
 
-			{% set articles = categoriesController.categoryItems %}
-			
-			{% if articles is empty %}
-			
-				<i>Il n'y a aucun article dans cette catégorie.</i>
-			
-			{% else %}
 			<table class="dataTable">
-					<tr>
-						<th>ID</th>
-						<th>NOM</th>
-						<th>ACTIONS</th>
-					</tr>
-				{% for article in articles %}
-					<tr>
-						<td>{{ article.id }}</td>
-						<td>{{ article.nom }}</td>
-						<td> 
-							<a href="index.php?service=Articles&function=modify&id={{ article.id }}"> + modifier </a> <br/> 
-							<a href="index.php?service=Articles&function=delete&id={{ article.id }}">+ supprimer </a><br/> 
-							<a href="index.php?service=Articles&function=see&id={{ article.id }}">+ informations </a>
-						</td>
-					</tr>
-				{% endfor %}
+				<tr> 
+					<th> ID </th>
+					<td> {{ article.id }} </td>
+				</tr>
+				<tr> 
+					<th> NOM </th>
+					<td> {{ article.nom }} </td>
+				</tr>
+				<tr> 
+					<th> PRIX </th>
+					<td> {{ article.prix }} </td>
+				</tr>
+				<tr> 
+					<th> STOCK ACTUEL </th>
+					<td> {{ article.nombre }} </td>
+				</tr>
 			</table>
-			{% endif %}
 			
+			<br/>
 			<br/>
 			
 		</td>

@@ -1,0 +1,46 @@
+{% include 'header.template.html' %}
+
+<table id="mainBlock">
+	<tr>
+		<td id="leftBlock"> 
+		
+			{% include 'menu.template.html' %}
+		
+		</td>
+				
+		{% set category = categoriesController.category %}
+				
+		<td id="rightBlock"> 
+
+			<h1> Catégorie [{{ category.id }}] {{ category.nom }} : </h1>
+			
+			<br/>
+			
+			<h2> Catégorie parente : </h2>
+			
+			<br/>
+			{% set parentCategory = categoriesController.parentCategory %}
+			
+			{% if parentCategory is not empty %}
+			
+				[{{ parentCategory.id }}] {{ parentCategory.nom }}
+			
+			{% else %}
+			
+				<i>Cette catégorie n'a pas de catégorie parente.</i>
+			
+			{% endif %}
+			
+			<br/>
+			<br/>
+			
+			<h2> Sous-catégories : </h2>
+			
+			
+			
+		</td>
+		
+	</tr>
+</table>
+
+{% include 'footer.template.html' %}

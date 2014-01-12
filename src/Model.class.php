@@ -124,6 +124,30 @@ abstract class Model {
 		
 	}
 	
+	public function selectById($id) {
+		
+		$datas = $this->select("id = $id");
+		$data = $datas[0];
+		
+		return $data;
+		
+	}
+	
+	public function remove() {
+		
+		
+		$statement = Model::$bdd->prepare('DELETE FROM $tableName WHERE id = :id');
+		$statement->bindParam(':id', $this->getId());
+		
+		/* éxecution */
+		if(!$statement->execute()) {
+			echo $query;
+			print_r($statement->errorInfo()); 
+			die("Model : Erreur lors de l'execution dans : $tableName");
+		}
+		
+	}
+	
 	public function exec($query) {
 		
 		$statement = Model::$bdd->prepare($query);
@@ -335,6 +359,11 @@ abstract class Model {
 	public static function toData($models) {
 		
 		if(!is_array($models)) {
+			
+			if(empty($models)) {
+				return null;
+			}
+			
 			return $models->getData();
 		}
 		

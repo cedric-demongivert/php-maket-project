@@ -8,14 +8,14 @@ class Category extends Model {
 	
 	public function getSubCategories() {
 		
-		return $this->select("id_parent = ".$this->getId());
+		return $this->select("idParent = ".$this->getId());
 		
 	}
 	
 	public function getSpecificArticles() {
 		
 		$articleFact = new Article();
-		return $articleFact->select("id_categorie = ".$this->getId());
+		return $articleFact->select("idCategorie = ".$this->getId());
 		
 	}
 	
@@ -24,7 +24,7 @@ class Category extends Model {
 		$articleFact = new Article();
 		
 		/* Les articles de la catégorie */
-		$results = $articleFact->select("id_categorie = ".$this->getId());
+		$results = $articleFact->select("idCategorie = ".$this->getId());
 		
 		/* Et les articles des sous catégories */
 		foreach($category as $this->getSubCategories) {
@@ -38,6 +38,25 @@ class Category extends Model {
 		}
 		
 		return $results;
+		
+	}
+	
+	public function getParent() {
+		
+		if($this->getIdParent() < 0) {
+			return null;
+		}
+		
+		$articleFact = new Article();
+		
+		/* Les articles de la catégorie */
+		$results = $articleFact->select("id = ".$this->getIdParent());
+		
+		if(empty($results)) {
+			return null;
+		}
+		
+		return $results[0];
 		
 	}
 	

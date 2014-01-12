@@ -2,8 +2,6 @@
 
 class Categories extends Controller {
 	
-	private $modifiedCategory;
-	
 	public function __construct() {
 		parent::__construct("categoriesController","Categories.template.html");
 	}
@@ -31,6 +29,12 @@ class Categories extends Controller {
 			$this->controllerTemplate = "Categories.template.html";
 			
 		}
+		
+	}
+	
+	public function see() {
+		
+		$this->controllerTemplate = "Categories_See.template.html";
 		
 	}
 	
@@ -80,7 +84,63 @@ class Categories extends Controller {
 	}
 	
 	public function getCategory() {
-		return Model::toData($this->modifiedCategory);
+		if(isset($_GET['id'])) {
+			
+			$category = new Category();
+			$category = $category->select("id = {$_GET['id']}");
+			$category = $category[0];
+			
+			return Model::toData($category);
+			
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public function getSubCategories() {
+		if(isset($_GET['id'])) {
+			
+			$category = new Category();
+			$category = $category->select("id = {$_GET['id']}");
+			$category = $category[0];
+			
+			return Model::toData($category->getSubCategories());
+			
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public function getCategoryItems() {
+		if(isset($_GET['id'])) {
+			
+			$category = new Category();
+			$category = $category->select("id = {$_GET['id']}");
+			$category = $category[0];
+			
+			return Model::toData($category->getSpecificArticles());
+			
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public function getParentCategory() {
+		if(isset($_GET['id'])) {
+			
+			$category = new Category();
+			$category = $category->select("id = {$_GET['id']}");
+			$category = $category[0];
+			
+			return Model::toData($category->getParent());
+			
+		}
+		else {
+			return null;
+		}
 	}
 	
 }

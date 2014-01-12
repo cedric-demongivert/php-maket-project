@@ -12,6 +12,28 @@ class Category extends Model {
 		
 	}
 	
+	public function getAllSubCategories() {
+		
+		$categories = $this->getSubCategories();
+		
+		$results = array();
+		
+		foreach($categories as $category) {
+			
+			$subs = $category->getAllSubCategories();
+			
+			foreach($subs as $sub) {
+				$results[] = $sub;
+			}
+			
+			$results[] = $category;
+			
+		}
+		
+		return $results;
+		
+	}
+	
 	public function getSpecificArticles() {
 		
 		$articleFact = new Article();
@@ -27,7 +49,7 @@ class Category extends Model {
 		$results = $articleFact->select("idCategorie = ".$this->getId());
 		
 		/* Et les articles des sous catégories */
-		foreach($category as $this->getSubCategories) {
+		foreach($this->getSubCategories() as $category) {
 			
 			$articles = $category->getArticles();
 			
@@ -47,16 +69,30 @@ class Category extends Model {
 			return null;
 		}
 		
-		$articleFact = new Article();
+		$categoryFact = new Category();
 		
 		/* Les articles de la catégorie */
-		$results = $articleFact->select("id = ".$this->getIdParent());
+		$results = $categoryFact->select("id = ".$this->getIdParent());
 		
 		if(empty($results)) {
 			return null;
 		}
 		
 		return $results[0];
+		
+	}
+	
+	public function remove() {
+		
+		foreach($this->getAllSubCategories() as $category) {
+			$category->remove();
+		}
+		
+		foreach($this->getSpecificArticles() as $article) {
+			$article->remove();
+		}
+		
+		parent::remove();
 		
 	}
 	

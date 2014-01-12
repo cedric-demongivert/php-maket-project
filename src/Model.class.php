@@ -136,14 +136,13 @@ abstract class Model {
 	public function remove() {
 		
 		
-		$statement = Model::$bdd->prepare('DELETE FROM $tableName WHERE id = :id');
+		$statement = Model::$bdd->prepare("DELETE FROM {$this->tableName} WHERE id = :id");
 		$statement->bindParam(':id', $this->getId());
 		
 		/* éxecution */
 		if(!$statement->execute()) {
-			echo $query;
 			print_r($statement->errorInfo()); 
-			die("Model : Erreur lors de l'execution dans : $tableName");
+			die("Model : Erreur lors de l'execution dans : {$this->tableName}");
 		}
 		
 	}

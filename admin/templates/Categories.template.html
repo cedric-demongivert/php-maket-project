@@ -26,7 +26,7 @@
 						<td>{{ category.nom }}</td>
 						<td> 
 							<a href="index.php?service=Categories&function=modify&id={{ category.id }}"> + modifier </a> <br/> 
-							+ supprimer <br/> 
+							<a href="index.php?service=Categories&function=delete&id={{ category.id }}">+ supprimer </a><br/> 
 							<a href="index.php?service=Categories&function=see&id={{ category.id }}">+ informations </a>
 						</td>
 					</tr>

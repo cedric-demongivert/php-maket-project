@@ -47,8 +47,7 @@ class Categories extends Controller {
 			
 			/* C'est partit : */
 			$category = new Category();
-			$category = $category->select("id = {$_GET['id']}");
-			$category = $category[0];
+			$category = $category->selectById($_GET['id']);
 			
 			$this->modifiedCategory = $category;
 			
@@ -76,6 +75,28 @@ class Categories extends Controller {
 		
 	}
 
+	public function delete() {
+		
+		if(isset($_GET['id'])) {
+			
+			if(isset($_GET['force'])) {
+				
+				$category = new Category();
+				$category = $category->selectById($_GET['id']);
+				
+				$category->remove();
+				
+				$this->info = "La catégorie {$category->getNom()} à bien été supprimée. ";
+				
+			}
+			else {
+				$this->controllerTemplate = "Categories_Delete.template.html";
+			}
+			
+		}
+		
+	}
+	
 	public function getCategories() {
 		
 		$categories = new Category();
@@ -87,8 +108,7 @@ class Categories extends Controller {
 		if(isset($_GET['id'])) {
 			
 			$category = new Category();
-			$category = $category->select("id = {$_GET['id']}");
-			$category = $category[0];
+			$category = $category->selectById($_GET['id']);
 			
 			return Model::toData($category);
 			
@@ -102,8 +122,7 @@ class Categories extends Controller {
 		if(isset($_GET['id'])) {
 			
 			$category = new Category();
-			$category = $category->select("id = {$_GET['id']}");
-			$category = $category[0];
+			$category = $category->selectById($_GET['id']);
 			
 			return Model::toData($category->getSubCategories());
 			
@@ -117,10 +136,37 @@ class Categories extends Controller {
 		if(isset($_GET['id'])) {
 			
 			$category = new Category();
-			$category = $category->select("id = {$_GET['id']}");
-			$category = $category[0];
+			$category = $category->selectById($_GET['id']);
 			
 			return Model::toData($category->getSpecificArticles());
+			
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public function getAllCategoryItems() {
+		if(isset($_GET['id'])) {
+			
+			$category = new Category();
+			$category = $category->selectById($_GET['id']);
+			
+			return Model::toData($category->getArticles());
+			
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public function getAllSubCategories() {
+	if(isset($_GET['id'])) {
+			
+			$category = new Category();
+			$category = $category->selectById($_GET['id']);
+			
+			return Model::toData($category->getAllSubCategories());
 			
 		}
 		else {
@@ -132,8 +178,7 @@ class Categories extends Controller {
 		if(isset($_GET['id'])) {
 			
 			$category = new Category();
-			$category = $category->select("id = {$_GET['id']}");
-			$category = $category[0];
+			$category = $category->selectById($_GET['id']);
 			
 			return Model::toData($category->getParent());
 			

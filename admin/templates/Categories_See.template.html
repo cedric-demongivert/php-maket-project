@@ -12,13 +12,10 @@
 				
 		<td id="rightBlock"> 
 
-			<h1> Catégorie [{{ category.id }}] {{ category.nom }} : </h1>
-			
-			<br/>
-			
+			<h1> Catégorie [{{ category.id }}] {{ category.nom }} : </h1>
+
 			<h2> Catégorie parente : </h2>
-			
-			<br/>
+
 			{% set parentCategory = categoriesController.parentCategory %}
 			
 			{% if parentCategory is not empty %}
@@ -32,11 +29,68 @@
 			{% endif %}
 			
 			<br/>
-			<br/>
 			
 			<h2> Sous-catégories : </h2>
 			
+			{% set subCategories = categoriesController.subCategories %}
 			
+			{% if subCategories is empty %}
+			
+				<i>Cette catégorie ne possède pas de sous-catégories.</i>
+			
+			{% else %}
+			<table class="dataTable">
+					<tr>
+						<th>ID</th>
+						<th>NOM</th>
+						<th>ACTIONS</th>
+					</tr>
+				{% for subCategory in subCategories %}
+					<tr>
+						<td>{{ subCategory.id }}</td>
+						<td>{{ subCategory.nom }}</td>
+						<td> 
+							<a href="index.php?service=Categories&function=modify&id={{ subCategory.id }}"> + modifier </a> <br/> 
+							<a href="index.php?service=Categories&function=delete&id={{ subCategory.id }}">+ supprimer </a><br/> 
+							<a href="index.php?service=Categories&function=see&id={{ subCategory.id }}">+ informations </a>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+			{% endif %}
+			
+			<br/>
+			
+			<h2> Articles dans la catégorie : </h2>
+
+			{% set articles = categoriesController.categoryItems %}
+			
+			{% if articles is empty %}
+			
+				<i>Il n'y a aucun article dans cette catégorie.</i>
+			
+			{% else %}
+			<table class="dataTable">
+					<tr>
+						<th>ID</th>
+						<th>NOM</th>
+						<th>ACTIONS</th>
+					</tr>
+				{% for article in articles %}
+					<tr>
+						<td>{{ article.id }}</td>
+						<td>{{ article.nom }}</td>
+						<td> 
+							<a href="index.php?service=Articles&function=modify&id={{ article.id }}"> + modifier </a> <br/> 
+							<a href="index.php?service=Articles&function=delete&id={{ article.id }}">+ supprimer </a><br/> 
+							<a href="index.php?service=Articles&function=see&id={{ article.id }}">+ informations </a>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+			{% endif %}
+			
+			<br/>
 			
 		</td>
 		

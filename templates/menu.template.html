@@ -1,0 +1,10 @@
+<h1>Menu</h1>
+
+<a href="index.php">Sélectionner articles</a> <br/>
+
+{% if user is not empty %} 
+<a href="index.php?service=Users&function=disconnect">Me déconnecter</a> <br/>
+{% else %}
+<a href="index.php?service=Users">Me connecter</a> <br/>
+<a href="index.php?service=Users&function=create">M'inscrire</a> <br/>
+{% endif %}

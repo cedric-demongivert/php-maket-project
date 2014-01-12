@@ -28,8 +28,8 @@ abstract class Controller {
 	/* -------------------------------------------------------- */
 	/*			METHOD(S)										*/
 	/* -------------------------------------------------------- */
-	public function includeController($controllerName, $controller) {
-		$this->controllers[$controllerName] = $controller;
+	public function includeController($controller) {
+		$this->controllers[$controller->getName()] = $controller;
 	}
 	
 	/* -------------------------------------------------------- */

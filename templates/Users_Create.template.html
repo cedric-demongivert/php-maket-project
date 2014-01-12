@@ -1,0 +1,51 @@
+{% include 'header.template.html' %}
+
+<table id="mainBlock">
+	<tr>
+		<td id="leftBlock"> 
+		
+			{% include 'menu.template.html' %}
+		
+		</td>
+				
+		<td id="rightBlock"> 
+
+			<h1> S'inscrire : </h1>
+			
+			<br/>
+
+			{% set form = controller.form %}
+			
+			<form id="create_user" method="post" action="index.php?service=Users&function=create">
+			
+				<table class="formTable">
+					<tr>
+						<td>Login : </td>	
+						<td>
+							<input type="text" name="login" id="login" value="{{ form.login }}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Password : </td>	
+						<td>
+							<input type="password" name="password" id="password" value="{{ form.password }}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Mail : </td>	
+						<td>
+							<input type="text" name="mail" id="mail" value="{{ form.mail }}"/>
+						</td>
+					</tr>
+				</table>
+			
+				<input type="submit" value="m'inscrire" />
+			
+			</form>
+			
+		</td>
+		
+	</tr>
+</table>
+
+{% include 'footer.template.html' %}

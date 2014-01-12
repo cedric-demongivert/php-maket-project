@@ -62,6 +62,10 @@ foreach ($controller->getIncludedControllers() as $includedController) {
 	$data[$includedController->getName()] = $includedController;
 }
 
+if(isset($_SESSION['user'])) {
+	$data['user'] = $_SESSION['user'];
+}
+
 /* Affichage de la page */
 echo $twig->render($controller->getTemplate(), $data);
 

@@ -1,0 +1,50 @@
+{% include 'header.template.html' %}
+
+<table id="mainBlock">
+	<tr>
+		<td id="leftBlock"> 
+		
+			{% include 'menu.template.html' %}
+		
+		</td>
+				
+		<td id="rightBlock"> 
+
+			<h1> Liste des articles du site : </h1>
+			
+			<br/>
+			
+			<table class="dataTable">
+					<tr>
+						<th>ID</th>
+						<th>NOM</th>
+						<th>PRIX</th>
+						<th>NOMBRE</th>
+						<th>CATEGORIE</th>
+						<th>ACTIONS</th>
+					</tr>
+				{% for article in articlesController.articles %}
+					<tr>
+						<td>{{ article.id }}</td>
+						<td>{{ article.nom }}</td>
+						<td>{{ article.prix }}</td>
+						<td>{{ article.nombre }}</td>
+						<td>{{ article.categorie }}</td>
+						<td> 
+							<a href="index.php?service=Articles&function=modify&id={{ article.id }}"> + modifier </a> <br/> 
+							<a href="index.php?service=Articles&function=delete&id={{ article.id }}">+ supprimer </a><br/> 
+							<a href="index.php?service=Articles&function=see&id={{ article.id }}">+ informations </a>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+			
+			<br/>
+			
+			<a href="index.php?service=Articles&function=create">+ Ajouter un nouvel article</a>
+		</td>
+		
+	</tr>
+</table>
+
+{% include 'footer.template.html' %}

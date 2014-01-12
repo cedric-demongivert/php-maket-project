@@ -2,10 +2,17 @@
 
 class Categories extends Controller {
 	
+	/* -------------------------------------------------------- */
+	/*			CONSTRUCTOR(S)									*/
+	/* -------------------------------------------------------- */
 	public function __construct() {
 		parent::__construct("categoriesController","Categories.template.html");
 	}
 	
+	
+	/* -------------------------------------------------------- */
+	/*			METHOD(S)										*/
+	/* -------------------------------------------------------- */
 	/* Créer une nouvelle catégorie */
 	public function create() {
 		
@@ -97,6 +104,9 @@ class Categories extends Controller {
 		
 	}
 	
+	/* -------------------------------------------------------- */
+	/*			GETTER(S) & SETTER(S)							*/
+	/* -------------------------------------------------------- */
 	public function getCategories() {
 		
 		$categories = new Category();

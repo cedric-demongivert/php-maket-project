@@ -10,36 +10,49 @@
 				
 		<td id="rightBlock"> 
 
-			<h1> Creer une nouvelle catégorie : </h1>
+			<h1> Modifier un article : </h1>
 			
 			<br/>
 			
-			{% set modified = categoriesController.category %}
+			{% set modified = articlesController.article.data %}
+			{% set form = articlesController.form %}
 			
-			<form id="create_category" method="post" action="index.php?service=Categories&function=modify&id={{ modified.id }}">
+			<form id="modify_article" method="post" action="index.php?service=Articles&function=modify&id={{ modified.id }}">
 			
 				<table class="formTable">
 					<tr>
-						<td>Nom de la nouvelle catégorie : </td>	
+						<td>Nom du nouvel article : </td>	
 						<td>
-							<input type="text" name="name" id="name" value="{{ modified.nom }}"/>
+							<input type="text" name="name" id="name" value="{{ form.name }}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Prix du nouvel article : </td>	
+						<td>
+							<input type="text" name="price" id="price" value="{{ form.price }}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Quantitée en stock du nouvel article : </td>	
+						<td>
+							<input type="text" name="stock" id="stock" value="{{ form.stock }}"/>
 						</td>
 					</tr>
 					<tr>
 						<td>Catégorie parente : </td>	
 						<td>
 							<select name="parent" id="parent">
-								<option value="-1" 
-									{% if modified.idParent == -1 %}
+								<option value="-1"
+									{% if form.parent == -1 %}
 										selected="selected"
 									{% endif %}
-								 > Pas de catégorie parente </option>
-							{% for category in categoriesController.categories %}
-								<option value="{{ category.id }}" 
-									{% if modified.idParent == category.id %}
+								> Pas de catégorie parente </option>
+							{% for category in articlesController.categories %}
+								<option value="{{ category.id }}"
+									{% if form.parent == category.id %}
 										selected="selected"
 									{% endif %}
-									>{{ category.nom }}</option>
+								>{{ category.nom }}</option>
 							{% endfor %}
 							</select>
 						</td>

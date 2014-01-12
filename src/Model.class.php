@@ -64,8 +64,9 @@ abstract class Model {
 		
 		/* Cas d'erreur */
 		if(!$statement->execute()) {
+			echo "$where";
 			print_r($statement->errorInfo()); 
-			die("Model : impossible d'exécuter la requête sur la table : $tableName");
+			die("Model : impossible d'exécuter la requête sur la table : {$this->tableName}");
 		}
 		
 		/* Récupération des entrées : */

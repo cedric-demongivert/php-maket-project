@@ -8,69 +8,21 @@
 		
 		</td>
 				
-		{% set category = categoriesController.category %}
+		{% set article = articlesController.article.data %}
 				
 		<td id="rightBlock"> 
 
-			<h1> Supprimer la catégorie [{{ category.id }}] {{ category.nom }} : </h1>
+			<h1> Supprimer l'article [{{ article.id }}] {{ article.nom }} : </h1>
 			
-			<i> Attention : la suppression de cette catégorie entraînera la suppression de(s) : </i>
+			<i> Attention : la suppression de cette article entraînera les modifications suivantes : </i>
 			
-			<h2> Catégorie(s) suivante(s) : </h2>
+			<h2> Commandes impactées : </h2>
 			
-			{% set subCategories = categoriesController.allSubCategories %}
-			
-			{% if subCategories is empty %}
-			
-				<i>Cette catégorie ne possède pas de sous-catégories.</i>
-			
-			{% else %}
-			<table class="dataTable">
-					<tr>
-						<th>ID</th>
-						<th>NOM</th>
-						<th>ACTIONS</th>
-					</tr>
-				{% for subCategory in subCategories %}
-					<tr>
-						<td>{{ subCategory.id }}</td>
-						<td>{{ subCategory.nom }}</td>
-						<td> 
-							<a href="index.php?service=Categories&function=delete&id={{ subCategory.id }}">+ supprimer plutôt</a>
-						</td>
-					</tr>
-				{% endfor %}
-			</table>
-			{% endif %}
-			
-			<br/>
-			
-			<h2> Article(s) suivant(s) : </h2>
-			
-			{% set articles = categoriesController.allCategoryItems %}
-			
-			{% if articles is empty %}
-			
-				<i>Il n'y a aucun article dans cette catégorie.</i>
-			
-			{% else %}
-			<table class="dataTable">
-					<tr>
-						<th>ID</th>
-						<th>NOM</th>
-					</tr>
-				{% for article in articles %}
-					<tr>
-						<td>{{ article.id }}</td>
-						<td>{{ article.nom }}</td>
-					</tr>
-				{% endfor %}
-			</table>
-			{% endif %}
+			<i> Aucune gestion des commandes pour le moment</i>
 			
 			<br/>
 			<br/>
-			Si vous souhaitez réellement supprimer cette catégorie, cliquez <a href="index.php?service=Categories&function=delete&id={{ category.id }}&force">ici</a>
+			Si vous souhaitez réellement supprimer cet article, cliquez <a href="index.php?service=Articles&function=delete&id={{ article.id }}&force">ici</a>
 		</td>
 
 	</tr>

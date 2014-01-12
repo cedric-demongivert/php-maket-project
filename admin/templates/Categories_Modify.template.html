@@ -10,13 +10,13 @@
 				
 		<td id="rightBlock"> 
 
-			<h1> Creer une nouvelle catégorie : </h1>
+			<h1> Modifier une catégorie : </h1>
 			
 			<br/>
 			
 			{% set modified = categoriesController.category %}
 			
-			<form id="create_category" method="post" action="index.php?service=Categories&function=modify&id={{ modified.id }}">
+			<form id="modify_category" method="post" action="index.php?service=Categories&function=modify&id={{ modified.id }}">
 			
 				<table class="formTable">
 					<tr>

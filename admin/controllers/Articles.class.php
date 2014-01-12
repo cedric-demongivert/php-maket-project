@@ -6,12 +6,14 @@ class Articles extends Controller {
 	/*			FIELD(S)										*/
 	/* -------------------------------------------------------- */
 	private $form;
+	private $stock;
 	
 	/* -------------------------------------------------------- */
 	/*			CONSTRUCTOR(S)									*/
 	/* -------------------------------------------------------- */
 	public function __construct() {
 		parent::__construct("articlesController","Articles.template.html");
+		$this->stock = false;
 	}
 	
 	/* -------------------------------------------------------- */
@@ -65,6 +67,10 @@ class Articles extends Controller {
 			$this->controllerTemplate = "Articles_Create.template.html";
 		}
 		
+	}
+	
+	public function ruptureStock() {
+		$this->stock = true;
 	}
 	
 	public function see() {
@@ -195,7 +201,20 @@ class Articles extends Controller {
 				$datas[$i]["categorie"] = "Aucune catégorie";
 			}
 		}
-
+		
+		if($this->stock) {
+			
+			$articles = $datas;
+			$datas = array();
+			
+			foreach($articles as $article) {
+				if($article["nombre"] <= 0) {
+					$datas[] = $article;
+				}
+			} 
+			
+		}
+		
 		return $datas;
 		
 	}
@@ -220,6 +239,9 @@ class Articles extends Controller {
 		
 	}
 	
+	public function isStock() {
+		return $this->stock;
+	}
 	
 }
 

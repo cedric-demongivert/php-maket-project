@@ -120,7 +120,7 @@ class Categories extends Controller {
 			$category = new Category();
 			$category = $category->selectById($_GET['id']);
 			
-			return $category;
+			return Model::toData($category);
 			
 		}
 		else {

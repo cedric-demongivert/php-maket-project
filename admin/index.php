@@ -17,14 +17,6 @@ while(($file = readdir($dir)) !== false) {
 	}
 }
 
-$dir = opendir("../src/form");
-
-while(($file = readdir($dir)) !== false) {
-	if(!($file == ".") && !($file == "..")) {
-		require_once "../src/data/$file";
-	}
-}
-
 /* Récupération du controleur : */
 $controller_name = "Categories"; /* Controleur par défaut */
 

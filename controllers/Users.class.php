@@ -106,7 +106,7 @@ class Users extends Controller {
 	}
 	
 	public function disconnect() {
-				session_unset();
+				session_unregister("user");
 				$this->info = "Déconnection réussie !";
 					
 				$this->includeController(new Categories());

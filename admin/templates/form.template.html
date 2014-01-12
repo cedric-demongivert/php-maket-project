@@ -1,0 +1,14 @@
+{{ form.htmlStart }}
+
+<table class="formTable">
+{% for field in form.fields %}
+	<tr>
+		<td> field.label </td>
+		<td> field.html </td>
+	</tr>
+{% endfor %}
+</table>
+
+<input type="submit" value="{{ form.submit }}"/>
+
+{{ form.htmlEnd }}

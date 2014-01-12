@@ -120,77 +120,7 @@ class Categories extends Controller {
 			$category = new Category();
 			$category = $category->selectById($_GET['id']);
 			
-			return Model::toData($category);
-			
-		}
-		else {
-			return null;
-		}
-	}
-	
-	public function getSubCategories() {
-		if(isset($_GET['id'])) {
-			
-			$category = new Category();
-			$category = $category->selectById($_GET['id']);
-			
-			return Model::toData($category->getSubCategories());
-			
-		}
-		else {
-			return null;
-		}
-	}
-	
-	public function getCategoryItems() {
-		if(isset($_GET['id'])) {
-			
-			$category = new Category();
-			$category = $category->selectById($_GET['id']);
-			
-			return Model::toData($category->getSpecificArticles());
-			
-		}
-		else {
-			return null;
-		}
-	}
-	
-	public function getAllCategoryItems() {
-		if(isset($_GET['id'])) {
-			
-			$category = new Category();
-			$category = $category->selectById($_GET['id']);
-			
-			return Model::toData($category->getArticles());
-			
-		}
-		else {
-			return null;
-		}
-	}
-	
-	public function getAllSubCategories() {
-	if(isset($_GET['id'])) {
-			
-			$category = new Category();
-			$category = $category->selectById($_GET['id']);
-			
-			return Model::toData($category->getAllSubCategories());
-			
-		}
-		else {
-			return null;
-		}
-	}
-	
-	public function getParentCategory() {
-		if(isset($_GET['id'])) {
-			
-			$category = new Category();
-			$category = $category->selectById($_GET['id']);
-			
-			return Model::toData($category->getParent());
+			return $category;
 			
 		}
 		else {

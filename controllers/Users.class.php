@@ -85,7 +85,7 @@ class Users extends Controller {
 			
 			if($valid) {
 				
-				$user = $user->identify($_POST['login'], $_POST['pass']);
+				$user = $user->identify($_POST['login'], $_POST['password']);
 				
 				if($user == false) {
 					$this->error = "Le login ou le mot de passe sont incorrect";
@@ -103,6 +103,14 @@ class Users extends Controller {
 			
 		}
 		
+	}
+	
+	public function disconnect() {
+				session_unset();
+				$this->info = "Déconnection réussie !";
+					
+				$this->includeController(new Categories());
+				$this->controllerTemplate = "Categories.template.html";
 	}
 
 	public function getForm() {

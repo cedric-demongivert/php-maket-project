@@ -1,11 +1,12 @@
 <?php
-require_once "./src/data/Category.class.php";
+require_once "./controllers/Ariane.class.php";
 
 class Categories extends Controller {
 	
 	public function __construct() {
 		parent::__construct("nav", "Categories.template.html");
 		$this->title = "Navigation";
+		$this->includeController(new Ariane("index.php?service=Categories"));
 	}
 	
 	public function init() {
@@ -14,8 +15,12 @@ class Categories extends Controller {
 	
 	public function getCategory() {
 		$category = new Category();
-		if (isset($_GET['id_category'])) {
+		if (isset($_GET['id_category']) && $_GET['id_category'] != -1) {
 			return $category->selectById($_GET['id_category']);
+		} else {
+			$category->setId(-1);
+			$category->setNom("racine");
+			return $category;
 		}
 	}
 	

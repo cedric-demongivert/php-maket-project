@@ -1,0 +1,39 @@
+{% include 'header.template.html' %}
+
+<table id='mainBLock'>
+	<tr>
+		<td id="leftBlock">
+		
+			{% include 'menu.template.html' %}
+		
+		</td>
+		<td id='rightBlock'>
+		
+			{% if panier.articles|lenght > 0 %}
+				<table>
+				
+					{% for article in paniercontroller.articles %}
+					
+						<tr>
+							<td>
+								{% paniercontroller.article.data.id %}
+							</td>
+							<td>
+								{% paniercontroller.article.data.nom %}
+							</td>
+							<td>
+								{% paniercontroller.article.data.prix %}
+							</td>
+							<td>
+								{% paniercontroller.article.data.nombre %}
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% endif %}
+			
+		</td>
+	</tr>
+</table>
+
+{% include 'footer.template.html' %}

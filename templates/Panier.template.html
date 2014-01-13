@@ -9,23 +9,23 @@
 		</td>
 		<td id='rightBlock'>
 		
-			{% if panier.articles|lenght > 0 %}
+			{% if panier.articles|length > 0 %}
 				<table>
 				
-					{% for article in paniercontroller.articles %}
+					{% for panieritem in panier.articles %}
 					
 						<tr>
 							<td>
-								{% paniercontroller.article.data.id %}
+								{{ panieritem.data.id }}
 							</td>
 							<td>
-								{% paniercontroller.article.data.nom %}
+								{{ panieritem.data.nom }}
 							</td>
 							<td>
-								{% paniercontroller.article.data.prix %}
+								{{ panieritem.data.prix }}
 							</td>
 							<td>
-								{% paniercontroller.article.data.nombre %}
+								{{ panieritem.data.nombre }}
 							</td>
 						</tr>
 					{% endfor %}

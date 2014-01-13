@@ -1,21 +1,25 @@
 <?php
 
-require_once "./controllers/Arianle.class.php";
+require_once "./controllers/Ariane.class.php";
+require_once "./src/Panier.class.php";
 
 class PanierController extends Controller {
 	
 	public function __construct() {
-		parent::__construct("paniercontroller", "Panier.template.html");
+		parent::__construct("panier", "Panier.template.html");
 		$this->title = "Panier";
+		if (!isset($_SESSION['panier'])) {
+			$_SESSION['panier'] = new Panier();
+		} 
 	}
 	
 	public function getArticles() {
 		$panier = new Panier();
 		if (isset($_SESSION['panier'])) {
-			return $_SESSION['panier']->items;
+			return $_SESSION['panier']->getItems();
 		} else {
 			$_SESSION['panier'] = $panier;
-			return $_SESSION['panier'];
+			return $_SESSION['panier']->getItems();
 		}
 	}
 	
@@ -29,14 +33,27 @@ class PanierController extends Controller {
 		return $article;
 	}
 	
-	public function ajouter($article) {
-		$panier = new Panier();
-		if (isset($_SESSION['panier'])) {
-			$panier.addItem($article);
-			$_SESSION['panier'].add($article);
-		} else {
-			$panier.addItem($article);
-			$_SESSION['panier'] = $panier;
+	public function ajouter() {
+		$article;
+		$panier = $_SESSION['panier'];
+		print_r($panier);
+		die();
+		if (isset($_GET['id_article'])) {
+			foreach ($panier->getItems() as $item) {
+				if ($item->getIdArticle() == $_GET['id_article']) {
+					$article = $item;
+					break;
+				}
+			}
+			$panier = new Panier();
+			if (isset($_SESSION['panier'])) {
+				$panier = $_SESSION['panier'];
+				$panier.addItem($article);
+				$_SESSION['panier'] = $panier;
+			} else {
+				$panier.addItem($article);
+				$_SESSION['panier'] = $panier;
+			}
 		}
 	}
 	

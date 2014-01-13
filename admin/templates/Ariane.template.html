@@ -1,0 +1,14 @@
+<div id="ariane">
+
+	<a href="index.php?service=Ariane&id_category=-1"> Accueil </a> 
+	{% set tree = ariane.categoryTree %} 
+	
+	{% if tree|length > 0 %} 
+		{% for category in tree %} >> 
+			<a href="index.php?service=Ariane&id_category={{ category.data.id }}">
+				{{ category.data.nom }} 
+			</a> 
+		{% endfor %} 
+	{% endif %}
+	
+</div>

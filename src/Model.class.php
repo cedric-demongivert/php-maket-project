@@ -128,6 +128,11 @@ abstract class Model {
 	public function selectById($id) {
 		
 		$datas = $this->select("id = $id");
+		
+		if(sizeof($datas) == 0) {
+			return null;
+		}
+		
 		$data = $datas[0];
 		
 		return $data;

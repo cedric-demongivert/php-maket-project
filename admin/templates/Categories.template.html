@@ -61,8 +61,8 @@
 						<td>{{ article.data.prix }}</td>
 						<td>{{ article.data.nombre }}</td>
 						<td> 
-							<a href="index.php?service=Articles&function=modify&id={{ article.id }}"> + modifier </a> <br/> 
-							<a href="index.php?service=Articles&function=delete&id={{ article.id }}">+ supprimer </a> <br/> 
+							<a href="index.php?service=Articles&function=modify&id_category={{ nav.category.data.id }}&id_article={{ article.data.id }}"> + modifier </a> <br/> 
+							<a href="index.php?service=Articles&function=delete&id_category={{ nav.category.data.id }}&id_article={{ article.data.id }}"> + supprimer </a> <br/> 
 							<!--  <a href="index.php?service=Articles&function=see&id={{ article.id }}">+ informations </a> -->
 						</td>
 					</tr>
@@ -73,7 +73,7 @@
 				<br/>
 			{% endif %}
 			<br/>
-			<a href="index.php?service=Categories&function=create&id_category={{ nav.category.data.id }}">+ Ajouter un article dans {{ nav.category.data.nom }}</a>
+			<a href="index.php?service=Articles&function=create&id_category={{ nav.category.data.id }}">+ Ajouter un article dans {{ nav.category.data.nom }}</a>
 		
 		</td>
 		

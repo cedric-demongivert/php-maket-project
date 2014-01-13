@@ -13,11 +13,13 @@
 			<h1> Modifier un article : </h1>
 			
 			<br/>
+			{% include 'Ariane.template.html' %}
+			<br/>
 			
-			{% set modified = articlesController.article.data %}
-			{% set form = articlesController.form %}
+			{% set modified = articles.article.data %}
+			{% set form = articles.form %}
 			
-			<form id="modify_article" method="post" action="index.php?service=Articles&function=modify&id={{ modified.id }}">
+			<form id="modify_article" method="post" action="index.php?service=Articles&function=modify&id_article={{ modified.id }}&id_category={{ modified.idCategorie }}">
 			
 				<table class="formTable">
 					<tr>
@@ -47,12 +49,12 @@
 										selected="selected"
 									{% endif %}
 								> Pas de catégorie parente </option>
-							{% for category in articlesController.categories %}
-								<option value="{{ category.id }}"
-									{% if form.parent == category.id %}
+							{% for category in nav.allCategories %}
+								<option value="{{ category.data.id }}"
+									{% if form.parent == category.data.id %}
 										selected="selected"
 									{% endif %}
-								>{{ category.nom }}</option>
+								>{{ category.data.nom }}</option>
 							{% endfor %}
 							</select>
 						</td>

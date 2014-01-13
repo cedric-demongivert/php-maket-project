@@ -10,8 +10,15 @@
 				
 		<td id="rightBlock"> 
 
-			{% for category in categoriesController.categories %}
-				{{ category.nom }}<br/>
+			{% set singleton = 0 %}
+
+			{% for category in ariane.categoryTree %}
+				{% if singleton == 1 %}
+				
+				{%end
+				
+				<a href="index.php?service=Ariane&id_category={{ category.data.id }}">{{ category.data.nom }}</a> 
+				
 			{% endfor %}
 		
 		</td>

@@ -10,32 +10,71 @@
 				
 		<td id="rightBlock"> 
 		
-			<table>
+			{% include 'Ariane.template.html' %}
+		
+			{% if nav.category is not empty %}
+				<h1>Cat&eacute;gories pr&eacute;sentes dans {{ nav.category.data.nom|escape }} :</h1>
+			{% else %}
+				<h1>Cat&eacute;gories disponiblent :</h1>
+			{% endif %}
+		
+			
+			
+			{% if nav.categories is not empty %}
+				<table class='dataTable'>
 				
-				{% for category in nav.categories %}
-					
-				<tr>
+					{% for category in nav.categories %}
 				
-					<td>
-					
-					{{ category.data.nom }}
-						
-					</td>	
-					
-				</tr>
-						
-				{% endfor %}
+						<tr>
+							<td>
+								{{ category.data.id }}
+							</td>
+							<td>
+								<a href="index.php?service=Categories&id_category={{ category.data.id }}">{{ category.data.nom }}</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+			
+				<p>Aucune cat&eacute;gories disponible.</p>
+				
+			{% endif %}
+		
+			{% if nav.category.data.id >= 0 %}
+			
+				{% if nav.category is not empty %}
+					<h1>Articles pr&eacute;sents dans {{ nav.category.data.nom|escape }} :</h1>
+				{% else %}
+					<h1>Articles disponibles :</h1>
+				{% endif %}
+				
+				{% if nav.articles|length > 0 %}
+				<table class='dataTable'>
 				{% for article in nav.articles %}
-					
-				<tr>
-					
-					{{ article.data.nom }}
-						
-				</tr>	
-					
+					<tr>
+						<td>
+							{{ article.data.id }}
+						</td>
+						<td>
+							{{ article.data.nom }}
+						</td>
+						<td>
+							{{ article.data.prix }}
+						</td>
+						<td>
+							<a href="index.php?service=Panier&function=ajouter">+Ajouter au panier</a>
+						</td>
+					</tr>				
 				{% endfor %}
-				
-			</table>
+				</table>
+				{% else %}
+					
+					<p>Aucun articles disponnibles.</p>
+					
+				{% endif %}
+			
+			{% endif %}
 		
 		</td>
 		

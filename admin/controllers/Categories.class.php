@@ -10,7 +10,7 @@ class Categories extends Controller {
 	/* -------------------------------------------------------- */
 	public function __construct() {
 		parent::__construct("nav","Categories.template.html");
-		$this->title = "Navigation";
+		$this->title = "Gestion des catégories et articles";
 		$this->ariane = new Ariane("index.php?service=Categories");
 		$this->includeController($this->ariane);
 	}
@@ -41,6 +41,7 @@ class Categories extends Controller {
 			
 			$this->info = "La catégorie {$_POST['name']} a été créée avec succès !";
 			$this->controllerTemplate = "Categories.template.html";
+			$this->title = "Gestion des catégories et articles";
 			
 		}
 		else {
@@ -79,7 +80,7 @@ class Categories extends Controller {
 				$_GET['id_category'] = $category->getIdParent();
 				$category->setIdParent($_POST['parent']);
 				$category->update();
-				
+				$this->title = "Gestion des catégories et articles";
 				$this->info = "La catégorie {$_POST['name']} a été mise à jour !";
 				$this->controllerTemplate = "Categories.template.html";
 				$this->ariane->clearFunction();
@@ -105,6 +106,7 @@ class Categories extends Controller {
 				$category->remove();
 				
 				$this->info = "La catégorie {$category->getNom()} à bien été supprimée. ";
+				$this->title = "Gestion des catégories et articles";
 				
 			}
 			else {

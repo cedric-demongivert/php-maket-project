@@ -1,0 +1,77 @@
+{% include 'header.template.html' %}
+
+<table id="mainBlock">
+	<tr>
+		<td id="leftBlock"> 
+		
+			{% include 'menu.template.html' %}
+		
+		</td>
+				
+		<td id="rightBlock"> 
+
+			<h1> Utilisateurs : </h1>
+			
+			{% set userSuppr = users.remove %}
+			
+			{% if userSuppr is not empty %}
+			
+			<h2> Êtes-vous sûre de vouloir supprimer cet utilisateur ? </h2>
+			
+			<table class="dataTable">
+					<tr>
+						<th>ID</th>
+						<th>LOGIN</th>
+						<th>MAIL</th>
+						<th>NOMBRE DE COMMANDES</th>
+					</tr>
+
+					<tr>
+						<td>{{ userSuppr.data.id }}</td>
+						<td>{{ userSuppr.data.login }}</td>
+						<td>{{ userSuppr.data.mail }}</td>
+						<td>{{ userSuppr.commands|length }}</td>
+						<td> 
+							<a href="index.php?service=Users&function=delete&id_user={{ userSuppr.data.id }}&force">+ confirmer</a>
+						</td>
+					</tr>
+					
+			</table>
+			
+			{% endif %}
+			
+			<h2> Liste des utilisateurs : </h2>
+				
+			{% set usersData = users.users %}
+			{% if usersData|length > 0 %}
+			<table class="dataTable">
+					<tr>
+						<th>ID</th>
+						<th>LOGIN</th>
+						<th>MAIL</th>
+						<th>NOMBRE DE COMMANDES</th>
+					</tr>
+				{% for user in usersData %}
+					<tr>
+						<td>{{ user.data.id }}</td>
+						<td>{{ user.data.login }}</td>
+						<td>{{ user.data.mail }}</td>
+						<td>{{ user.commands|length }}</td>
+						<td> 
+							<a href="index.php?service=Users&function=delete&id_user={{ user.data.id }}">+ supprimer</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+			{% else %}
+			
+				<i> Aucun compte utilisateurs enregistré en base </i>
+			
+			{% endif %}
+
+		</td>
+		
+	</tr>
+</table>
+
+{% include 'footer.template.html' %}

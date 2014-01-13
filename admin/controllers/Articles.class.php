@@ -17,6 +17,7 @@ class Articles extends Controller {
 		parent::__construct("articles","Articles.template.html");
 		$controller = new Categories();
 		$this->includeController($controller);
+		$this->title="Gestion des stocks";
 		$this->name = $controller->title;
 		$this->ariane = new Ariane("index.php?service=Categories");
 		$this->includeController($this->ariane);
@@ -171,6 +172,40 @@ class Articles extends Controller {
 		}
 		
 	}
+	
+	public function reappro() {
+		
+		if(isset($_GET['id_article'])) {
+			
+			$this->title = "Supprimer un article";
+			$this->ariane->setFunction("Supprimer un article","index.php?service=Articles&function=delete&id_article={$_GET['id_article']}");
+			
+			if(isset($_POST['nombre']) && preg_match("/[0-9]+/", $_POST['nombre']) == 1) {
+				
+				$article = $this->getArticle();
+				
+				if($article == null) {
+					$this->error = "Impossible de réapprovisionner l'article demandé";
+				}
+				else {
+					$article->setNombre($article->getNombre()+$_POST['nombre']);
+					$article->update();
+					
+					$this->info = "L'article demandé a été réapprovisionné comme demandé ";
+					return;
+				}
+				
+			}
+			else {
+				$this->error = "Impossible de réapprovisionner l'article demandé";
+			}
+			
+		}
+		else {
+			$this->error = "Impossible de réapprovisionner l'article demandé";
+		}
+
+	}
 
 	public function delete() {
 		
@@ -226,7 +261,7 @@ class Articles extends Controller {
 		
 		$articles = new Article();
 		
-		$datas = Model::toData($articles->selectAll());
+		$datas = Model::toData($articles->select("nombre <= 0"));
 		
 		$categories = new Category();
 		for($i = 0; $i < sizeof($datas); $i++) {
@@ -239,17 +274,25 @@ class Articles extends Controller {
 			}
 		}
 		
-		if($this->stock) {
-			
-			$articles = $datas;
-			$datas = array();
-			
-			foreach($articles as $article) {
-				if($article["nombre"] <= 0) {
-					$datas[] = $article;
-				}
-			} 
-			
+		return $datas;
+		
+	}
+	
+	public function getWarnArticles() {
+		
+		$articles = new Article();
+		
+		$datas = Model::toData($articles->select("nombre <= 5 AND nombre != 0"));
+		
+		$categories = new Category();
+		for($i = 0; $i < sizeof($datas); $i++) {
+			if($datas[$i]["idCategorie"] >= 0) {
+				$categoryData = Model::toData($categories->selectById($datas[$i]["idCategorie"]));
+				$datas[$i]["categorie"] = $categoryData["nom"];
+			}
+			else {
+				$datas[$i]["categorie"] = "Aucune catégorie";
+			}
 		}
 		
 		return $datas;
@@ -274,10 +317,6 @@ class Articles extends Controller {
 			return null;
 		}
 		
-	}
-	
-	public function isStock() {
-		return $this->stock;
 	}
 	
 }

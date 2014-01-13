@@ -1,4 +1,5 @@
 <?php
+require_once("./controllers/Ariane.class.php");
 
 class Categories extends Controller {
 	
@@ -7,6 +8,8 @@ class Categories extends Controller {
 	/* -------------------------------------------------------- */
 	public function __construct() {
 		parent::__construct("categoriesController","Categories.template.html");
+		$this->title = "Gérer mes catégories et articles";
+		$this->includeController(new Ariane());
 	}
 	
 	

@@ -9,10 +9,33 @@
 		</td>
 				
 		<td id="rightBlock"> 
-
-			{% for category in categoriesController.categories %}
-				{{ category.nom }}<br/>
-			{% endfor %}
+		
+			<table>
+				
+				{% for category in nav.categories %}
+					
+				<tr>
+				
+					<td>
+					
+					{{ category.data.nom }}
+						
+					</td>	
+					
+				</tr>
+						
+				{% endfor %}
+				{% for article in nav.articles %}
+					
+				<tr>
+					
+					{{ article.data.nom }}
+						
+				</tr>	
+					
+				{% endfor %}
+				
+			</table>
 		
 		</td>
 		

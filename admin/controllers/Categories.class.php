@@ -15,7 +15,6 @@ class Categories extends Controller {
 		$this->includeController($this->ariane);
 	}
 	
-	
 	/* -------------------------------------------------------- */
 	/*			METHOD(S)										*/
 	/* -------------------------------------------------------- */
@@ -50,24 +49,23 @@ class Categories extends Controller {
 		
 	}
 	
-	public function see() {
-		
-		$this->controllerTemplate = "Categories_See.template.html";
-		
-	}
-	
 	/* Modifier une catégorie : */
 	public function modify() {
 		
 		if(isset($_GET['id_category'])) {
 			
-			$this->controllerTemplate = "Categories_Modify.template.html";
-			
 			/* C'est partit : */
 			$category = new Category();
 			$category = $category->selectById($_GET['id_category']);
 			
-			$this->modifiedCategory = $category;
+			if(empty($category)) {
+				$this->error = "La catégorie que vous souhaitez modifier n'existe pas en base";
+			}
+			else {
+				$this->controllerTemplate = "Categories_Modify.template.html";
+				$this->title = "Modifier une catégorie";
+				$this->ariane->setFunction("Modifier une catégorie", "index.php?service=Categories&function=modify&id_category={$_GET['id_category']}");
+			}
 			
 			/* Vérification si vérification nécéssaire */
 			if(isset($_POST) && !empty($_POST)) {
@@ -78,12 +76,13 @@ class Categories extends Controller {
 				}
 				
 				$category->setNom($_POST['name']);
+				$_GET['id_category'] = $category->getIdParent();
 				$category->setIdParent($_POST['parent']);
 				$category->update();
 				
 				$this->info = "La catégorie {$_POST['name']} a été mise à jour !";
 				$this->controllerTemplate = "Categories.template.html";
-				
+				$this->ariane->clearFunction();
 			}
 			
 		}
@@ -102,6 +101,7 @@ class Categories extends Controller {
 				$category = new Category();
 				$category = $category->selectById($_GET['id_category']);
 				
+				$_GET['id_category'] = $category->getIdParent();
 				$category->remove();
 				
 				$this->info = "La catégorie {$category->getNom()} à bien été supprimée. ";
@@ -109,6 +109,8 @@ class Categories extends Controller {
 			}
 			else {
 				$this->controllerTemplate = "Categories_Delete.template.html";
+				$this->ariane->setFunction("Supprimer une catégorie","index.php?service=Categories&function=delete&id_category={$_GET['id_category']}");
+				$this->title = "Supprimer une catégorie";
 			}
 			
 		}
@@ -141,6 +143,30 @@ class Categories extends Controller {
 			
 			return $categories;
 		}
+	}
+	
+	public function getAllSubCategories() {
+		
+		$category = $this->getCategory();
+		
+		return $category->getAllSubCategories();
+		
+	}
+	
+	public function getAllCategoryItems() {
+		
+		$category = $this->getCategory();
+		
+		return $category->getArticles();
+		
+	}
+	
+	public function getAllCategories() {
+		
+		$categories = new Category();
+		
+		return $categories->selectAll();
+		
 	}
 	
 	public function getArticles() {

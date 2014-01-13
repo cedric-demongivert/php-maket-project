@@ -1,4 +1,5 @@
 <?php
+require_once "./controllers/Categories.class.php";
 
 class Articles extends Controller {
 	
@@ -6,14 +7,19 @@ class Articles extends Controller {
 	/*			FIELD(S)										*/
 	/* -------------------------------------------------------- */
 	private $form;
-	private $stock;
+	private $ariane;
+	private $name;
 	
 	/* -------------------------------------------------------- */
 	/*			CONSTRUCTOR(S)									*/
 	/* -------------------------------------------------------- */
 	public function __construct() {
-		parent::__construct("articlesController","Articles.template.html");
-		$this->stock = false;
+		parent::__construct("articles","Articles.template.html");
+		$controller = new Categories();
+		$this->includeController($controller);
+		$this->name = $controller->title;
+		$this->ariane = new Ariane("index.php?service=Categories");
+		$this->includeController($this->ariane);
 	}
 	
 	/* -------------------------------------------------------- */
@@ -49,6 +55,7 @@ class Articles extends Controller {
 				$article->insert();
 				
 				$this->info = "L'article {$_POST['name']} a bien été crée !";
+				$this->controllerTemplate = "Categories.template.html";
 			}
 			else {
 				$this->form['name'] = $_POST["name"];
@@ -58,6 +65,8 @@ class Articles extends Controller {
 				
 				/* Formulaire */
 				$this->controllerTemplate = "Articles_Create.template.html";
+				$this->title = "Créer un article";
+				$this->ariane->setFunction("Créer un article", "index.php?service=Articles&function=create&id_category={$_GET['id_category']}");
 			
 			}
 			
@@ -65,6 +74,8 @@ class Articles extends Controller {
 		else {
 			/* Formulaire */
 			$this->controllerTemplate = "Articles_Create.template.html";
+			$this->title = "Créer un article";
+			$this->ariane->setFunction("Créer un article", "index.php?service=Articles&function=create&id_category={$_GET['id_category']}");
 		}
 		
 	}
@@ -82,7 +93,10 @@ class Articles extends Controller {
 	/* Modifier une catégorie : */
 	public function modify() {
 		
-		if(isset($_GET['id'])) {
+		$this->ariane->setFunction("Modifier un article", "index.php?service=Articles&function=modify&id_article={$_GET['id_article']}&id_category={$_GET['id_category']}");
+		$this->title="Modifier un article";
+		
+		if(isset($_GET['id_article'])) {
 			$article = $this->getArticle();
 			if(!empty($article)) {
 				
@@ -112,8 +126,11 @@ class Articles extends Controller {
 						
 						$article->update();
 						
-						$this->info = "L'article {$article->getId()} a bien été modifié !";
-					
+						$this->controllerTemplate = "Categories.template.html";
+						$this->title = $this->name;
+						$this->info = "L'article {$article->getNom()} a bien été modifié !";
+						$this->ariane->clearFunction();
+						
 					} // if($valid)
 					else {
 						
@@ -124,7 +141,7 @@ class Articles extends Controller {
 						
 						/* Formulaire */
 						$this->controllerTemplate = "Articles_Modify.template.html";
-					
+						
 					}
 					
 				} // if(isset($_POST) && !empty($_POST))
@@ -136,15 +153,20 @@ class Articles extends Controller {
 					$this->form['parent'] = $article->getIdCategorie();
 						
 					$this->controllerTemplate = "Articles_Modify.template.html";
+					
 				
 				}
 			}// if(!empty($article))
 			else {
 				$this->error = "L'article à modifier n'existe pas en base !";
+				$this->controllerTemplate = "Categories.template.html";
+				$this->title = $this->name;
 			}
 			
 		}// if(isset($_GET['id']))
 		else {
+			$this->controllerTemplate = "Categories.template.html";
+			$this->title = $this->name;
 			$this->error = "Erreur lors de la tentative de modification de l'article.";	
 		}
 		
@@ -152,7 +174,10 @@ class Articles extends Controller {
 
 	public function delete() {
 		
-		if(isset($_GET['id'])) {
+		if(isset($_GET['id_article'])) {
+			
+			$this->title = "Supprimer un article";
+			$this->ariane->setFunction("Supprimer un article","index.php?service=Articles&function=delete&id_category={$_GET['id_category']}&id_article={$_GET['id_article']}");
 			
 			if(isset($_GET['force'])) {
 				
@@ -160,10 +185,17 @@ class Articles extends Controller {
 				
 				if($article == null) {
 					$this->error = "L'article que vous souhaitez supprimer n'existe pas en base.";
+					$this->controllerTemplate = "Categories.template.html";
+					$this->title = $this->name;	
+					$this->ariane->clearFunction();
 				}
 				else {
 					$article->remove();
-					$this->info = "L'article {$article->getId()} a bien été supprimé !";
+					$this->controllerTemplate = "Categories.template.html";
+					$this->title = $this->name;	
+					$this->ariane->clearFunction();
+					$this->info = "L'article {$article->getNom()} a bien été supprimé !";
+					return;
 				}
 				
 			}
@@ -171,6 +203,11 @@ class Articles extends Controller {
 				$this->controllerTemplate = "Articles_Delete.template.html";
 			}
 			
+		}
+		else {
+			$this->controllerTemplate = "Categories.template.html";
+			$this->title = $this->name;
+			$this->error = "Erreur lors de la tentative de suppression de l'article.";	
 		}
 		
 	}
@@ -225,10 +262,10 @@ class Articles extends Controller {
 	
 	public function getArticle() {
 		
-		if(isset($_GET["id"])) {
+		if(isset($_GET["id_article"])) {
 			
 			$article = new Article();
-			$article = $article->selectById($_GET["id"]);
+			$article = $article->selectById($_GET["id_article"]);
 			
 			return $article;
 			

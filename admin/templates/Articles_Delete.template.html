@@ -8,12 +8,14 @@
 		
 		</td>
 				
-		{% set article = articlesController.article.data %}
+		{% set article = articles.article.data %}
 				
 		<td id="rightBlock"> 
 
-			<h1> Supprimer l'article [{{ article.id }}] {{ article.nom }} : </h1>
-			
+			<h1> Supprimer l'article {{ article.id }}, {{ article.nom }} : </h1>
+			<br/>
+			{% include 'Ariane.template.html' %}
+			<br/>
 			<i> Attention : la suppression de cette article entraînera les modifications suivantes : </i>
 			
 			<h2> Commandes impactées : </h2>
@@ -22,7 +24,7 @@
 			
 			<br/>
 			<br/>
-			Si vous souhaitez réellement supprimer cet article, cliquez <a href="index.php?service=Articles&function=delete&id={{ article.id }}&force">ici</a>
+			Si vous souhaitez réellement supprimer cet article, cliquez <a href="index.php?service=Articles&function=delete&id_category={{ article.idCategorie }}&id_article={{ article.id }}&force">ici</a>
 		</td>
 
 	</tr>

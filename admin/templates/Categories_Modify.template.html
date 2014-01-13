@@ -13,16 +13,18 @@
 			<h1> Modifier une catégorie : </h1>
 			
 			<br/>
+				{% include 'Ariane.template.html' %}
+			<br/>
 			
-			{% set modified = categoriesController.category %}
+			{% set modified = nav.category %}
 			
-			<form id="modify_category" method="post" action="index.php?service=Categories&function=modify&id={{ modified.id }}">
+			<form id="modify_category" method="post" action="index.php?service=Categories&function=modify&id_category={{ modified.data.id }}">
 			
 				<table class="formTable">
 					<tr>
 						<td>Nom de la nouvelle catégorie : </td>	
 						<td>
-							<input type="text" name="name" id="name" value="{{ modified.nom }}"/>
+							<input type="text" name="name" id="name" value="{{ modified.data.nom }}"/>
 						</td>
 					</tr>
 					<tr>
@@ -30,16 +32,16 @@
 						<td>
 							<select name="parent" id="parent">
 								<option value="-1" 
-									{% if modified.idParent == -1 %}
+									{% if modified.data.idParent == -1 %}
 										selected="selected"
 									{% endif %}
 								 > Pas de catégorie parente </option>
-							{% for category in categoriesController.categories %}
-								<option value="{{ category.id }}" 
-									{% if modified.idParent == category.id %}
+							{% for category in nav.allCategories %}
+								<option value="{{ category.data.id }}" 
+									{% if modified.data.idParent == category.data.id %}
 										selected="selected"
 									{% endif %}
-									>{{ category.nom }}</option>
+									>{{ category.data.nom }}</option>
 							{% endfor %}
 							</select>
 						</td>

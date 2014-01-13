@@ -8,17 +8,21 @@
 		
 		</td>
 				
-		{% set category = categoriesController.category %}
+		{% set category = nav.category %}
 				
 		<td id="rightBlock"> 
 
-			<h1> Supprimer la catégorie [{{ category.id }}] {{ category.nom }} : </h1>
+			<h1> Supprimer la catégorie {{ category.data.id }}, {{ category.data.nom }} : </h1>
+			
+			<br/>
+				{% include 'Ariane.template.html' %}
+			<br/>
 			
 			<i> Attention : la suppression de cette catégorie entraînera la suppression de(s) : </i>
 			
 			<h2> Catégorie(s) suivante(s) : </h2>
 			
-			{% set subCategories = categoriesController.allSubCategories %}
+			{% set subCategories = nav.allSubCategories %}
 			
 			{% if subCategories is empty %}
 			
@@ -33,10 +37,10 @@
 					</tr>
 				{% for subCategory in subCategories %}
 					<tr>
-						<td>{{ subCategory.id }}</td>
-						<td>{{ subCategory.nom }}</td>
+						<td>{{ subCategory.data.id }}</td>
+						<td>{{ subCategory.data.nom }}</td>
 						<td> 
-							<a href="index.php?service=Categories&function=delete&id={{ subCategory.id }}">+ supprimer plutôt</a>
+							<a href="index.php?service=Categories&function=delete&id_category={{ subCategory.data.id }}">+ supprimer plutôt</a>
 						</td>
 					</tr>
 				{% endfor %}
@@ -47,7 +51,7 @@
 			
 			<h2> Article(s) suivant(s) : </h2>
 			
-			{% set articles = categoriesController.allCategoryItems %}
+			{% set articles = nav.allCategoryItems %}
 			
 			{% if articles is empty %}
 			
@@ -61,8 +65,8 @@
 					</tr>
 				{% for article in articles %}
 					<tr>
-						<td>{{ article.id }}</td>
-						<td>{{ article.nom }}</td>
+						<td>{{ article.data.id }}</td>
+						<td>{{ article.data.nom }}</td>
 					</tr>
 				{% endfor %}
 			</table>
@@ -70,7 +74,7 @@
 			
 			<br/>
 			<br/>
-			Si vous souhaitez réellement supprimer cette catégorie, cliquez <a href="index.php?service=Categories&function=delete&id={{ category.id }}&force">ici</a>
+			Si vous souhaitez réellement supprimer cette catégorie, cliquez <a href="index.php?service=Categories&function=delete&id_category={{ category.data.id }}&force">ici</a>
 		</td>
 
 	</tr>

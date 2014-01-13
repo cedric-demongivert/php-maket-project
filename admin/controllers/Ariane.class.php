@@ -60,6 +60,9 @@ class Ariane extends Controller {
 		return $this->function;
 	}
 	
+	public function clearFunction() {
+		$this->function = null;
+	}
 }
 
 ?>

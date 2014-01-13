@@ -3,13 +3,16 @@ require_once("./controllers/Ariane.class.php");
 
 class Categories extends Controller {
 	
+	private $ariane;
+	
 	/* -------------------------------------------------------- */
 	/*			CONSTRUCTOR(S)									*/
 	/* -------------------------------------------------------- */
 	public function __construct() {
-		parent::__construct("categoriesController","Categories.template.html");
-		$this->title = "Gérer mes catégories et articles";
-		$this->includeController(new Ariane());
+		parent::__construct("nav","Categories.template.html");
+		$this->title = "Navigation";
+		$this->ariane = new Ariane("index.php?service=Categories");
+		$this->includeController($this->ariane);
 	}
 	
 	
@@ -21,12 +24,14 @@ class Categories extends Controller {
 		
 		/* Formulaire */
 		$this->controllerTemplate = "Categories_Create.template.html";
+		$this->title = "Créer une catégorie";
 		
 		/* Vérification si vérification nécéssaire */
 		if(isset($_POST) && !empty($_POST)) {
 			
 			if(empty($_POST['name'])) {
 				$this->error = "Veuillez préciser un nom pour votre catégorie";
+				$this->ariane->setFunction("Créer une catégorie", "index.php?service=Categories&function=create&id_category={$_GET['id_category']}");
 				return;
 			}
 			
@@ -38,6 +43,9 @@ class Categories extends Controller {
 			$this->info = "La catégorie {$_POST['name']} a été créée avec succès !";
 			$this->controllerTemplate = "Categories.template.html";
 			
+		}
+		else {
+			$this->ariane->setFunction("Créer une catégorie", "index.php?service=Categories&function=create&id_category={$_GET['id_category']}");
 		}
 		
 	}
@@ -51,13 +59,13 @@ class Categories extends Controller {
 	/* Modifier une catégorie : */
 	public function modify() {
 		
-		if(isset($_GET['id'])) {
+		if(isset($_GET['id_category'])) {
 			
 			$this->controllerTemplate = "Categories_Modify.template.html";
 			
 			/* C'est partit : */
 			$category = new Category();
-			$category = $category->selectById($_GET['id']);
+			$category = $category->selectById($_GET['id_category']);
 			
 			$this->modifiedCategory = $category;
 			
@@ -87,12 +95,12 @@ class Categories extends Controller {
 
 	public function delete() {
 		
-		if(isset($_GET['id'])) {
+		if(isset($_GET['id_category'])) {
 			
 			if(isset($_GET['force'])) {
 				
 				$category = new Category();
-				$category = $category->selectById($_GET['id']);
+				$category = $category->selectById($_GET['id_category']);
 				
 				$category->remove();
 				
@@ -110,25 +118,41 @@ class Categories extends Controller {
 	/* -------------------------------------------------------- */
 	/*			GETTER(S) & SETTER(S)							*/
 	/* -------------------------------------------------------- */
-	public function getCategories() {
-		
-		$categories = new Category();
-		return Model::toData($categories->selectAll());
-		
-	}
-	
 	public function getCategory() {
-		if(isset($_GET['id'])) {
-			
-			$category = new Category();
-			$category = $category->selectById($_GET['id']);
-			
-			return Model::toData($category);
-			
+		$category = new Category();
+		if (isset($_GET['id_category']) && $_GET['id_category'] != '-1') {
+			return $category->selectById($_GET['id_category']);
 		}
 		else {
-			return null;
+			$category->setId(-1);
+			$category->setNom("racine");
+			return $category;
 		}
+	}
+	
+	public function getCategories() {
+		$category = new Category();
+		if (isset($_GET['id_category'])) {
+			$categories = $category->select("idParent = ".Model::$bdd->quote($_GET['id_category']));
+			
+			return $categories;
+		} else {
+			$categories = $category->select("idParent = -1");
+			
+			return $categories;
+		}
+	}
+	
+	public function getArticles() {
+		$category = new Category();
+		$id = -1;
+		if (isset($_GET['id_category']) && $_GET['id_category'] != '-1') {
+			$id = $_GET['id_category'];
+			$category = $category->selectById($id);
+		} else {
+			$category->setId($id);
+		}
+		return $category->getSpecificArticles();
 	}
 	
 }

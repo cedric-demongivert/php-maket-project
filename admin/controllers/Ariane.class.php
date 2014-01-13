@@ -2,9 +2,13 @@
 
 class Ariane extends Controller {
 	
-	public function __construct() {
+	private $url;
+	private $function;
+	
+	public function __construct($url="index.php?") {
 		parent::__construct("ariane", "Ariane.template.html");
 		$this->title = "Fil d'ariane";
+		$this->url = $url;
 	}
 	
 	public function getCategoryTree() {
@@ -44,6 +48,17 @@ class Ariane extends Controller {
 		
 	}
 	
+	public function getUrl() {
+		return $this->url;
+	}
+
+	public function setFunction($function, $url) {
+		$this->function = array("nom"=>$function, "url"=>$url);
+	}
+	
+	public function getFunction() {
+		return $this->function;
+	}
 	
 }
 

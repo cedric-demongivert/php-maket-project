@@ -10,11 +10,13 @@
 				
 		<td id="rightBlock"> 
 
-			<h1> Creer une nouvelle catégorie : </h1>
+			<h1> Creer une nouvelle catégorie dans : {{ nav.category.data.nom }} </h1>
 			
 			<br/>
+				{% include 'Ariane.template.html' %}
+			<br/>
 			
-			<form id="create_category" method="post" action="index.php?service=Categories&function=create">
+			<form id="create_category" method="post" action="index.php?service=Categories&function=create&id_category={{ nav.category.data.id }}">
 			
 				<table class="formTable">
 					<tr>
@@ -23,19 +25,9 @@
 							<input type="text" name="name" id="name"/>
 						</td>
 					</tr>
-					<tr>
-						<td>Catégorie parente : </td>	
-						<td>
-							<select name="parent" id="parent">
-								<option value="-1"> Pas de catégorie parente </option>
-							{% for category in categoriesController.categories %}
-								<option value="{{ category.id }}">{{ category.nom }}</option>
-							{% endfor %}
-							</select>
-						</td>
-					</tr> 
 				</table>
-			
+				
+				<input type="hidden" name="parent" id="parent" value="{{ nav.category.data.id }}"/>
 				<input type="submit" value="créer" />
 			
 			</form>

@@ -12,31 +12,63 @@
 
 			<h1> Gérer mes catégories et mes articles : </h1>
 			
+			<br/>
 			{% include 'Ariane.template.html' %}
 			<br/>
 			
+			<h2>Catégories présentes dans : {{ nav.category.data.nom }}</h2>
+			
+			{% set categories = nav.categories %}
+			
+			{% if categories|length > 0 %}
 			<table class="dataTable">
+				{% for category in categories %}
 					<tr>
-						<th>ID</th>
-						<th>NOM</th>
-						<th>ACTIONS</th>
-					</tr>
-				{% for category in categoriesController.categories %}
-					<tr>
-						<td>{{ category.id }}</td>
-						<td>{{ category.nom }}</td>
+						<td>{{ category.data.id }}</td>
+						<td><a href="index.php?service=Categories&id_category={{ category.data.id }}">{{ category.data.nom }}</a></td>
 						<td> 
-							<a href="index.php?service=Categories&function=modify&id={{ category.id }}"> + modifier </a> <br/> 
-							<a href="index.php?service=Categories&function=delete&id={{ category.id }}">+ supprimer </a><br/> 
-							<a href="index.php?service=Categories&function=see&id={{ category.id }}">+ informations </a>
+							<a href="index.php?service=Categories&function=modify&id_category={{ category.data.id }}"> + modifier </a> <br/> 
+							<a href="index.php?service=Categories&function=delete&id_category={{ category.data.id }}">+ supprimer </a><br/> 
 						</td>
 					</tr>
 				{% endfor %}
 			</table>
+			{% else %}
+				<i> Il n'y a aucune catégorie dans cette catégorie </i>
+				<br/>
+			{% endif %}
 			
 			<br/>
 			
-			<a href="index.php?service=Categories&function=create">+ Ajouter une nouvelle catégorie</a>
+			<a href="index.php?service=Categories&function=create&id_category={{ nav.category.data.id }}">+ Ajouter une nouvelle catégorie dans {{ nav.category.data.nom }}</a>
+		
+			<h2>Articles présents dans : {{ nav.category.data.nom }}</h2>
+			
+			{% set articles = nav.articles %}
+			
+			{% if articles|length > 0 %}
+			<table class="dataTable">
+				{% for article in articles %}
+					<tr>
+						<td>{{ article.data.id }}</td>
+						<td>{{ article.data.nom }}</td>
+						<td>{{ article.data.prix }}</td>
+						<td>{{ article.data.nombre }}</td>
+						<td> 
+							<a href="index.php?service=Articles&function=modify&id={{ article.id }}"> + modifier </a> <br/> 
+							<a href="index.php?service=Articles&function=delete&id={{ article.id }}">+ supprimer </a> <br/> 
+							<!--  <a href="index.php?service=Articles&function=see&id={{ article.id }}">+ informations </a> -->
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+			{% else %}
+				<i> Il n'y a aucun article dans cette catégorie </i>
+				<br/>
+			{% endif %}
+			<br/>
+			<a href="index.php?service=Categories&function=create&id_category={{ nav.category.data.id }}">+ Ajouter un article dans {{ nav.category.data.nom }}</a>
+		
 		</td>
 		
 	</tr>

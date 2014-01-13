@@ -64,17 +64,30 @@ h1 {
 		
 }
 
-.dataTable tr:nth-child(2n) td {
+.dataTable tr:nth-child(2n+1) td {
 
 	background-color:#222222;
 	color:#efefef;
 		
 }
 
-.dataTable tr:nth-child(2n) a {
+.dataTable tr:nth-child(2n+1) a {
 
 	color:#efefef;
 		
+}
+
+.dataTable tr:HOVER td{
+	
+	background-color:#222288;
+	color:#efefef;
+	
+}
+
+.dataTable tr:HOVER a{
+	
+	color:#efefef;
+	
 }
 
 .formTable {

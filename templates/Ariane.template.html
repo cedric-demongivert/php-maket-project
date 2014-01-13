@@ -1,36 +1,21 @@
-{% include 'header.template.html' %}
 
-<table id="mainBlock">
-	<tr>
-		<td id="leftBlock"> 
-		
-			{% include 'menu.template.html' %}
-		
-		</td>
-				
-		<td id="rightBlock"> 
-		
-			<div id="ariane">
-			
-				<a href="index.php?service=Ariane&id_category=-1">
-							Accueil 
-				</a>
-			{% set tree = ariane.categoryTree %}
-			
-			{% if tree|length > 0 %}
-				{% for category in tree %}
-					>>
-					<a href="index.php?service=Ariane&id_category={{ category.data.id }}">
-							{{ category.data.nom }} 
-					</a>
-					
-				{% endfor %}
-			{% endif %}
-			</div>
-			
-		</td>
-		
-	</tr>
-</table>
+<div id="ariane">
 
-{% include 'footer.template.html' %}
+	<a href="{{ ariane.url }}&id_category=-1"> Accueil </a> 
+	{% set tree = ariane.categoryTree %} 
+		{% if tree|length > 0 %} 
+			{% for category in tree %} >> 
+			<a href="{{ ariane.url }}&id_category={{ category.data.id }}">
+				{{ category.data.nom }} 
+			</a> 
+			{% endfor %} 
+		{% endif %}
+		
+		{% if ariane.function is not empty %}
+			>>
+			<a href="{{ ariane.function.url }}">
+				{{ ariane.function.nom }} 
+			</a> 
+		{% endif %}
+		
+</div>

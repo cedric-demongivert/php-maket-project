@@ -48,6 +48,12 @@
 			
 			{% if articles|length > 0 %}
 			<table class="dataTable">
+					<tr>
+						<th>ID</th>
+						<th>NOM</th>
+						<th>PRIX</th>
+						<th>NOMBRE</th>
+					</tr>
 				{% for article in articles %}
 					<tr>
 						<td>{{ article.data.id }}</td>

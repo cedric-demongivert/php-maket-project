@@ -9,18 +9,13 @@ class PanierController extends Controller {
 		parent::__construct("panier", "Panier.template.html");
 		$this->title = "Panier";
 		if (!isset($_SESSION['panier'])) {
-			$_SESSION['panier'] = new Panier();
+			$_SESSION['panier'] = serialize(new Panier());
 		} 
 	}
 	
 	public function getArticles() {
-		$panier = new Panier();
-		if (isset($_SESSION['panier'])) {
-			return $_SESSION['panier']->getItems();
-		} else {
-			$_SESSION['panier'] = $panier;
-			return $_SESSION['panier']->getItems();
-		}
+		$panier = unserialize($_SESSION['panier']);
+		return $_SESSION['panier']->getItems();
 	}
 	
 	public function getArticle($id) {
@@ -35,9 +30,7 @@ class PanierController extends Controller {
 	
 	public function ajouter() {
 		$article;
-		$panier = $_SESSION['panier'];
-		print_r($panier);
-		die();
+		$panier = unserialize($_SESSION['panier']);
 		if (isset($_GET['id_article'])) {
 			foreach ($panier->getItems() as $item) {
 				if ($item->getIdArticle() == $_GET['id_article']) {

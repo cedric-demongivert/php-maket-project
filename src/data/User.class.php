@@ -34,6 +34,14 @@ class User extends Model {
 		
 	}
 	
+	public function getCommands() {
+		
+		$commands = new Commande();
+		
+		return $commands->select("idUser = {$this->getId()}");
+		
+	}
+	
 }
 
 ?>

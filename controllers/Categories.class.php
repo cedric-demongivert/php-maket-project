@@ -38,14 +38,8 @@ class Categories extends Controller {
 	}
 	
 	public function getArticles() {
-		$category = new Category();
-		$id = -1;
-		if (isset($_GET['id_category'])) {
-			$id = $_GET['id_category'];
-			$category = $category->selectById($id);
-		} else {
-			$category->setId($id);
-		}
+		$category = $this->getCategory();
+		
 		return $category->getSpecificArticles();
 	}
 	

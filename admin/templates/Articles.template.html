@@ -10,22 +10,13 @@
 				
 		<td id="rightBlock"> 
 
-			<h1> Liste des articles du site : </h1>
+			<h1> Gestion des stocks : </h1>
 			
-			<br/>
+			<h2> Articles en rupture de stock : </h2>
 			
-			{% if not articlesController.stock %}
-			
-			<a href="index.php?service=Articles&function=ruptureStock" > Uniquement les articles en rupture de stock </a>
-			<br/><br/>	
-			
-			{% else %}
-			
-			<a href="index.php?service=Articles" > Tous les articles </a>
-			<br/><br/>	
-			
-			{% endif %}
-						
+				
+			{% set articlesData = articles.articles %}
+			{% if articlesData|length > 0 %}
 			<table class="dataTable">
 					<tr>
 						<th>ID</th>
@@ -35,7 +26,7 @@
 						<th>CATEGORIE</th>
 						<th>ACTIONS</th>
 					</tr>
-				{% for article in articlesController.articles %}
+				{% for article in articlesData %}
 					<tr>
 						<td>{{ article.id }}</td>
 						<td>{{ article.nom }}</td>
@@ -43,17 +34,56 @@
 						<td>{{ article.nombre }}</td>
 						<td>{{ article.categorie }}</td>
 						<td> 
-							<a href="index.php?service=Articles&function=modify&id={{ article.id }}"> + modifier </a> <br/> 
-							<a href="index.php?service=Articles&function=delete&id={{ article.id }}">+ supprimer </a> <br/> 
-							<a href="index.php?service=Articles&function=see&id={{ article.id }}">+ informations </a>
+							<form id="reapro_article" method="post" action="index.php?service=Articles&function=reappro&article_id={{ article.data.id }}">
+								<input type="text" name="nombre" value="" />
+								<input type="submit" value="réapprovisionner" />
+							</form>
 						</td>
 					</tr>
 				{% endfor %}
 			</table>
+			{% else %}
 			
+				<i> Aucun problème de stocks détecté </i>
+			
+			{% endif %}
 			<br/>
 			
-			<a href="index.php?service=Articles&function=create">+ Ajouter un nouvel article</a>
+			<h2> Articles en voie de rupture de stock : </h2>
+			
+			{% set articlesData = articles.warnArticles %}
+			{% if articlesData|length > 0 %}
+			<table class="dataTable">
+					<tr>
+						<th>ID</th>
+						<th>NOM</th>
+						<th>PRIX</th>
+						<th>NOMBRE</th>
+						<th>CATEGORIE</th>
+						<th>ACTIONS</th>
+					</tr>
+				{% for article in articlesData %}
+					<tr>
+						<td>{{ article.id }}</td>
+						<td>{{ article.nom }}</td>
+						<td>{{ article.prix }}</td>
+						<td>{{ article.nombre }}</td>
+						<td>{{ article.categorie }}</td>
+						<td> 
+							<form id="reapro_article" method="post" action="index.php?service=Articles&function=reappro&id_article={{ article.id }}">
+								<input type="text" name="nombre" value="" />
+								<input type="submit" value="réapprovisionner" />
+							</form>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+			{% else %}
+			
+				<i> Aucun problème de stocks détecté </i>
+			
+			{% endif %}
+			
 		</td>
 		
 	</tr>

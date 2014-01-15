@@ -30,6 +30,10 @@ class PanierItem {
 		return $this->idArticle == $idArticle;
 	}
 	
+	public function setIdArticle($id) {
+		$this->idArticle = $id;
+	}
+	
 }
 
 ?>

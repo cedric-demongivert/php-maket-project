@@ -2,7 +2,7 @@
 
 class Panier {
 	
-	private $items[];
+	private $items;
 	
 	public function __construct() {
 		
@@ -42,6 +42,10 @@ class Panier {
 	
 	public function getItems() {
 		return $this->items;
+	}
+	
+	public function setItems($items) {
+		$this->items = $items;
 	}
 	
 }

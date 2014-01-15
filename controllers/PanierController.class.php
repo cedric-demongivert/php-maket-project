@@ -1,21 +1,25 @@
 <?php
 
 require_once "./controllers/Ariane.class.php";
-require_once "./src/Panier.class.php";
 
 class PanierController extends Controller {
 	
 	public function __construct() {
 		parent::__construct("panier", "Panier.template.html");
 		$this->title = "Panier";
+		
 		if (!isset($_SESSION['panier'])) {
-			$_SESSION['panier'] = serialize(new Panier());
+			$_SESSION['panier'] = new Panier();
 		} 
+
 	}
 	
 	public function getArticles() {
-		$panier = unserialize($_SESSION['panier']);
-		return $_SESSION['panier']->getItems();
+		
+		$panier = $_SESSION['panier'];
+
+		return $panier->getItems();
+		
 	}
 	
 	public function getArticle($id) {
@@ -30,7 +34,7 @@ class PanierController extends Controller {
 	
 	public function ajouter() {
 		$article;
-		$panier = unserialize($_SESSION['panier']);
+		$panier = $_SESSION['panier'];
 		if (isset($_GET['id_article'])) {
 			foreach ($panier->getItems() as $item) {
 				if ($item->getIdArticle() == $_GET['id_article']) {

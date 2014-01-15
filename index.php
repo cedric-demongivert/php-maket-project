@@ -1,10 +1,11 @@
 <?php
-session_start();
 
 /* Connexion bdd */
 require_once './src/bdd.php';
 require_once "./src/Controller.class.php";
 require_once "./src/Model.class.php";
+require_once "./src/Panier.class.php";
+require_once "./src/PanierItem.class.php";
 
 Model::$bdd = bdd_connect();
 
@@ -17,6 +18,7 @@ while(($file = readdir($dir)) !== false) {
 	}
 }
 
+session_start();
 /* Récupération du controleur : */
 $controller_name = "Categories"; /* Controleur par défaut */
 

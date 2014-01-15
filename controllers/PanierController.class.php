@@ -36,21 +36,18 @@ class PanierController extends Controller {
 		$article;
 		$panier = $_SESSION['panier'];
 		if (isset($_GET['id_article'])) {
-			foreach ($panier->getItems() as $item) {
+			/*foreach ($panier->getItems() as $item) {
 				if ($item->getIdArticle() == $_GET['id_article']) {
 					$article = $item;
 					break;
 				}
-			}
-			$panier = new Panier();
-			if (isset($_SESSION['panier'])) {
-				$panier = $_SESSION['panier'];
-				$panier.addItem($article);
-				$_SESSION['panier'] = $panier;
-			} else {
-				$panier.addItem($article);
-				$_SESSION['panier'] = $panier;
-			}
+			}*/
+
+			/* TODO : VERIFIER L'EXISTENCE EN BASE DE L'ID */
+			/* Info : si l'article existe déjà le panier va automatiquement incrémenter pas besoin de se
+			 * prendre la tête */
+			$panier->addItem($_GET['id_article'],1);
+
 		}
 	}
 	

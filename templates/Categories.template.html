@@ -59,7 +59,7 @@
 							{{ article.data.prix }}
 						</td>
 						<td>
-							<a href="index.php?service=PanierController&function=ajouter">+Ajouter au panier</a>
+							<a href="index.php?service=PanierController&function=ajouter&id_article={{ article.data.id }}">+Ajouter au panier</a>
 						</td>
 					</tr>				
 				{% endfor %}

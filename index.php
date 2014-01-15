@@ -19,6 +19,7 @@ while(($file = readdir($dir)) !== false) {
 }
 
 session_start();
+
 /* Récupération du controleur : */
 $controller_name = "Categories"; /* Controleur par défaut */
 

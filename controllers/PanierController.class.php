@@ -17,8 +17,28 @@ class PanierController extends Controller {
 	public function getArticles() {
 		
 		$panier = $_SESSION['panier'];
-
-		return $panier->getItems();
+		
+		$results = array();
+		
+		$article = new Article();
+		
+		foreach($panier->getItems() as $item) {
+			
+			$results[] = $article->selectById($item->getIdArticle());
+			
+		}
+		
+		$results = Model::toData($results);
+		
+		$i = 0;
+		foreach($panier->getItems() as $item) {
+				
+			$results[$i]['nombre'] = $item->getQuantity();
+			$i++;
+			
+		}
+		 
+		return $results;
 		
 	}
 	
@@ -33,21 +53,20 @@ class PanierController extends Controller {
 	}
 	
 	public function ajouter() {
-		$article;
+		$article = new Article();
 		$panier = $_SESSION['panier'];
 		if (isset($_GET['id_article'])) {
-			/*foreach ($panier->getItems() as $item) {
-				if ($item->getIdArticle() == $_GET['id_article']) {
-					$article = $item;
-					break;
-				}
-			}*/
-
-			/* TODO : VERIFIER L'EXISTENCE EN BASE DE L'ID */
-			/* Info : si l'article existe déjà le panier va automatiquement incrémenter pas besoin de se
-			 * prendre la tête */
-			$panier->addItem($_GET['id_article'],1);
-
+			if (($article->selectById($_GET['id_article'])) != null) {
+				$panier->addItem($_GET['id_article'],1);
+				header('Location:./index.php?service=PanierController');
+				exit();
+			}
+		}
+	}
+	
+	public function remove() {
+		if (isset($_SESSION['panier']) && isset($_GET['id_article'])) {
+			$_SESSION['panier']->remove($_GET['id_article']);
 		}
 	}
 	

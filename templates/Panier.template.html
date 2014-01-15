@@ -10,22 +10,42 @@
 		<td id='rightBlock'>
 		
 			{% if panier.articles|length > 0 %}
-				<table>
+				<table class='dataTable'>
 				
+					<tr>
+						<th>
+							Produit(s)
+						</th>
+						<th>
+							Prix unitaire
+						</th>
+						<th>
+							Quantit&eacute;e
+						</th>
+						<th>
+							Prix total
+						</th>
+						<th>
+							Opérations
+						</th>
+					</tr>
 					{% for panieritem in panier.articles %}
 					
 						<tr>
 							<td>
-								{{ panieritem.data.id }}
+								{{ panieritem.nom|escape }}
 							</td>
 							<td>
-								{{ panieritem.data.nom }}
+								{{ panieritem.prix }}
 							</td>
 							<td>
-								{{ panieritem.data.prix }}
+								{{ panieritem.nombre }}
 							</td>
 							<td>
-								{{ panieritem.data.nombre }}
+								{{ panieritem.nombre * panieritem.prix }}
+							</td>
+							<td>
+								<a href='index.php?service=PanierController&function=remove&id_article={{ panieritem.id }}'>+Supprimer</a>
 							</td>
 						</tr>
 					{% endfor %}

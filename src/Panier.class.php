@@ -5,14 +5,14 @@ class Panier {
 	private $items;
 	
 	public function __construct() {
-		
+		$this->items = array();
 	}
 	
 	public function addItem($newItem, $quantity) {
 		
 		foreach($this->items as $item) {
 			if($item->isArticle($newItem)) {
-				$item->add($quantity);
+				$item->addQuantity($quantity);
 				return;
 			}
 		}

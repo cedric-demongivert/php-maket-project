@@ -34,6 +34,17 @@ class User extends Model {
 		
 	}
 	
+	public function modify() {
+		
+		$this->title="Modifier un utilisateur";
+		$this->controllerTemplate = "Users_Modify.template.html";
+		
+		if(isset($_POST)) {
+			
+		}
+		
+	}
+	
 	public function getCommands() {
 		
 		$commands = new Commande();

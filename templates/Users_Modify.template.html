@@ -1,0 +1,51 @@
+{% include 'header.template.html' %}
+
+<table id="mainBlock">
+	<tr>
+		<td id="leftBlock"> 
+		
+			{% include 'menu.template.html' %}
+		
+		</td>
+				
+		<td id="rightBlock"> 
+
+			<h1> S'inscrire : </h1>
+			
+			<br/>
+
+			{% set form = controller.form %}
+			
+			<form id="modify_user" method="post" action="index.php?service=Users&function=modify">
+			
+				<table class="formTable">
+					<tr>
+						<td>Ancient password : </td>	
+						<td>
+							<input type="password" name="oldPassword" id="oldPassword" value=""/>
+						</td>
+					</tr>
+					<tr>
+						<td>Nouveau password : </td>	
+						<td>
+							<input type="password" name="password" id="password" value="{{ form.password }}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Nouveau mail : </td>	
+						<td>
+							<input type="text" name="mail" id="mail" value="{{ form.mail }}"/>
+						</td>
+					</tr>
+				</table>
+			
+				<input type="submit" value="modifier" />
+			
+			</form>
+			
+		</td>
+		
+	</tr>
+</table>
+
+{% include 'footer.template.html' %}

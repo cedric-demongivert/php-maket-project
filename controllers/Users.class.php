@@ -74,7 +74,7 @@ class Users extends Controller {
 		
 		if(isset($_POST)) {
 			
-			$valid = true;
+			$valid = false;
 			$user = $_SESSION['user'];
 			
 			if(!empty($_POST['oldPassword']) && empty($_POST['password'])) {
@@ -90,19 +90,25 @@ class Users extends Controller {
 					$this->error = "Mot de passe incorrect";
 					$valid = false;
 				}
+				else {
+					$valid = true;
+				}
 			}
 			else if(!empty($_POST['mail']) && preg_match("/\w+@\w+\.\w+/", $_POST['mail']) == false) {
 				$this->error = "L'adresse saisie est invalide.";
 				$valid = false;
 			}
+			else if(!empty($_POST['mail']) && preg_match("/\w+@\w+\.\w+/", $_POST['mail'])) {
+				$valid = true;
+			}
 			
 			if($valid) {
 				
-				if(isset($_POST["password"])) {
+				if(!empty($_POST["password"])) {
 					$user->setPass(crypt($_POST["password"]));
 				}
 
-				if(isset($_POST["mail"])) {
+				if(!empty($_POST["mail"])) {
 					$user->setMail($_POST["mail"]);
 				}
 			
@@ -111,8 +117,10 @@ class Users extends Controller {
 				$this->info = "Votre compte a bien été modifié !";
 			}
 			else {
-				$this->form['password'] = $_POST["password"];
-				$this->form['mail'] = $_POST["mail"];
+				if(isset($_POST["password"]))
+					$this->form['password'] = $_POST["password"];
+				if(isset($_POST["mail"]))
+					$this->form['mail'] = $_POST["mail"];
 				
 				/* Formulaire */
 				$this->controllerTemplate = "Users_Modify.template.html";

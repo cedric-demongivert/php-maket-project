@@ -229,16 +229,17 @@ abstract class Model {
 		/* construction de la requête */
 		$fields = "";
 		$values = "";
+		$query = "";
 		
 		$singleton = true;
 		
 		/* pour chaque attribut */
 		foreach($this->fields as $field) {
-			if(!empty($this->data[$field])) {
+			if(!empty($this->data[$field]) && $field != $this->primary) {
 
 				/* la petite virgule du bonheur */
 				if(!$singleton) {
-					$query.=", ";
+					$fields.=", ";
 					$values .= ", ";
 				}
 				else {
@@ -255,7 +256,7 @@ abstract class Model {
 		
 		$statement = $this->exec($query);
 		
-		$this->data[$primary] = Model::$bdd->lastInsertId();
+		$this->data[$this->primary] = Model::$bdd->lastInsertId();
 		$this->unModified();
 		
 		return $statement;
@@ -330,33 +331,43 @@ abstract class Model {
 	 */
 	private function bindParams($statement, $sql, $exteriorParams) {
 		
+		$params = array();
+		
 		/* Récupération des paramètres */
-		preg_match("/:\w+/", $sql, $params);
+		preg_match_all("/:\w+/", $sql, $params);
+		
+		/*if (preg_match("/INSERT INTO/", $sql)) {
+			echo($sql);
+			print_r($params);
+			die();
+		}*/
 		
 		/* Pour chaque paramètres */
-		foreach($params as $param) {
-			$key = substr($param,1);
-			/* Soit il est extérieur : */
-			if(!empty($exteriorParams) && array_key_exists($key, $exteriorParams)) {
-				$statement->bindParam($param, $exteriorParams[$key]);
+		foreach($params[0] as $param) {
+			if(!empty($param)) {
+				$key = substr($param,1);
+								echo "$param - $key";
+				/* Soit il est extérieur : */
+				if(!empty($exteriorParams) && array_key_exists($key, $exteriorParams)) {
+					$statement->bindParam("$param", $exteriorParams[$key]);
+				}
+				/* Soit il appartient à notre objet actuel : */
+				else if(array_key_exists($key, $this->data)) {
+					$statement->bindParam("$param", $this->data[$key]);
+				}
+				/* Soit erreur : */
+				else {
+					
+					$trace = debug_backtrace();
+					trigger_error(
+					htmlentities(
+						"Paramètre inconnu $pram ($sql) " .
+						' dans ' . $trace[0]['file'] .
+						' à la ligne ' . $trace[0]['line']),
+						E_USER_ERROR);
+					
+				}
 			}
-			/* Soit il appartient à notre objet actuel : */
-			else if(array_key_exists($key, $this->data)) {
-				$statement->bindParam($param, $this->data[$key]);
-			}
-			/* Soit erreur : */
-			else {
-				
-				$trace = debug_backtrace();
-				trigger_error(
-				htmlentities(
-					"Paramètre inconnu $pram ($sql) " .
-					' dans ' . $trace[0]['file'] .
-					' à la ligne ' . $trace[0]['line']),
-					E_USER_ERROR);
-				
-			}
-			
 		}
 		
 	}

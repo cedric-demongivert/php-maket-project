@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 /* Connexion bdd */
 require_once '../src/bdd.php';
@@ -15,6 +14,12 @@ while(($file = readdir($dir)) !== false) {
 	if(!($file == ".") && !($file == "..")) {
 		require_once "../src/data/$file";
 	}
+}
+
+session_start();
+
+if(!isset($_SESSION['user']) || !$_SESSION['user']->getAdmin()) {
+	header("Location: ../index.php");
 }
 
 /* Récupération du controleur : */

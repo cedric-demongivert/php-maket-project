@@ -335,18 +335,12 @@ abstract class Model {
 		
 		/* Récupération des paramètres */
 		preg_match_all("/:\w+/", $sql, $params);
-		
-		/*if (preg_match("/INSERT INTO/", $sql)) {
-			echo($sql);
-			print_r($params);
-			die();
-		}*/
-		
+
 		/* Pour chaque paramètres */
 		foreach($params[0] as $param) {
 			if(!empty($param)) {
 				$key = substr($param,1);
-								echo "$param - $key";
+
 				/* Soit il est extérieur : */
 				if(!empty($exteriorParams) && array_key_exists($key, $exteriorParams)) {
 					$statement->bindParam("$param", $exteriorParams[$key]);
@@ -440,6 +434,18 @@ abstract class Model {
 	/* -------------------------------------------------------- */
 	public function getData() {
 		return $this->data;
+	}
+	
+	public static function toData($array) {
+		
+		$results = array();
+		
+		foreach($array as $item) {
+			$results[] = $item->getData();
+		}
+		
+		return $results;
+		
 	}
 	
 }

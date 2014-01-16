@@ -5,9 +5,10 @@ abstract class Model {
 	/* -------------------------------------------------------- */
 	/*			FIELD(S)										*/
 	/* -------------------------------------------------------- */
-	protected $tableName;
 	public static $bdd;
+	protected $tableName;
 	protected $fields;
+	protected $primary;
 	protected $update;
 	protected $data;
 	protected $data_modified;
@@ -15,6 +16,11 @@ abstract class Model {
 	/* -------------------------------------------------------- */
 	/*			CONSTRUCTOR(S)									*/
 	/* -------------------------------------------------------- */
+	/**
+	 * Constructeur de Model
+	 * 
+	 * @param String $tableName, le nom de la table en base
+	 */
 	public function __construct($tableName) {
 
 		$this->tableName = $tableName;
@@ -32,12 +38,14 @@ abstract class Model {
 		
 		/* Récupération du nom des champs : */
 		while(($line = $statement->fetch()) !== false) {
+			/* Valeurs par défauts pour les champs : */
+			$this->data[$line["Field"]] = null;
+			$this->data_modified[$line["Field"]] = false;
 			$this->fields[] = $line["Field"];
-		}
-		
-		foreach($this->fields as $field) {
-			$this->data[$field] = null;
-			$this->data_modified[$field] = false;
+			
+			if($line["Key"]=="PRI") {
+				$this->primary = $line["Field"];
+			}
 		}
 		
 	}
@@ -45,39 +53,45 @@ abstract class Model {
 	/* -------------------------------------------------------- */
 	/*			METHOD(S)										*/
 	/* -------------------------------------------------------- */
+	/**
+	 * 	Renvoie toute les entrées présente en base.
+	 */
 	public function selectAll() {
 		
 		return $this->select(null);
 		
 	}
 	
-	public function select($where) {
+	/**
+	 * 
+	 * Select avec clause WHERE.
+	 * Attention, les paramètres internes à l'objet doivent être spécifiés de la manière suivante :nom_param
+	 * et serons changés avant lancement de la requête.
+	 * @param String $where conditions de la cause WHERE (si null pas de clause WHERE)
+	 * @param Array $bind liste des paramètres extérieurs à l'objet "nom_param"=>valeur
+	 * 
+	 */
+	public function select($where, $bind=array()) {
 		
+		$query = "";
 		if(empty($where)) {
-			$statement = Model::$bdd->prepare("SELECT * FROM {$this->tableName}");
+			$query = "SELECT * FROM {$this->tableName}";
 		}
 		else {
-			$statement = Model::$bdd->prepare("SELECT * FROM {$this->tableName} WHERE ".$where);
+			$query = "SELECT * FROM {$this->tableName} WHERE ".$where;
 		}
-		
-		$resultSet = array();
-		
-		/* Cas d'erreur */
-		if(!$statement->execute()) {
-			echo "$where";
-			print_r($statement->errorInfo()); 
-			die("Model : impossible d'exécuter la requête sur la table : {$this->tableName}");
-		}
-		
-		/* Récupération des entrées : */
-		while(($data = $this->build($statement)) !== false) {
-			$resultSet[] = $data;
-		}
-		
-		return $resultSet;
+	
+		return $this->query($query, $bind);
 		
 	}
 	
+	/**
+	 * 
+	 * Mettre à jour en base l'objet actuellement manipulé
+	 * 
+	 * @return PDOStatement requête
+	 * 
+	 */
 	public function update() {
 		
 		/* construction de la requête */
@@ -103,81 +117,98 @@ abstract class Model {
 			}
 		}
 		
-		$query .= $set." WHERE id = :id";
+		$query .= $set." WHERE ".$this->getPrimaryKey();
 		
-		$statement = Model::$bdd->prepare($query);
-		
-		/* Ajout des paramètres */
-		foreach($this->fields as $field) {
-			if($this->data_modified[$field]) {
-				$statement->bindParam(":$field", $this->data[$field]);
-				$this->data_modified[$field] = false;
-			}
-		}
-		
-		$statement->bindParam(":id", $this->getId());
-		
-		if(!$statement->execute()) {
-			echo $query;
-			print_r($statement->errorInfo()); 
-			die("Model : Erreur lors de la mise à jour dans : $tableName");
-		}
+		return $this->exec($query);
 		
 	}
 	
-	public function selectById($id) {
+	/**
+	 * 
+	 * Récupérer un objet par sa clef primaire
+	 * @param Array $primary (éléments constituants la clef primaire)
+	 * @return <T extends Model> Objet ou NULL si aucun élément trouvé
+	 * 
+	 */
+	public function selectById($primary) {
 		
-		$datas = $this->select("id = $id");
+		$this->data[$this->primary] = $primary;
+		$datas = $this->select($this->getPrimaryKey());
 		
+		/* Si pas de retour renvoi null */
 		if(sizeof($datas) == 0) {
 			return null;
 		}
-		
-		$data = $datas[0];
-		
-		return $data;
+
+		return $datas[0];
 		
 	}
 	
-	public function remove() {
+	/**
+	 * 
+	 * Supprimer l'objet actuellement manipulé (par la clef primaire)
+	 * @return PDOStatement requête
+	 * 
+	 */
+	public function delete() {
 		
-		
-		$statement = Model::$bdd->prepare("DELETE FROM {$this->tableName} WHERE id = :id");
-		$statement->bindParam(':id', $this->getId());
-		
-		/* éxecution */
-		if(!$statement->execute()) {
-			print_r($statement->errorInfo()); 
-			die("Model : Erreur lors de l'execution dans : {$this->tableName}");
-		}
+		return $this->exec("DELETE FROM {$this->tableName} WHERE {$this->getPrimaryKey()}");
 		
 	}
 	
-	public function exec($query) {
-		
-		$statement = Model::$bdd->prepare($query);
-		
-		/* éxecution */
-		if(!$statement->execute()) {
-			echo $query;
-			print_r($statement->errorInfo()); 
-			die("Model : Erreur lors de l'execution dans : $tableName");
-		}
-		
-	}
-	
-	public function get($query) {
+	/**
+	 * 
+	 * Effectuer une requête sur la base.
+	 * Attention, les paramètres doivent être spécifiés de la manière suivante :nom_param
+	 * et seront changés avant lancement de la requête.
+	 * @param String $query, la requête SQL
+	 * @param Array $exteriorParams, paramètres non internes à l'objet manipulé "nom_param"=>value
+	 * @return PDOStatement requête
+	 * 
+	 */
+	public function exec($query, $exteriorParams=array()) {
 		
 		$statement = Model::$bdd->prepare($query);
 		
 		$resultSet = array();
 		
+		/* Préparation de la requête */
+		$this->bindParams($statement, $query, $exteriorParams);
+		
 		/* Cas d'erreur */
 		if(!$statement->execute()) {
-			echo($query);
+			
+			$trace = debug_backtrace();
 			print_r($statement->errorInfo()); 
-			die("Model : impossible d'exécuter la requête sur la table : $tableName");
+			trigger_error(
+			htmlentities(
+				"Erreur lors de l'exécution de la requête $query " .
+				' dans ' . $trace[0]['file'] .
+				' à la ligne ' . $trace[0]['line']),
+				E_USER_ERROR);
+			
 		}
+		
+		/* Renvoie l'objet PDOStatement */
+		return $statement;
+		
+	}
+	
+	/**
+	 * 
+	 * Effectuer une requête retournant des résultats sur la base.
+	 * Attention, les paramètres doivent être spécifiés de la manière suivante :nom_param
+	 * et seront changés avant lancement de la requête.
+	 * @param String $query, la requête SQL
+	 * @param Array $exteriorParams, paramètres non internes à l'objet manipulé "nom_param"=>value
+	 * @return Array résultats de la requête
+	 * 
+	 */
+	public function query($query, $exteriorParams=array()) {
+		
+		$statement = $this->exec($query, $exteriorParams);
+		
+		$resultSet = array();
 		
 		/* Récupération des entrées : */
 		while(($data = $this->build($statement)) !== false) {
@@ -188,30 +219,16 @@ abstract class Model {
 		
 	}
 	
+	/**
+	 * 
+	 * Insérer l'objet actuel en base
+	 * 
+	 */
 	public function insert() {
 		
 		/* construction de la requête */
-		$query = "INSERT INTO {$this->tableName} (";
-		$singleton = true;
-		
-		/* pour chaque attribut */
-		foreach($this->fields as $field) {
-			if(!empty($this->data[$field])) {
-
-				/* la petite virgule du bonheur */
-				if(!$singleton) {
-					$query.=", ";
-				}
-				else {
-					$singleton = false;
-				}
-				
-				$query .= $field;
-				
-			}
-		}
-		
-		$query .= ") VALUES (";
+		$fields = "";
+		$values = "";
 		
 		$singleton = true;
 		
@@ -222,45 +239,54 @@ abstract class Model {
 				/* la petite virgule du bonheur */
 				if(!$singleton) {
 					$query.=", ";
+					$values .= ", ";
 				}
 				else {
 					$singleton = false;
 				}
 				
-				$query .= ":$field";
+				$fields .= $field;
+				$values .= ":$field";
 				
 			}
 		}
 		
-		$query .= ")";
+		$query = "INSERT INTO {$this->tableName} ($fields) VALUES ($values)";
 		
-		$statement = Model::$bdd->prepare($query);
+		$statement = $this->exec($query);
 		
-		/* maintenant les paramètres... */
-		foreach($this->fields as $field) {
-			if(!empty($this->data[$field])) {
-				$statement->bindParam(":$field", $this->data[$field]);
-			}
-		}
-		
-		/* éxecution */
-		if(!$statement->execute()) {
-			echo $query;
-			print_r($statement->errorInfo()); 
-			die("Model : Erreur lors de l'insertion dans : $tableName");
-		}
-		
-		$this->setId(Model::$bdd->lastInsertId());
+		$this->data[$primary] = Model::$bdd->lastInsertId();
 		$this->unModified();
+		
+		return $statement;
 		
 	}
 	
+	/**
+	 * 
+	 * Retourne la clause where clef primaire de cet objet.
+	 * @return String where
+	 * 
+	 */
+	private function getPrimaryKey() {
+		
+		return "$this->primary = :$this->primary";
+		
+	}
+	
+	/**
+	 * 
+	 * Créer un objet avec un résultat 
+	 * 
+	 * @return <? extends Model> objet
+	 * 
+	 */
 	private function build($statement) {
 		
 		if(($line = $statement->fetch()) !== false) {
 			
 			$name = get_class($this);
-			/* On instencie l'objet qui va bien */
+			/* On instancie l'objet qui va bien */
 			$data = new $name();
 			
 			/* on parcourt les champs et ont les set */
@@ -283,10 +309,54 @@ abstract class Model {
 		
 	}
 	
+	/**
+	 * Remise à zéro des champs non-touchés
+	 */
 	private function unModified() {
 		
 		foreach($this->fields as $field) {
 			$this->data_modified[$field] = false;
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * Bind Param pour tous les paramètres.
+	 * @param PDOStatement $statement
+	 * @param String $sql, sql de la requête
+	 * @param Array $exteriorParams, paramètres extérieurs "nom_param"=>value
+	 * 
+	 */
+	private function bindParams($statement, $sql, $exteriorParams) {
+		
+		/* Récupération des paramètres */
+		preg_match("/:\w+/", $sql, $params);
+		
+		/* Pour chaque paramètres */
+		foreach($params as $param) {
+			$key = substr($param,1);
+			/* Soit il est extérieur : */
+			if(!empty($exteriorParams) && array_key_exists($key, $exteriorParams)) {
+				$statement->bindParam($param, $exteriorParams[$key]);
+			}
+			/* Soit il appartient à notre objet actuel : */
+			else if(array_key_exists($key, $this->data)) {
+				$statement->bindParam($param, $this->data[$key]);
+			}
+			/* Soit erreur : */
+			else {
+				
+				$trace = debug_backtrace();
+				trigger_error(
+				htmlentities(
+					"Paramètre inconnu $pram ($sql) " .
+					' dans ' . $trace[0]['file'] .
+					' à la ligne ' . $trace[0]['line']),
+					E_USER_ERROR);
+				
+			}
+			
 		}
 		
 	}
@@ -359,27 +429,6 @@ abstract class Model {
 	/* -------------------------------------------------------- */
 	public function getData() {
 		return $this->data;
-	}
-	
-	public static function toData($models) {
-		
-		if(!is_array($models)) {
-			
-			if(empty($models)) {
-				return null;
-			}
-			
-			return $models->getData();
-		}
-		
-		$return = array();
-		
-		foreach($models as $model) {
-			$return[] = $model->getData();
-		}
-		
-		return $return;
-		
 	}
 	
 }

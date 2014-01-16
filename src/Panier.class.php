@@ -13,6 +13,9 @@ class Panier {
 		foreach($this->items as $item) {
 			if($item->isArticle($newItem)) {
 				$item->addQuantity($quantity);
+				if($item->getQuantity() <= 0) {
+					$this->remove($item->getIdArticle());
+				}
 				return;
 			}
 		}

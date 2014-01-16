@@ -1,6 +1,6 @@
 {% include 'header.template.html' %}
 
-<table id='mainBLock'>
+<table id='mainBlock'>
 	<tr>
 		<td id="leftBlock">
 		
@@ -26,7 +26,7 @@
 							Prix total
 						</th>
 						<th>
-							Opérations
+							Opï¿½rations
 						</th>
 					</tr>
 					{% set total = 0 %}
@@ -49,7 +49,7 @@
 							<td>
 								<a href='index.php?service=PanierController&function=remove&id_article={{ panieritem.id }}'>+Supprimer</a>
 								<form action="index.php?service=PanierController&function=addQuantity&id_article={{ panieritem.id }}" method="POST">
-									Ajouter : <input type="text" name="nombre" placeholder="Entier négatif pour retirer"/>
+									Ajouter : <input type="text" name="nombre" placeholder="Entier nï¿½gatif pour retirer"/>
 									<input type="SUBMIT" value="Valider"/>
 								</form>
 							</td>

@@ -438,10 +438,16 @@ abstract class Model {
 	
 	public static function toData($array) {
 		
+		if(!is_array($array)) {
+			return $array->getData();
+		}
+		
 		$results = array();
 		
 		foreach($array as $item) {
-			$results[] = $item->getData();
+			if(!empty($item)) {
+				$results[] = $item->getData();
+			}
 		}
 		
 		return $results;

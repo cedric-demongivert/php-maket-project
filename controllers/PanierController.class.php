@@ -70,6 +70,13 @@ class PanierController extends Controller {
 		}
 	}
 	
+	public function addQuantity() {
+		$panier = $_SESSION['panier'];
+		if (isset($_GET['id_article'])) {
+			$panier->addItem($_GET['id_article'], $_POST['nombre']);
+		}
+	}
+	
 }
 
 ?>

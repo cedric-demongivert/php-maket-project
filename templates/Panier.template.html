@@ -1,6 +1,6 @@
 {% include 'header.template.html' %}
 
-<table id='mainBlock'>
+<table id='mainBLock'>
 	<tr>
 		<td id="leftBlock">
 		
@@ -26,9 +26,10 @@
 							Prix total
 						</th>
 						<th>
-							Op&eacute;rations
+							Opérations
 						</th>
 					</tr>
+					{% set total = 0 %}
 					{% for panieritem in panier.articles %}
 					
 						<tr>
@@ -42,13 +43,33 @@
 								{{ panieritem.nombre }}
 							</td>
 							<td>
+								{% set total = total + (panieritem.nombre * panieritem.prix) %}
 								{{ panieritem.nombre * panieritem.prix }}
 							</td>
 							<td>
 								<a href='index.php?service=PanierController&function=remove&id_article={{ panieritem.id }}'>+Supprimer</a>
+								<form action="index.php?service=PanierController&function=addQuantity&id_article={{ panieritem.id }}" method="POST">
+									Ajouter : <input type="text" name="nombre" placeholder="Entier négatif pour retirer"/>
+									<input type="SUBMIT" value="Valider"/>
+								</form>
 							</td>
 						</tr>
 					{% endfor %}
+				</table>
+				<table class='dataTable'>
+					<tr>
+						<th>
+							Prix total de la commande : 
+						</th>
+						<td>
+							{{ total }}
+						</td>
+						<td>
+							<form action="index.php?service=PanierController&function=validate">
+								<input type="SUBMIT" value="Valider la commande"/>
+							</form>
+						</td>
+					</tr>
 				</table>
 			{% endif %}
 			

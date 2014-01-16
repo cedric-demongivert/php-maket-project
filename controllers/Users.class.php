@@ -67,6 +67,62 @@ class Users extends Controller {
 		
 	}
 	
+	public function modify() {
+		
+		$this->title="Modifier un utilisateur";
+		$this->controllerTemplate = "Users_Modify.template.html";
+		
+		if(isset($_POST)) {
+			
+			$valid = true;
+			$user = $_SESSION['user'];
+			
+			if(!empty($_POST['oldPassword']) && empty($_POST['password'])) {
+				$this->error = "Veuillez saisir un nouveau mot de passe";
+				$valid = false;
+			}
+			else if(empty($_POST['oldPassword']) && !empty($_POST['password'])) {
+				$this->error = "Veuillez saisir l'ancien mot de passe";
+				$valid = false;
+			}
+			else if(!empty($_POST['oldPassword']) && !empty($_POST['password'])) {
+				if(crypt($_POST['oldPassword'], $user->pass) != $user->pass) {
+					$this->error = "Mot de passe incorrect";
+					$valid = false;
+				}
+			}
+			else if(!empty($_POST['mail']) && preg_match("/\w+@\w+\.\w+/", $_POST['mail']) == false) {
+				$this->error = "L'adresse saisie est invalide.";
+				$valid = false;
+			}
+			
+			if($valid) {
+				
+				if(isset($_POST["password"])) {
+					$user->setPass(crypt($_POST["password"]));
+				}
+
+				if(isset($_POST["mail"])) {
+					$user->setMail($_POST["mail"]);
+				}
+			
+				$user->update();
+				
+				$this->info = "Votre compte a bien été modifié !";
+			}
+			else {
+				$this->form['password'] = $_POST["password"];
+				$this->form['mail'] = $_POST["mail"];
+				
+				/* Formulaire */
+				$this->controllerTemplate = "Users_Modify.template.html";
+			
+			}
+			
+		}
+		
+	}
+	
 	public function connect() {
 		
 		if(isset($_POST) && !empty($_POST)) {

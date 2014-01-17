@@ -11,11 +11,11 @@
 	<div id="header">- MON SITE DE COMMERCE EN LIGNE -</div>
 
 	{% if controller.error is not empty %}
-	<div class="errorBlock">{{ controller.error|escape }}</div>
+	<div class="errorBlock">{{ controller.error|raw }}</div>
 	{% endif %} 
 	
 	{% if controller.info is not empty %}
-	<div class="infoBlock">{{ controller.info|escape }}</div>
+	<div class="infoBlock">{{ controller.info|raw }}</div>
 	{% endif %}
 
 	<div id="bodyData">

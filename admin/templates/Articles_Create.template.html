@@ -17,31 +17,43 @@
 			<br/>
 			{% set form = articles.form %}
 			
-			<form id="create_article" method="post" action="index.php?service=Articles&function=create&id_category={{ nav.category.data.id }}">
+			<form id="create_article" method="post" enctype="multipart/form-data" action="index.php?service=Articles&function=create&id_category={{ nav.category.data.id }}">
 			
 				<table class="formTable">
 					<tr>
-						<td>Nom du nouvel article : </td>	
+						<td>Nom du nouvel article <span class="formImportant">*</span>: </td>	
 						<td>
-							<input type="text" name="name" id="name" value="{{ form.name }}"/>
+							<input type="text" name="nom" id="nom" value="{{ form.values.nom }}"/>
 						</td>
 					</tr>
 					<tr>
-						<td>Prix du nouvel article : </td>	
+						<td>Prix du nouvel article <span class="formImportant">*</span>: </td>	
 						<td>
-							<input type="text" name="price" id="price" value="{{ form.price }}"/>
+							<input type="text" name="prix" id="prix" value="{{ form.values.prix }}"/>
 						</td>
 					</tr>
 					<tr>
 						<td>Quantitée en stock du nouvel article : </td>	
 						<td>
-							<input type="text" name="stock" id="stock" value="{{ form.stock }}"/>
+							<input type="text" name="nombre" id="nombre" value="{{ form.values.nombre }}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Remise initiale (%) : </td>	
+						<td>
+							<input type="text" name="remise" id="remise" value="{{ form.values.remise }}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Image : </td>	
+						<td>
+							<input type="file" name="image" id="image" value="{{ form.values.image }}"/>
 						</td>
 					</tr>
 					
 				</table>
 			
-				<input type="hidden" name="parent" value="{{ nav.category.data.id }}" />
+				<input type="hidden" name="idCategorie" value="{{ nav.category.data.id }}" />
 				<input type="submit" value="créer" />
 			
 			</form>

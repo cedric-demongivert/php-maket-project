@@ -20,14 +20,14 @@
 			
 				<table class="formTable">
 					<tr>
-						<td>Nom de la nouvelle catégorie : </td>	
+						<td>Nom de la nouvelle catégorie <span class="formImportant">*</span> : </td>	
 						<td>
-							<input type="text" name="name" id="name"/>
+							<input type="text" name="nom" id="nom"/>
 						</td>
 					</tr>
 				</table>
 				
-				<input type="hidden" name="parent" id="parent" value="{{ nav.category.data.id }}"/>
+				<input type="hidden" name="idParent" id="idParent" value="{{ nav.category.data.id }}"/>
 				<input type="submit" value="créer" />
 			
 			</form>

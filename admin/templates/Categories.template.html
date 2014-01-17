@@ -24,9 +24,9 @@
 			<table class="dataTable">
 				{% for category in categories %}
 					<tr>
-						<td>{{ category.data.id }}</td>
+						<td id="id">{{ category.data.id }}</td>
 						<td><a href="index.php?service=Categories&id_category={{ category.data.id }}">{{ category.data.nom }}</a></td>
-						<td> 
+						<td id="functions"> 
 							<a href="index.php?service=Categories&function=modify&id_category={{ category.data.id }}"> + modifier </a> <br/> 
 							<a href="index.php?service=Categories&function=delete&id_category={{ category.data.id }}">+ supprimer </a><br/> 
 						</td>
@@ -56,11 +56,11 @@
 					</tr>
 				{% for article in articles %}
 					<tr>
-						<td>{{ article.data.id }}</td>
+						<td id="id"> {{ article.data.id }}</td>
 						<td>{{ article.data.nom }}</td>
 						<td>{{ article.data.prix }}</td>
 						<td>{{ article.data.nombre }}</td>
-						<td> 
+						<td id="functions"> 
 							<a href="index.php?service=Articles&function=modify&id_category={{ nav.category.data.id }}&id_article={{ article.data.id }}"> + modifier </a> <br/> 
 							<a href="index.php?service=Articles&function=delete&id_category={{ nav.category.data.id }}&id_article={{ article.data.id }}"> + supprimer </a> <br/> 
 							<!--  <a href="index.php?service=Articles&function=see&id={{ article.id }}">+ informations </a> -->

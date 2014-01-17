@@ -37,7 +37,7 @@ class Category extends Model {
 	public function getSpecificArticles() {
 		
 		$articleFact = new Article();
-		return $articleFact->select("idCategorie = ".$this->getId());
+		return $articleFact->select("idCategorie = ".$this->getId()." AND removed = 0");
 		
 	}
 	
@@ -46,7 +46,7 @@ class Category extends Model {
 		$articleFact = new Article();
 		
 		/* Les articles de la catégorie */
-		$results = $articleFact->select("idCategorie = ".$this->getId());
+		$results = $articleFact->select("idCategorie = ".$this->getId()." AND removed = 0");
 		
 		/* Et les articles des sous catégories */
 		foreach($this->getSubCategories() as $category) {
@@ -89,7 +89,8 @@ class Category extends Model {
 		}
 		
 		foreach($this->getSpecificArticles() as $article) {
-			$article->remove();
+			$article->setRemoved(1);
+			$article->update();
 		}
 		
 		parent::remove();

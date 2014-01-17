@@ -21,19 +21,17 @@
 					<tr>
 						<th>ID</th>
 						<th>NOM</th>
-						<th>PRIX</th>
 						<th>NOMBRE</th>
 						<th>CATEGORIE</th>
 						<th>ACTIONS</th>
 					</tr>
 				{% for article in articlesData %}
 					<tr>
-						<td>{{ article.id }}</td>
+						<td id="id">{{ article.id }}</td>
 						<td>{{ article.nom }}</td>
-						<td>{{ article.prix }}</td>
 						<td>{{ article.nombre }}</td>
 						<td>{{ article.categorie }}</td>
-						<td> 
+						<td id="functions"> 
 							<form id="reapro_article" method="post" action="index.php?service=Articles&function=reappro&article_id={{ article.data.id }}">
 								<input type="text" name="nombre" value="" />
 								<input type="submit" value="réapprovisionner" />
@@ -57,19 +55,17 @@
 					<tr>
 						<th>ID</th>
 						<th>NOM</th>
-						<th>PRIX</th>
 						<th>NOMBRE</th>
 						<th>CATEGORIE</th>
 						<th>ACTIONS</th>
 					</tr>
 				{% for article in articlesData %}
 					<tr>
-						<td>{{ article.id }}</td>
+						<td id="id">{{ article.id }}</td>
 						<td>{{ article.nom }}</td>
-						<td>{{ article.prix }}</td>
 						<td>{{ article.nombre }}</td>
 						<td>{{ article.categorie }}</td>
-						<td> 
+						<td id="functions"> 
 							<form id="reapro_article" method="post" action="index.php?service=Articles&function=reappro&id_article={{ article.id }}">
 								<input type="text" name="nombre" value="" />
 								<input type="submit" value="réapprovisionner" />

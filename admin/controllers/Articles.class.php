@@ -29,56 +29,61 @@ class Articles extends Controller {
 	/* Créer un nouvel article */
 	public function create() {
 
-		/* Vérification si vérification nécéssaire */
-		if(isset($_POST) && !empty($_POST)) {
-			
-			$valid = true;
-			
-			if(empty($_POST['name'])) {
-				$this->error = "Veuillez saisir le nom de l'article.";
-				$valid = false;
-			}
-			else if(empty($_POST['price'])) {
-				$this->error = "Veuillez saisir un prix pour l'article.";
-				$valid = false;
-			}
-			else if(empty($_POST['stock'])) {
-				$_POST['stock'] = 0;
-			}
-			
-			if($valid) {
-				$article = new Article();
-				$article->setNom($_POST["name"]);
-				$article->setPrix($_POST["price"]);
-				$article->setNombre($_POST["stock"]);
-				$article->setIdCategorie($_POST["parent"]);
+		if(isset($_GET['id_category'])) {
+			/* Vérification si vérification nécéssaire */
+			if(isset($_POST) && !empty($_POST)) {
 				
-				$article->insert();
+				/* Création de la vérification */
+				$formFactory = new ModelFormBuilder();
+				$formFactory->setModel(new Article());
+				$this->form = $formFactory->buildForm();
+				$this->form->addCheck('nom', new NoEmptyCheck());
+				$this->form->addCheck('idCategorie', new NoEmptyCheck());
+				$this->form->addCheck('idCategorie', new IntegerCheck());
+				$this->form->addCheck('prix', new NoEmptyCheck());
+				$this->form->addCheck('prix', new PositiveFloatCheck());
+				$this->form->addCheck('nombre', new IntegerCheck());
+				$this->form->addCheck('remise', new PositiveFloatCheck());		
 				
-				$this->info = "L'article {$_POST['name']} a bien été crée !";
-				$this->controllerTemplate = "Categories.template.html";
+				/* Si l'évaluation réussi, on crée l'article */
+				if(($errors = $this->form->evaluate($_POST)) === true) {
+					
+					$this->form->complete($_POST);
+					$article = $formFactory->buildModel($this->form, new Article());
+					$article->setImage("null.jpg");
+					$article->insert();	
+					
+					$this->info = "L'article {$_POST['nom']} a bien été crée !";
+					$this->controllerTemplate = "Categories.template.html";
+				
+					if(($fileName = $this->tmpFile($article->getId())) !== false) {
+						$article->setImage($fileName);
+						$article->update();
+					}
+					else {
+						$this->error .= "<br/> Erreur lors de l'upload de l'image";
+					}
+					
+				} 
+				else {
+					$this->error = Form::toStringErrors($errors);
+					$this->form->complete($_POST);
+					$this->controllerTemplate = "Articles_Create.template.html";
+					$this->title = "Créer un article";
+					$this->ariane->setFunction("Créer un article", "index.php?service=Articles&function=create&id_category={$_GET['id_category']}");
+				}
+				
 			}
 			else {
-				$this->form['name'] = $_POST["name"];
-				$this->form['price'] = $_POST["price"];
-				$this->form['stock'] = $_POST["stock"];
-				$this->form['parent'] = $_POST["parent"];
-				
 				/* Formulaire */
 				$this->controllerTemplate = "Articles_Create.template.html";
 				$this->title = "Créer un article";
 				$this->ariane->setFunction("Créer un article", "index.php?service=Articles&function=create&id_category={$_GET['id_category']}");
-			
 			}
-			
 		}
 		else {
-			/* Formulaire */
-			$this->controllerTemplate = "Articles_Create.template.html";
-			$this->title = "Créer un article";
-			$this->ariane->setFunction("Créer un article", "index.php?service=Articles&function=create&id_category={$_GET['id_category']}");
+			$this->error = "Erreur url";
 		}
-		
 	}
 	
 	public function ruptureStock() {
@@ -99,59 +104,56 @@ class Articles extends Controller {
 		
 		if(isset($_GET['id_article'])) {
 			$article = $this->getArticle();
+			
 			if(!empty($article)) {
 				
+				/* Création de la vérification */
+				$formFactory = new ModelFormBuilder();
+				$formFactory->setModel($article);
+				$this->form = $formFactory->buildForm();
+				$this->form->addCheck('nom', new NoEmptyCheck());
+				$this->form->addCheck('idCategorie', new NoEmptyCheck());
+				$this->form->addCheck('idCategorie', new IntegerCheck());
+				$this->form->addCheck('prix', new NoEmptyCheck());
+				$this->form->addCheck('prix', new PositiveFloatCheck());
+				$this->form->addCheck('nombre', new IntegerCheck());
+				$this->form->addCheck('remise', new PositiveFloatCheck());	
+			
 				/* Vérification si vérification nécéssaire */
 				if(isset($_POST) && !empty($_POST)) {
 					
-					$valid = true;
-				
-					if(empty($_POST['name'])) {
-						$this->error = "Veuillez saisir le nom de l'article.";
-						$valid = false;
-					}
-					else if(empty($_POST['price'])) {
-						$this->error = "Veuillez saisir un prix pour l'article.";
-						$valid = false;
-					}
-					else if(empty($_POST['stock'])) {
-						$_POST['stock'] = 0;
-					}
-					
-					if($valid) {
+					/* Si l'évaluation réussi, on met à jour l'article */
+					if(($errors = $this->form->evaluate($_POST)) === true) {
 						
-						$article->setNom($_POST["name"]);
-						$article->setPrix($_POST["price"]);
-						$article->setNombre($_POST["stock"]);
-						$article->setIdCategorie($_POST["parent"]);
+						if(($fileName = $this->tmpFile("article_".$article->getId())) !== false) {
+							$this->form->complete($_POST);
+							$article = $formFactory->buildModel($this->form, $article);
+							$article->setImage($fileName);
+							$article->update();
+							
+							$this->controllerTemplate = "Categories.template.html";
+							$this->title = $this->name;
+							$this->info = "L'article {$article->getNom()} a bien été modifié !";
+							$this->ariane->clearFunction();
 						
-						$article->update();
+						}
+						else {
+							$this->form->complete($_POST);
+							$this->error .= "<br/> Erreur lors de l'upload de l'image";
+							$this->controllerTemplate = "Articles_Modify.template.html";
+						}
 						
-						$this->controllerTemplate = "Categories.template.html";
-						$this->title = $this->name;
-						$this->info = "L'article {$article->getNom()} a bien été modifié !";
-						$this->ariane->clearFunction();
-						
-					} // if($valid)
+					} 
 					else {
-						
-						$this->form['name'] = $_POST["name"];
-						$this->form['price'] = $_POST["price"];
-						$this->form['stock'] = $_POST["stock"];
-						$this->form['parent'] = $_POST["parent"];
-						
+						$this->form->complete($_POST);
+						$this->error = Form::toStringErrors($errors);
 						/* Formulaire */
 						$this->controllerTemplate = "Articles_Modify.template.html";
-						
 					}
 					
 				} // if(isset($_POST) && !empty($_POST))
 				else {
-					
-					$this->form['name'] = $article->getNom();
-					$this->form['price'] = $article->getPrix();
-					$this->form['stock'] = $article->getNombre();
-					$this->form['parent'] = $article->getIdCategorie();
+					$this->form->complete($article->getData());
 						
 					$this->controllerTemplate = "Articles_Modify.template.html";
 					
@@ -225,7 +227,8 @@ class Articles extends Controller {
 					$this->ariane->clearFunction();
 				}
 				else {
-					$article->remove();
+					$article->setRemoved(1);
+					$article->update();
 					$this->controllerTemplate = "Categories.template.html";
 					$this->title = $this->name;	
 					$this->ariane->clearFunction();
@@ -247,6 +250,38 @@ class Articles extends Controller {
 		
 	}
 	
+	public function tmpFile($name) {
+		
+		if(!isset($_FILES) || !isset($_FILES['image']) || $_FILES['image']['size'] == 0) {
+			return "null.jpg";
+		}
+		
+		$maxSize = 500000;
+		$size = filesize($_FILES['image']['tmp_name']);
+		
+		if($size > $maxSize)
+		{
+			$erreur = "Image trop volumineuse : $size > $maxSize";
+			return false;
+		}
+		
+		$extension = strrchr($_FILES['image']['name'], '.'); 
+		
+		if(!in_array($extension, array('.png', '.gif', '.jpg', '.jpeg', '.svg'))) {
+			$this->erreur = "Le type d'image n'est pas correct : .png, .gif, .jpg, .svg ou .jpeg autorisés";
+			return false;
+		}
+		
+		if(move_uploaded_file($_FILES['image']['tmp_name'], "../img/".$name.$extension)) {
+			return $name.$extension;
+		}
+		else {
+			$this->erreur = "Erreur lors de l'upload de l'image";
+			return false;
+		}
+		
+	}
+	
 	/* -------------------------------------------------------- */
 	/*			GETTER(S) & SETTER(S)							*/
 	/* -------------------------------------------------------- */
@@ -261,7 +296,7 @@ class Articles extends Controller {
 		
 		$articles = new Article();
 		
-		$datas = Model::toData($articles->select("nombre <= 0"));
+		$datas = Model::toData($articles->select("nombre <= 0 AND removed = 0"));
 		
 		$categories = new Category();
 		for($i = 0; $i < sizeof($datas); $i++) {
@@ -282,7 +317,7 @@ class Articles extends Controller {
 		
 		$articles = new Article();
 		
-		$datas = Model::toData($articles->select("nombre <= 5 AND nombre != 0"));
+		$datas = Model::toData($articles->select("nombre <= 5 AND nombre != 0 AND removed = 0"));
 		
 		$categories = new Category();
 		for($i = 0; $i < sizeof($datas); $i++) {

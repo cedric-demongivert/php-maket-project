@@ -9,6 +9,11 @@ body {
 	
 }
 
+.formImportant {
+	color: #ff0000;
+	font-weight: bold;
+}
+
 #header {
 	top: 0px;
 	left: 0px;
@@ -28,10 +33,10 @@ body {
 #bodyData {
 
 	background-color: #ffffff;
-	width:100%;
+	width:88%;
 	padding-top:20px;
 	padding-bottom:20px;
-	margin-right:5%;	
+	margin-left:6%;	
 	margin-top: 10px;
 	border-radius:10px;
 	border:solid 1px #aeaeae;
@@ -54,7 +59,17 @@ h1 {
 .dataTable {
 
 	width:100%;
+	border-radius:10px;
+	border:solid 1px #222222;
 		
+}
+
+.dataTable #functions {
+	width:200px;	
+}
+
+.dataTable #id {
+	width:50px;	
 }
 
 .dataTable td {
@@ -64,30 +79,17 @@ h1 {
 		
 }
 
-.dataTable tr:nth-child(2n+1) td {
+.dataTable tr:nth-child(2n) td {
 
 	background-color:#222222;
 	color:#efefef;
 		
 }
 
-.dataTable tr:nth-child(2n+1) a {
+.dataTable tr:nth-child(2n) a {
 
 	color:#efefef;
 		
-}
-
-.dataTable tr:HOVER td{
-	
-	background-color:#222288;
-	color:#efefef;
-	
-}
-
-.dataTable tr:HOVER a{
-	
-	color:#efefef;
-	
 }
 
 .formTable {
@@ -191,4 +193,32 @@ h1 {
 	border-bottom:solid 3px #5555dd;
 	color:#5555dd;
 	
+}
+
+input[type=text] {
+	/*background-color: #efefef;*/
+	border-radius: 10px;
+	border-bottom: solid 1px #cccccc;
+	border-left: none;
+	border-right: none;
+	border-top: solid 1px #cccccc;
+	
+	padding-left: 10px;
+	padding-right: 10px;
+	width:90%;
+	height:25px;
+}
+
+input[type=password] {
+	/*background-color: #efefef;*/
+	border-radius: 10px;
+	border-bottom: solid 1px #cccccc;
+	border-left: none;
+	border-right: none;
+	border-top: solid 1px #cccccc;
+	
+	padding-left: 10px;
+	padding-right: 10px;
+	width:90%;
+	height:25px;
 }

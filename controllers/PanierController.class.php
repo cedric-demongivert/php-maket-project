@@ -77,6 +77,31 @@ class PanierController extends Controller {
 		}
 	}
 	
+	public function validate() {
+		if (isset($_SESSION['user'])) {
+			$article = new Article();
+			$commande = new Commande();
+			$commande->setIdUser($_SESSION['user']->getId());
+			$commande->insert();
+			$reservation = new Reservation();
+			foreach ($_SESSION['panier']->getItems() as $item) {
+				$article->selectById($item->getIdArticle());
+				if ($item->getQuantity() > $article->getNombre()) {
+					header('Location: ');
+					exit();
+				}
+				$reservation->setIdArticle($article->getId());
+				$reservation->setIdCommande($commande->getId());
+				$reservation->setNombre($item->getQuantity());
+				$reservation->setPrix($item->getQuantity()*$article->getPrix());
+				$reservation->insert();
+			}
+		} else {
+			header('Location: index.php?service=Users&function=connect');
+			exit();
+		}
+	}
+	
 }
 
 ?>

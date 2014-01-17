@@ -1,0 +1,53 @@
+{% include 'header.template.html' %}
+
+<table id="mainBlock">
+	<tr>
+		<td id="leftBlock"> 
+		
+			{% include 'menu.template.html' %}
+		
+		</td>
+				
+		<td id="rightBlock"> 
+
+			{% set commande = commandes.commande %}
+			<h1> Commande n°{{ commande.id }}, de {{ commande.user.login }} : </h1>
+
+			<div style="width:100%; text-align:left;margin-left:30px;">
+				<a href="index.php?service=Commandes"><< retour</a>
+			</div>
+			
+			<h2> Liste des produits commandés : </h2>
+				
+			{% if commande.reservations|length > 0 %}
+			<table class="dataTable">
+					<tr>
+						<th>ID</th>
+						<th>NOM DU PRODUIT</th>
+						<th>NOMBRE</th>
+						<th>TOTAL</th>
+					</tr>
+				{% for reservation in commande.reservations %}
+					<tr>
+						<td id="id">{{ reservation.id }}</td>
+						<td>{{ reservation.article.nom }}</td>
+						<td>{{ reservation.nombre }}</td>
+						<td>{{ reservation.prix }}</td>
+					</tr>
+				{% endfor %}
+					<tr>
+						<th id="id"></th>
+						<th></td>
+						<th>Total : </th>
+						<td>{{ commande.total }}</td>
+					</tr>
+			</table>
+			{% else %}
+				<i> Aucune réservation dans la commande, ça énerve le rock'n'poussin ça ! </i>
+			{% endif %}
+		</td>
+		
+	</tr>
+</table>
+
+{% include 'footer.template.html' %}

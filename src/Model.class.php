@@ -81,7 +81,7 @@ abstract class Model {
 			$query = "SELECT * FROM {$this->tableName} WHERE ".$where;
 		}
 	
-		return $this->query($query, $bind);
+		return $this->queryObj($query, $bind);
 		
 	}
 	
@@ -168,6 +168,8 @@ abstract class Model {
 	 */
 	public function exec($query, $exteriorParams=array()) {
 		
+		$query = str_replace(":table", $this->tableName, $query);
+		
 		$statement = Model::$bdd->prepare($query);
 		
 		$resultSet = array();
@@ -205,6 +207,21 @@ abstract class Model {
 	 * 
 	 */
 	public function query($query, $exteriorParams=array()) {
+		
+		$statement = $this->exec($query, $exteriorParams);
+		
+		$resultSet = array();
+		
+		/* Récupération des entrées : */
+		while(($data = $statement->fetch()) !== false) {
+			$resultSet[] = $data;
+		}
+		
+		return $resultSet;
+		
+	}
+	
+	public function queryObj($query, $exteriorParams=array()) {
 		
 		$statement = $this->exec($query, $exteriorParams);
 		
@@ -340,7 +357,7 @@ abstract class Model {
 		foreach($params[0] as $param) {
 			if(!empty($param)) {
 				$key = substr($param,1);
-
+				
 				/* Soit il est extérieur : */
 				if(!empty($exteriorParams) && array_key_exists($key, $exteriorParams)) {
 					$statement->bindParam("$param", $exteriorParams[$key]);

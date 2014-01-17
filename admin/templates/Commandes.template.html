@@ -14,31 +14,56 @@
 
 			<h2> Liste des commandes non trait&eacute;es : </h2>
 				
-			{% set commandList = commandes.commands %}
+			{% set commandList = commandes.invalidCommands %}
 			{% if commandList|length > 0 %}
 			<table class="dataTable">
 					<tr>
 						<th>ID</th>
 						<th>LOGIN CLIENT</th>
-						<th>MAIL CLIENT</th>
 						<th>TOTAL</th>
-						<th>DATE</th>
 					</tr>
 				{% for command in commandList %}
 					<tr>
-						<td>{{ command.id }}</td>
+						<td id="id">{{ command.id }}</td>
 						<td>{{ command.user.login }}</td>
-						<td>{{ command.user.mail }}</td>
-						<td></td>
-						<td> 
-							<a href="index.php?service=Users&function=delete&id_user={{ user.data.id }}">+ supprimer</a>
+						<td>{{ command.total }}</td>
+						<td id="functions"> 
+							<a href="index.php?service=Commandes&function=valid&id_command={{ command.id }}">+ valider</a><br/>
+							<a href="index.php?service=Commandes&function=details&id_command={{ command.id }}">+ détails</a>
 						</td>
 					</tr>
 				{% endfor %}
 			</table>
 			{% else %}
 			
-				<i> Aucun compte utilisateurs enregistré en base </i>
+				<i> Aucune commande non traitée renseignée en base </i>
+			
+			{% endif %}
+			
+			<h2> Liste des commandes trait&eacute;es : </h2>
+			
+			{% set commandList = commandes.validCommands %}
+			{% if commandList|length > 0 %}
+			<table class="dataTable">
+					<tr>
+						<th>ID</th>
+						<th>LOGIN CLIENT</th>
+						<th>TOTAL</th>
+					</tr>
+				{% for command in commandList %}
+					<tr>
+						<td id="id">{{ command.id }}</td>
+						<td>{{ command.user.login }}</td>
+						<td>{{ command.total }}</td>
+						<td id="functions"> 
+							<a href="index.php?service=Commandes&function=details&id_command={{ command.id }}">+ détails</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+			{% else %}
+			
+				<i> Aucune commande traitée renseignée en base </i>
 			
 			{% endif %}
 

@@ -227,7 +227,8 @@ class Articles extends Controller {
 					$this->ariane->clearFunction();
 				}
 				else {
-					$article->remove();
+					$article->setRemoved(1);
+					$article->update();
 					$this->controllerTemplate = "Categories.template.html";
 					$this->title = $this->name;	
 					$this->ariane->clearFunction();

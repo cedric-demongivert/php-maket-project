@@ -14,7 +14,19 @@ class Commandes extends Controller {
 	public function getCommands() {
 		
 		$commands = new Commande();
-		return $commands->selectAll();
+		$users = new User();
+		
+		$commands = Model::toData($commands->selectAll());
+		$results = array();
+		
+		foreach($commands as $command) {
+			
+			$command["user"] = Model::toData($users->selectById($command['idUser']));
+			$results[] = $command;
+			
+		}
+		
+		return $results;
 		
 	}
 

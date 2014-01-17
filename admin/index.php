@@ -19,7 +19,8 @@ while(($file = readdir($dir)) !== false) {
 session_start();
 
 if(!isset($_SESSION['user']) || !$_SESSION['user']->getAdmin()) {
-	header("Location: ../index.php");
+	header("Location: ../index.php?service=Users&function=connect");
+	exit();
 }
 
 /* Récupération du controleur : */

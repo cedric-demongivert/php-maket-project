@@ -181,8 +181,29 @@ h1 {
 }
 
 input[type=text] {
-	background-color: #eeeeee;
-	border-radius: 1em;
-	padding-left: 5px;
-	padding-right: 5px;
+	/*background-color: #efefef;*/
+	border-radius: 10px;
+	border-bottom: solid 1px #cccccc;
+	border-left: none;
+	border-right: none;
+	border-top: solid 1px #cccccc;
+	
+	padding-left: 10px;
+	padding-right: 10px;
+	width:90%;
+	height:25px;
+}
+
+input[type=password] {
+	/*background-color: #efefef;*/
+	border-radius: 10px;
+	border-bottom: solid 1px #cccccc;
+	border-left: none;
+	border-right: none;
+	border-top: solid 1px #cccccc;
+	
+	padding-left: 10px;
+	padding-right: 10px;
+	width:90%;
+	height:25px;
 }

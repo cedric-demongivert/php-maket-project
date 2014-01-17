@@ -14,7 +14,7 @@
 
 			<h2> Liste des commandes non trait&eacute;es : </h2>
 				
-			{% set commandList = commands.commands %}
+			{% set commandList = commandes.commands %}
 			{% if commandList|length > 0 %}
 			<table class="dataTable">
 					<tr>
@@ -22,13 +22,14 @@
 						<th>LOGIN CLIENT</th>
 						<th>MAIL CLIENT</th>
 						<th>TOTAL</th>
+						<th>DATE</th>
 					</tr>
-				{% for command in usersData %}
+				{% for command in commandList %}
 					<tr>
-						<td>{{ user.data.id }}</td>
-						<td>{{ user.data.login }}</td>
-						<td>{{ user.data.mail }}</td>
-						<td>{{ user.commands|length }}</td>
+						<td>{{ command.id }}</td>
+						<td>{{ command.user.login }}</td>
+						<td>{{ command.user.mail }}</td>
+						<td></td>
 						<td> 
 							<a href="index.php?service=Users&function=delete&id_user={{ user.data.id }}">+ supprimer</a>
 						</td>

@@ -26,7 +26,6 @@ class Form {
 	 * 
 	 */
 	public function addField($name) {
-		$this->checks[$name] = array();
 		$this->values[$name] = null;
 	}
 	
@@ -71,17 +70,15 @@ class Form {
 		
 		$errors = array();
 		
-		foreach($this->checks as $key => $value) {
+		foreach($this->checks as $key => $checks) {
 			
-			if(!array_key_exists($key, $post)) {
+			$value = null;
+			if(array_key_exists($key, $post)) {
 				$value = $post[$key];
-			}
-			else {
-				$value = null;
 			}
 			
 			foreach($this->checks[$key] as $check) {
-					
+				
 				if(!$check->check($value)) {
 					$errors[$key][] = array("check" => $check, "error" => $check->errorMessage());
 				}
@@ -89,7 +86,7 @@ class Form {
 			}
 			
 		}
-		
+			
 		if(empty($errors)) {
 			return true;
 		}
@@ -97,6 +94,24 @@ class Form {
 			return $errors;
 		}
 		
+	}
+	
+	public static function toStringErrors($errors) {
+		$singleton = false;
+		$errorMsg = "";
+		foreach($errors as $label => $subErrors) {
+			foreach($subErrors as $error) {
+				if($singleton) {
+					$errorMsg .="<br/>";
+				}
+				else {
+					$singleton = true;
+				}
+				$errorMsg .= "$label : {$error['error']}";
+			}
+		}
+		
+		return $errorMsg;
 	}
 	
 	/* -------------------------------------------------------- */

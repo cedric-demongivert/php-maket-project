@@ -21,33 +21,44 @@ class Categories extends Controller {
 	/* Créer une nouvelle catégorie */
 	public function create() {
 		
-		/* Formulaire */
-		$this->controllerTemplate = "Categories_Create.template.html";
-		$this->title = "Créer une catégorie";
+		if(isset($_GET['id_category'])) {
 		
-		/* Vérification si vérification nécéssaire */
-		if(isset($_POST) && !empty($_POST)) {
+			/* Formulaire */
+			$this->controllerTemplate = "Categories_Create.template.html";
+			$this->title = "Créer une catégorie";
+	
+			/* Si une variable POST existe, on vérifie les informations */
+			if(isset($_POST) && !empty($_POST)) {
+				
+				/* Création de la vérification */
+				$formFactory = new ModelFormBuilder();
+				$formFactory->setModel(new Category());
+				$form = $formFactory->buildForm();
+				$form->addCheck('nom', new NoEmptyCheck());
+				$form->addCheck('idParent', new NoEmptyCheck());
+				$form->addCheck('idParent', new IntegerCheck());
 			
-			if(empty($_POST['name'])) {
-				$this->error = "Veuillez préciser un nom pour votre catégorie";
-				$this->ariane->setFunction("Créer une catégorie", "index.php?service=Categories&function=create&id_category={$_GET['id_category']}");
-				return;
+				/* Si l'évaluation réussi, on crée la catégorie */
+				if(($errors = $form->evaluate($_POST)) === true) {
+					$form->complete($_POST);
+					$formFactory->buildModel($form, new Category())->insert();
+				
+					$this->info = "La catégorie {$_POST['nom']} a été créée avec succès !";
+					$this->controllerTemplate = "Categories.template.html";
+					$this->title = "Gestion des catégories et articles";
+				} 
+				else {
+					$this->error = $form::toStringErrors($errors);
+				}
+	
 			}
-			
-			$category = new Category();
-			$category->setNom($_POST['name']);
-			$category->setIdParent($_POST['parent']);
-			$category->insert();
-			
-			$this->info = "La catégorie {$_POST['name']} a été créée avec succès !";
-			$this->controllerTemplate = "Categories.template.html";
-			$this->title = "Gestion des catégories et articles";
-			
+			else {
+				$this->ariane->setFunction("Créer une catégorie", "index.php?service=Categories&function=create&id_category={$_GET['id_category']}");
+			}
 		}
 		else {
-			$this->ariane->setFunction("Créer une catégorie", "index.php?service=Categories&function=create&id_category={$_GET['id_category']}");
+			$this->error = "Erreur url";
 		}
-		
 	}
 	
 	/* Modifier une catégorie : */
@@ -55,10 +66,11 @@ class Categories extends Controller {
 		
 		if(isset($_GET['id_category'])) {
 			
-			/* C'est partit : */
+			/* Récupération de la catégorie : */
 			$category = new Category();
 			$category = $category->selectById($_GET['id_category']);
 			
+			/* Existence de la catégorie en base : */
 			if(empty($category)) {
 				$this->error = "La catégorie que vous souhaitez modifier n'existe pas en base";
 			}
@@ -71,19 +83,36 @@ class Categories extends Controller {
 			/* Vérification si vérification nécéssaire */
 			if(isset($_POST) && !empty($_POST)) {
 				
+				/* Création de la vérification */
+				$formFactory = new ModelFormBuilder();
+				$formFactory->setModel(new Category());
+				$form = $formFactory->buildForm();
+				$form->addCheck('nom', new NoEmptyCheck());
+				$form->addCheck('idParent', new NoEmptyCheck());
+				$form->addCheck('idParent', new IntegerCheck());
+				
+				/* Si l'évaluation réussi, on crée la catégorie */
+				if(($errors = $form->evaluate($_POST)) === true) {
+					$form->complete($_POST);
+					$formFactory->buildModel($form, $category)->update();
+				
+					$category->update();
+					
+					$_GET['id_category'] = $category->getIdParent();
+					$this->title = "Gestion des catégories et articles";
+					$this->info = "La catégorie {$_POST['name']} a été mise à jour !";
+					$this->controllerTemplate = "Categories.template.html";
+					$this->ariane->clearFunction();
+				} 
+				else {
+					$this->error = $form::toStringErrors($errors);
+				}
+				
 				if(empty($_POST['name'])) {
 					$this->error = "Veuillez préciser un nom pour votre catégorie";
 					return;
 				}
-				
-				$category->setNom($_POST['name']);
-				$_GET['id_category'] = $category->getIdParent();
-				$category->setIdParent($_POST['parent']);
-				$category->update();
-				$this->title = "Gestion des catégories et articles";
-				$this->info = "La catégorie {$_POST['name']} a été mise à jour !";
-				$this->controllerTemplate = "Categories.template.html";
-				$this->ariane->clearFunction();
+			
 			}
 			
 		}

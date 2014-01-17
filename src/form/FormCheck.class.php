@@ -27,7 +27,7 @@ abstract class FormCheck {
 class NoEmptyCheck extends FormCheck {
 	
 	public function check($value) {
-		return preg_match("/\s*/", $value);
+		return !empty($value) && !preg_match("/^\s+$/", $value);
 	}
 	
 	public function errorMessage() {
@@ -39,7 +39,7 @@ class NoEmptyCheck extends FormCheck {
 class IntegerCheck extends FormCheck {
 	
 	public function check($value) {
-		return preg_match("/([0-9]+)?/", $value);
+		return preg_match("/^([\+\-]?([0-9]+)?)$/", $value);
 	}
 	
 	public function errorMessage() {
@@ -51,7 +51,7 @@ class IntegerCheck extends FormCheck {
 class FloatCheck extends FormCheck {
 	
 	public function check($value) {
-		return preg_match("/([0-9]+(.[0-9]+)?)?/", $value);
+		return preg_match("/^(((\+ | \-)?[0-9]+(.[0-9]+)?)?)$/", $value);
 	}
 	
 	public function errorMessage() {
@@ -60,10 +60,26 @@ class FloatCheck extends FormCheck {
 	
 }
 
+class PositiveFloatCheck extends FormCheck {
+	
+	public function check($value) {
+		
+		//print_r($value);
+		//print_r(preg_match("/(\+)?([0-9]+(.[0-9]+)?)?/", $value));
+
+		return empty($value) || preg_match("/^((\+)?([0-9]+(.[0-9]+)?)?)$/", $value) && $value >= 0;
+	}
+	
+	public function errorMessage() {
+		return "La valeur saisie n'est pas un réel positif.";
+	}
+	
+}
+
 class MailCheck extends FormCheck {
 	
 	public function check($value) {
-		return preg_match("/(\w+@\w+.\w+)?/", $value);
+		return preg_match("/^((\w+@\w+.\w+)?)$/", $value);
 	}
 	
 	public function errorMessage() {

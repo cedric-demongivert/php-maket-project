@@ -19,39 +19,52 @@
 			{% set modified = articles.article.data %}
 			{% set form = articles.form %}
 			
-			<form id="modify_article" method="post" action="index.php?service=Articles&function=modify&id_article={{ modified.id }}&id_category={{ modified.idCategorie }}">
+			<form id="modify_article" method="post" enctype="multipart/form-data" action="index.php?service=Articles&function=modify&id_article={{ modified.id }}&id_category={{ modified.idCategorie }}">
 			
 				<table class="formTable">
 					<tr>
-						<td>Nom du nouvel article : </td>	
+						<td>Nom de l'article : </td>	
 						<td>
-							<input type="text" name="name" id="name" value="{{ form.name }}"/>
+							<input type="text" name="nom" id="nom" value="{{ form.values.nom }}"/>
 						</td>
 					</tr>
 					<tr>
-						<td>Prix du nouvel article : </td>	
+						<td>Prix de l'article : </td>	
 						<td>
-							<input type="text" name="price" id="price" value="{{ form.price }}"/>
+							<input type="text" name="prix" id="prix" value="{{ form.values.prix }}"/>
 						</td>
 					</tr>
 					<tr>
-						<td>Quantitée en stock du nouvel article : </td>	
+						<td>Quantitée en stock de l'article : </td>	
 						<td>
-							<input type="text" name="stock" id="stock" value="{{ form.stock }}"/>
+							<input type="text" name="nombre" id="nombre" value="{{ form.values.nombre }}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Remise (%) : </td>	
+						<td>
+							<input type="text" name="remise" id="remise" value="{{ form.values.remise }}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Image : </td>	
+						<td>
+							<img height="150px" src="../img/{{ modified.image }}"/>
+							<input type="file" name="image" id="image" value="{{ form.values.image }}"/>
 						</td>
 					</tr>
 					<tr>
 						<td>Catégorie parente : </td>	
 						<td>
-							<select name="parent" id="parent">
+							<select name="idCategorie" id="idCategorie">
 								<option value="-1"
-									{% if form.parent == -1 %}
+									{% if form.values.idCategorie == -1 %}
 										selected="selected"
 									{% endif %}
 								> Pas de catégorie parente </option>
 							{% for category in nav.allCategories %}
 								<option value="{{ category.data.id }}"
-									{% if form.parent == category.data.id %}
+									{% if form.values.idCategorie == category.data.id %}
 										selected="selected"
 									{% endif %}
 								>{{ category.data.nom }}</option>

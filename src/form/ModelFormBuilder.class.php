@@ -6,7 +6,6 @@ class ModelFormBuilder {
 	/*			FIELD(S)										*/
 	/* -------------------------------------------------------- */
 	private $model;
-	private $form;
 	
 	/* -------------------------------------------------------- */
 	/*			CONSTRUCTOR(S)									*/
@@ -49,14 +48,17 @@ class ModelFormBuilder {
 	/**
 	 * 
 	 * Complète un modèle avec un formulaire
+	 * @param Form $form le formulaire contenant les informations
 	 * @param <? extends Model> $model
 	 *
 	 */
-	public function buildModel($model) {
+	public function buildModel($form, $model) {
 		
-		foreach($this->form->getValues() as $key => $value) {
+		foreach($form->getValues() as $key => $value) {
 			$model->__set($key, $value);
 		}
+
+		return $model;
 		
 	}
 	

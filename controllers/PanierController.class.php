@@ -79,6 +79,7 @@ class PanierController extends Controller {
 	
 	public function validate() {
 		if (isset($_SESSION['user'])) {
+			echo "Coucou";
 			$article = new Article();
 			$commande = new Commande();
 			$commande->setIdUser($_SESSION['user']->getId());
@@ -87,7 +88,7 @@ class PanierController extends Controller {
 			foreach ($_SESSION['panier']->getItems() as $item) {
 				$article->selectById($item->getIdArticle());
 				if ($item->getQuantity() > $article->getNombre()) {
-					header('Location: ');
+					header('Location: index.php?service=PanierController&modif=1');
 					exit();
 				}
 				$reservation->setIdArticle($article->getId());
@@ -96,10 +97,24 @@ class PanierController extends Controller {
 				$reservation->setPrix($item->getQuantity()*$article->getPrix());
 				$reservation->insert();
 			}
+			$_SESSION['panier'] = new Panier();
+			header('Location: index.php?service=PanierController');
 		} else {
-			header('Location: index.php?service=Users&function=connect');
+			header('Location: index.php?service=Users');
 			exit();
 		}
+	}
+	
+	public function modif() {
+		$article = new Article();
+		foreach ($_SESSION['panier']->getItems() as $item) {
+			$article->selectById($item->getIdArticle());
+			if ($item->getQuantity() > $article->getNombre()) {
+				$_SESSION['panier']->remove($item);
+			}
+		}
+		header("Location: index.php?service=PanierController");
+		exit();
 	}
 	
 }

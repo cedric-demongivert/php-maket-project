@@ -1,23 +1,16 @@
 <?php
 
-/* Connexion bdd */
-require_once '../src/bdd.php';
-require_once "../src/Controller.class.php";
-require_once "../src/Model.class.php";
+/* Importation classes php */
+include_once '../src/include.php';
+includeLib("..");
 
+/* Connexion bdd */
 Model::$bdd = bdd_connect();
 
-/* Importation models */
-$dir = opendir("../src/data");
-
-while(($file = readdir($dir)) !== false) {
-	if(!($file == ".") && !($file == "..")) {
-		require_once "../src/data/$file";
-	}
-}
-
+/* Session : */
 session_start();
 
+/* Il faut être admin pour accéder : */
 if(!isset($_SESSION['user']) || !$_SESSION['user']->getAdmin()) {
 	header("Location: ../index.php?service=Users&function=connect");
 	exit();

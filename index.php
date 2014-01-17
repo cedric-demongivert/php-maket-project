@@ -1,22 +1,11 @@
 <?php
 
+/* Importation classes php */
+include_once './src/include.php';
+includeLib(".");
+
 /* Connexion bdd */
-require_once './src/bdd.php';
-require_once "./src/Controller.class.php";
-require_once "./src/Model.class.php";
-require_once "./src/Panier.class.php";
-require_once "./src/PanierItem.class.php";
-
 Model::$bdd = bdd_connect();
-
-/* Importation models */
-$dir = opendir("./src/data");
-
-while(($file = readdir($dir)) !== false) {
-	if(!($file == ".") && !($file == "..")) {
-		require_once "./src/data/$file";
-	}
-}
 
 session_start();
 

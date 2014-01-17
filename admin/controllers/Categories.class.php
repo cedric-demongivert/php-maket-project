@@ -126,6 +126,21 @@ class Categories extends Controller {
 		
 		if(isset($_GET['id_category'])) {
 			
+			if(isset($_GET['move'])) {
+				
+				$category = new Category();
+				$category = $category->selectById($_GET['id_category']);
+				$id = $category->getIdParent();
+				
+				foreach($category->getArticles() as $article) {
+					$article->setIdCategorie($id);
+					$article->update();
+				}
+				
+				$this->info = "Les articles ont bien été déplacés. ";
+				
+			}
+			
 			if(isset($_GET['force'])) {
 				
 				$category = new Category();

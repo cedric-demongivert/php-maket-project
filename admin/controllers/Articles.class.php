@@ -296,7 +296,7 @@ class Articles extends Controller {
 		
 		$articles = new Article();
 		
-		$datas = Model::toData($articles->select("nombre <= 0"));
+		$datas = Model::toData($articles->select("nombre <= 0 AND removed = 0"));
 		
 		$categories = new Category();
 		for($i = 0; $i < sizeof($datas); $i++) {
@@ -317,7 +317,7 @@ class Articles extends Controller {
 		
 		$articles = new Article();
 		
-		$datas = Model::toData($articles->select("nombre <= 5 AND nombre != 0"));
+		$datas = Model::toData($articles->select("nombre <= 5 AND nombre != 0 AND removed = 0"));
 		
 		$categories = new Category();
 		for($i = 0; $i < sizeof($datas); $i++) {

@@ -16,7 +16,7 @@
 			
 			{% if userSuppr is not empty %}
 			
-			<h2> Êtes-vous sûre de vouloir supprimer cet utilisateur ? </h2>
+			<h2> Êtes-vous sûr de vouloir supprimer cet utilisateur ? </h2>
 			
 			<table class="dataTable">
 					<tr>
@@ -59,6 +59,12 @@
 						<td>{{ user.commands|length }}</td>
 						<td> 
 							<a href="index.php?service=Users&function=delete&id_user={{ user.data.id }}">+ supprimer</a>
+							
+							{% if user.data.admin == 0 %}
+								<a href="index.php?service=Users&function=admin&id_user={{ user.data.id }}&admin">+ passer en compte admin</a>
+							{% else %}
+								<a href="index.php?service=Users&function=admin&id_user={{ user.data.id }}&noadmin">+ supprimer le compte admin</a>
+							{% endif %}
 						</td>
 					</tr>
 				{% endfor %}

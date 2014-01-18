@@ -11,7 +11,7 @@ class Users extends Controller {
 		
 		$user = new User();
 		
-		return $user->selectAll();
+		return $user->select("removed = 0");
 		
 	}
 	
@@ -21,13 +21,46 @@ class Users extends Controller {
 			
 			$user = new User();
 			$user = $user->selectById($_GET["id_user"]);
-			
-			$user->remove();
+			$user->setRemoved(1);
+			$user->update();
 			
 			$_GET["function"] = "";
 			
 			$this->info = "L'utilisateur {$user->getLogin()} a bien été supprimé ";
 		
+		}
+		
+	}
+	
+	public function admin() {
+		
+		if(isset($_GET["id_user"]) && isset($_GET["admin"])) {
+			
+			$user = new User();
+			$user = $user->selectById($_GET["id_user"]);
+			$user->setAdmin(1);
+			$user->update();
+			
+			$this->info = "L'utilisateur {$user->getLogin()} est devenu admin ";
+						
+		}
+		else if(isset($_GET["id_user"]) && isset($_GET["noadmin"])) {
+			
+			$user = new User();
+			$user = $user->selectById($_GET["id_user"]);
+			
+			if($user->getLogin() == $_SESSION['user']->getLogin()) {
+				
+				$this->error = "Impossible de changer le statut d'un compte utilisé";
+				return;
+				
+			}
+			
+			$user->setAdmin(0);
+			$user->update();
+			
+			$this->info = "L'utilisateur {$user->getLogin()} n'est plus admin ";
+						
 		}
 		
 	}

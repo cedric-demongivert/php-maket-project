@@ -85,9 +85,10 @@ class PanierController extends Controller {
 			$commande = new Commande();
 			$commande->setIdUser($_SESSION['user']->getId());
 			$commande->insert();
+			
 			$reservation = new Reservation();
 			foreach ($_SESSION['panier']->getItems() as $item) {
-				$article->selectById($item->getIdArticle());
+				$article = $article->selectById($item->getIdArticle());
 				if ($item->getQuantity() > $article->getNombre()) {
 					header('Location: index.php?service=PanierController&modif=1');
 					exit();
@@ -95,9 +96,12 @@ class PanierController extends Controller {
 				$reservation->setIdArticle($article->getId());
 				$reservation->setIdCommande($commande->getId());
 				$reservation->setNombre($item->getQuantity());
-				$reservation->setPrix($item->getQuantity()*$article->getPrix());
+				$reservation->setPrix($item->getQuantity()*$article->getPrix()*(1 - $article->getRemise()/100.0));
 				$reservation->insert();
+				$article->setNombre($article->getNombre()-$item->getQuantity());
+				$article->update();
 			}
+			
 			$_SESSION['panier'] = new Panier();
 			header('Location: index.php?service=PanierController');
 		} else {

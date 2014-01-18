@@ -1,4 +1,5 @@
 <?php
+require_once "./controllers/PanierController.class.php";
 
 class Users extends Controller {
 	
@@ -7,6 +8,7 @@ class Users extends Controller {
 	public function __construct() {
 		parent::__construct("usersController", "Users_Connection.template.html");
 		$this->title = "Inscription";
+		$this->includeController(new PanierController("index.php?service=Categories"));
 	}
 	
 	public function create() {

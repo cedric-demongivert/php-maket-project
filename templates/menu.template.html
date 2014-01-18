@@ -10,3 +10,24 @@
 <a href="index.php?service=Users"><div class="menu_item">Me connecter</div></a>
 <a href="index.php?service=Users&function=create"><div class="menu_item">M'inscrire</div></a>
 {% endif %}
+
+<h1>Mon panier </h1>
+
+{% if panier.articles|length > 0 %}
+
+	{% set total = 0 %}
+	{% for panieritem in panier.articles %}
+					
+		{% set prix = panieritem.prix*(1 - panieritem.remise/100.0) %}
+		{% set total = total + (panieritem.nombre * prix) %}
+		<div class="menu_item">{{ panieritem.nombre }} {{ panieritem.nom|escape }} pour {{ panieritem.nombre * prix }}</div>
+									
+	{% endfor %}
+
+	<div class="menu_item">Pour un total de : {{ total }}</div>
+
+{% else %}
+
+	<div class="menu_item">Le panier est vide</div>
+
+{% endif %}

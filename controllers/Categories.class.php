@@ -1,5 +1,6 @@
 <?php
 require_once "./controllers/Ariane.class.php";
+require_once "./controllers/PanierController.class.php";
 
 class Categories extends Controller {
 	
@@ -7,6 +8,7 @@ class Categories extends Controller {
 		parent::__construct("nav", "Categories.template.html");
 		$this->title = "Navigation";
 		$this->includeController(new Ariane("index.php?service=Categories"));
+		$this->includeController(new PanierController("index.php?service=Categories"));
 	}
 	
 	public function init() {

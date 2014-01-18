@@ -1,5 +1,4 @@
 <?php
-
 require_once "./controllers/Ariane.class.php";
 
 class PanierController extends Controller {

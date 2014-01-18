@@ -26,7 +26,7 @@ class Users extends Controller {
 			
 			$_GET["function"] = "";
 			
-			$this->info = "L'utilisateur {$user->getLogin()} a bien été supprimé ";
+			$this->setInfo("L'utilisateur {$user->getLogin()} a bien été supprimé ");
 		
 		}
 		
@@ -41,7 +41,7 @@ class Users extends Controller {
 			$user->setAdmin(1);
 			$user->update();
 			
-			$this->info = "L'utilisateur {$user->getLogin()} est devenu admin ";
+			$this->setInfo("L'utilisateur {$user->getLogin()} est devenu admin ");
 						
 		}
 		else if(isset($_GET["id_user"]) && isset($_GET["noadmin"])) {
@@ -51,7 +51,7 @@ class Users extends Controller {
 			
 			if($user->getLogin() == $_SESSION['user']->getLogin()) {
 				
-				$this->error = "Impossible de changer le statut d'un compte utilisé";
+				$this->setError("Impossible de changer le statut d'un compte utilisé");
 				return;
 				
 			}
@@ -59,7 +59,7 @@ class Users extends Controller {
 			$user->setAdmin(0);
 			$user->update();
 			
-			$this->info = "L'utilisateur {$user->getLogin()} n'est plus admin ";
+			$this->setInfo("L'utilisateur {$user->getLogin()} n'est plus admin ");
 						
 		}
 		

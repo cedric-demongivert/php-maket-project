@@ -19,7 +19,7 @@ class Commandes extends Controller {
 			$commande = $commande->selectById($_GET['id_command']);
 			$commande->setValide(1);
 			$commande->update();
-			$this->info = "La commande a été validée !";
+			$this->setInfo("La commande a été validée !");
 			
 		}
 		

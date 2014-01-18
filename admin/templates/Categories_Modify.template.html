@@ -24,13 +24,13 @@
 					<tr>
 						<td>Nom de la nouvelle catégorie : </td>	
 						<td>
-							<input type="text" name="name" id="name" value="{{ modified.data.nom }}"/>
+							<input type="text" name="nom" id="name" value="{{ modified.data.nom }}"/>
 						</td>
 					</tr>
 					<tr>
 						<td>Catégorie parente : </td>	
 						<td>
-							<select name="parent" id="parent">
+							<select name="idParent" id="parent">
 								<option value="-1" 
 									{% if modified.data.idParent == -1 %}
 										selected="selected"

@@ -79,7 +79,7 @@ class PositiveFloatCheck extends FormCheck {
 class MailCheck extends FormCheck {
 	
 	public function check($value) {
-		return preg_match("/^((\w+@\w+.\w+)?)$/", $value);
+		return preg_match("/^(([\w._]+@\w+.\w+)?)$/", $value);
 	}
 	
 	public function errorMessage() {

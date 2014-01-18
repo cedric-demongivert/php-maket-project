@@ -53,7 +53,7 @@ class Articles extends Controller {
 					$article->setImage("null.jpg");
 					$article->insert();	
 					
-					$this->info = "L'article {$_POST['nom']} a bien été crée !";
+					$this->setInfo("L'article {$_POST['nom']} a bien été crée !");
 					$this->controllerTemplate = "Categories.template.html";
 				
 					if(($fileName = $this->tmpFile($article->getId())) !== false) {
@@ -61,12 +61,12 @@ class Articles extends Controller {
 						$article->update();
 					}
 					else {
-						$this->error .= "<br/> Erreur lors de l'upload de l'image";
+						$this->addError("<br/> Erreur lors de l'upload de l'image");
 					}
 					
 				} 
 				else {
-					$this->error = Form::toStringErrors($errors);
+					$this->setError(Form::toStringErrors($errors));
 					$this->form->complete($_POST);
 					$this->controllerTemplate = "Articles_Create.template.html";
 					$this->title = "Créer un article";
@@ -82,7 +82,7 @@ class Articles extends Controller {
 			}
 		}
 		else {
-			$this->error = "Erreur url";
+			$this->setError("Erreur url");
 		}
 	}
 	
@@ -133,20 +133,20 @@ class Articles extends Controller {
 							
 							$this->controllerTemplate = "Categories.template.html";
 							$this->title = $this->name;
-							$this->info = "L'article {$article->getNom()} a bien été modifié !";
+							$this->setInfo("L'article {$article->getNom()} a bien été modifié !");
 							$this->ariane->clearFunction();
 						
 						}
 						else {
 							$this->form->complete($_POST);
-							$this->error .= "<br/> Erreur lors de l'upload de l'image";
+							$this->setError("<br/> Erreur lors de l'upload de l'image");
 							$this->controllerTemplate = "Articles_Modify.template.html";
 						}
 						
 					} 
 					else {
 						$this->form->complete($_POST);
-						$this->error = Form::toStringErrors($errors);
+						$this->setError(Form::toStringErrors($errors));
 						/* Formulaire */
 						$this->controllerTemplate = "Articles_Modify.template.html";
 					}
@@ -161,7 +161,7 @@ class Articles extends Controller {
 				}
 			}// if(!empty($article))
 			else {
-				$this->error = "L'article à modifier n'existe pas en base !";
+				$this->setError("L'article à modifier n'existe pas en base !");
 				$this->controllerTemplate = "Categories.template.html";
 				$this->title = $this->name;
 			}
@@ -170,7 +170,7 @@ class Articles extends Controller {
 		else {
 			$this->controllerTemplate = "Categories.template.html";
 			$this->title = $this->name;
-			$this->error = "Erreur lors de la tentative de modification de l'article.";	
+			$this->setError("Erreur lors de la tentative de modification de l'article.");	
 		}
 		
 	}
@@ -187,24 +187,24 @@ class Articles extends Controller {
 				$article = $this->getArticle();
 				
 				if($article == null) {
-					$this->error = "Impossible de réapprovisionner l'article demandé";
+					$this->setError("Impossible de réapprovisionner l'article demandé");
 				}
 				else {
 					$article->setNombre($article->getNombre()+$_POST['nombre']);
 					$article->update();
 					
-					$this->info = "L'article demandé a été réapprovisionné comme demandé ";
+					$this->setInfo("L'article demandé a été réapprovisionné comme demandé ");
 					return;
 				}
 				
 			}
 			else {
-				$this->error = "Impossible de réapprovisionner l'article demandé";
+				$this->setError("Impossible de réapprovisionner l'article demandé");
 			}
 			
 		}
 		else {
-			$this->error = "Impossible de réapprovisionner l'article demandé";
+			$this->setError("Impossible de réapprovisionner l'article demandé");
 		}
 
 	}
@@ -221,7 +221,7 @@ class Articles extends Controller {
 				$article = $this->getArticle();
 				
 				if($article == null) {
-					$this->error = "L'article que vous souhaitez supprimer n'existe pas en base.";
+					$this->setError("L'article que vous souhaitez supprimer n'existe pas en base.");
 					$this->controllerTemplate = "Categories.template.html";
 					$this->title = $this->name;	
 					$this->ariane->clearFunction();
@@ -232,7 +232,7 @@ class Articles extends Controller {
 					$this->controllerTemplate = "Categories.template.html";
 					$this->title = $this->name;	
 					$this->ariane->clearFunction();
-					$this->info = "L'article {$article->getNom()} a bien été supprimé !";
+					$this->setInfo("L'article {$article->getNom()} a bien été supprimé !");
 					return;
 				}
 				
@@ -244,8 +244,8 @@ class Articles extends Controller {
 		}
 		else {
 			$this->controllerTemplate = "Categories.template.html";
-			$this->title = $this->name;
-			$this->error = "Erreur lors de la tentative de suppression de l'article.";	
+			$this->setTitle($this->name);
+			$this->setError("Erreur lors de la tentative de suppression de l'article.");	
 		}
 		
 	}
@@ -261,14 +261,14 @@ class Articles extends Controller {
 		
 		if($size > $maxSize)
 		{
-			$erreur = "Image trop volumineuse : $size > $maxSize";
+			$this->addError("Image trop volumineuse : $size > $maxSize");
 			return false;
 		}
 		
 		$extension = strrchr($_FILES['image']['name'], '.'); 
 		
 		if(!in_array($extension, array('.png', '.gif', '.jpg', '.jpeg', '.svg'))) {
-			$this->erreur = "Le type d'image n'est pas correct : .png, .gif, .jpg, .svg ou .jpeg autorisés";
+			$this->addError("Le type d'image n'est pas correct : .png, .gif, .jpg, .svg ou .jpeg autorisés");
 			return false;
 		}
 		
@@ -276,7 +276,7 @@ class Articles extends Controller {
 			return $name.$extension;
 		}
 		else {
-			$this->erreur = "Erreur lors de l'upload de l'image";
+			$this->addError("Erreur lors de l'upload de l'image");
 			return false;
 		}
 		

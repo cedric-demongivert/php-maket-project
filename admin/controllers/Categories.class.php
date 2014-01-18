@@ -48,7 +48,8 @@ class Categories extends Controller {
 					$this->title = "Gestion des catégories et articles";
 				} 
 				else {
-					$this->error = $form::toStringErrors($errors);
+					$this->setError($form::toStringErrors($errors));
+					$this->ariane->setFunction("Créer une catégorie", "index.php?service=Categories&function=create&id_category={$_GET['id_category']}");
 				}
 	
 			}
@@ -57,7 +58,7 @@ class Categories extends Controller {
 			}
 		}
 		else {
-			$this->error = "Erreur url";
+			$this->setError("Erreur url");
 		}
 	}
 	
@@ -72,7 +73,7 @@ class Categories extends Controller {
 			
 			/* Existence de la catégorie en base : */
 			if(empty($category)) {
-				$this->error = "La catégorie que vous souhaitez modifier n'existe pas en base";
+				$this->setError("La catégorie que vous souhaitez modifier n'existe pas en base");
 			}
 			else {
 				$this->controllerTemplate = "Categories_Modify.template.html";
@@ -91,33 +92,27 @@ class Categories extends Controller {
 				$form->addCheck('idParent', new NoEmptyCheck());
 				$form->addCheck('idParent', new IntegerCheck());
 				
-				/* Si l'évaluation réussi, on crée la catégorie */
+				/* Si l'évaluation réussi, on modifie la catégorie */
 				if(($errors = $form->evaluate($_POST)) === true) {
-					$form->complete($_POST);
-					$formFactory->buildModel($form, $category)->update();
-				
+					$category->setNom($_POST['nom']);
+					$category->setIdParent($_POST['idParent']);
 					$category->update();
 					
 					$_GET['id_category'] = $category->getIdParent();
 					$this->title = "Gestion des catégories et articles";
-					$this->info = "La catégorie {$_POST['name']} a été mise à jour !";
+					$this->setInfo("La catégorie {$_POST['nom']} a été mise à jour !");
 					$this->controllerTemplate = "Categories.template.html";
 					$this->ariane->clearFunction();
 				} 
 				else {
-					$this->error = $form::toStringErrors($errors);
+					$this->setError($form::toStringErrors($errors));
 				}
 				
-				if(empty($_POST['name'])) {
-					$this->error = "Veuillez préciser un nom pour votre catégorie";
-					return;
-				}
-			
 			}
 			
 		}
 		else {
-			$this->error = "Erreur lors de la tentative de modification de la catégorie.";	
+			$this->setError("Erreur lors de la tentative de modification de la catégorie.");	
 		}
 		
 	}
@@ -137,7 +132,7 @@ class Categories extends Controller {
 					$article->update();
 				}
 				
-				$this->info = "Les articles ont bien été déplacés. ";
+				$this->setInfo("Les articles ont bien été déplacés. ");
 				
 			}
 			
@@ -147,9 +142,14 @@ class Categories extends Controller {
 				$category = $category->selectById($_GET['id_category']);
 				
 				$_GET['id_category'] = $category->getIdParent();
-				$category->remove();
+				$category->delete();
 				
-				$this->info = "La catégorie {$category->getNom()} à bien été supprimée. ";
+				foreach($category->getArticles() as $article) {
+					$article->setRemoved(1);
+					$article->update();
+				}
+				
+				$this->setInfo("La catégorie {$category->getNom()} à bien été supprimée. ");
 				$this->title = "Gestion des catégories et articles";
 				
 			}

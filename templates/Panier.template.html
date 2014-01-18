@@ -47,11 +47,10 @@
 								{{ panieritem.nombre * panieritem.prix }}
 							</td>
 							<td>
-								<a href='index.php?service=PanierController&function=remove&id_article={{ panieritem.id }}'>+Supprimer</a>
 								<form action="index.php?service=PanierController&function=addQuantity&id_article={{ panieritem.id }}" method="POST">
-									Ajouter : <input type="text" name="nombre" placeholder="Entier n�gatif pour retirer"/>
-									<input type="SUBMIT" value="Valider"/>
+									<input type="SUBMIT" value="Ajouter"/> <input style="width:70%;" type="text" name="nombre" placeholder="Entier n&eacute;gatif pour retirer"/>
 								</form>
+								<a href='index.php?service=PanierController&function=remove&id_article={{ panieritem.id }}'>+Supprimer</a>
 							</td>
 						</tr>
 					{% endfor %}

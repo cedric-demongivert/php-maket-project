@@ -1,5 +1,4 @@
 <?php
-require_once "./controllers/Categories.class.php";
 
 class Users extends Controller {
 	
@@ -12,59 +11,51 @@ class Users extends Controller {
 	
 	public function create() {
 		
+		$this->controllerTemplate = "Users_Create.template.html";
+		
 		if(isset($_POST) && !empty($_POST)) {
 			
-			$valid = true;
 			$user = new User();
 			
-			if(empty($_POST['login'])) {
-				$this->error = "Veuillez saisir un login.";
-				$valid = false;
-			}
-			else if(empty($_POST['password'])) {
-				$this->error = "Veuillez saisir un mot de passe.";
-				$valid = false;
-			}
-			else if(empty($_POST['mail'])) {
-				$this->error = "Veuillez saisir votre adresse mail.";
-				$valid = false;
-			}
-			else if(preg_match("/\w+@\w+\.\w+/", $_POST['mail']) == false) {
-				$this->error = "L'adresse saisie est invalide.";
-				$valid = false;
-			}
-			else if($user->exist($_POST['login'])) {
-				$this->error = "Le login utilisé existe déjà.";
-				$valid = false;
-			}
+			/* Préparation des tests sur le formulaire : */
+			$formFactory = new ModelFormBuilder();
+			$formFactory->setModel($user);
+			$this->form = $formFactory->buildForm();
+			$this->form->addCheck('mail', new MailCheck());
+			$this->form->addCheck('mail', new NoEmptyCheck());
+			$this->form->addCheck('pass', new NoEmptyCheck());
+			$this->form->addCheck('login', new NoEmptyCheck());
 			
-			if($valid) {
+			/* Si ok */
+			if(($errors = $this->form->evaluate($_POST)) === true) {
 				
-				$user->setLogin($_POST["login"]);
-				$user->setPass(crypt($_POST["password"]));
-				$user->setMail($_POST["mail"]);
+				/* Si login pas déjà pris */
+				if($user->exist($_POST['login'])) {
+					$this->setError("Le login utilisé existe déjà.");
+					return;
+				}
+				
+				/* Alors modif en base */
+				$this->form->complete($_POST);
+				$user = $formFactory->buildModel($this->form, new User());
+				$user->setPass(crypt($_POST['pass']));
 				$user->setAdmin(0);
-				
+
 				$user->insert();
 				
-				$this->info = "Votre compte a bien été crée !";
+				$this->setInfo("Votre compte a bien été crée, vous pouvez vous connecter.");
+				
+				header("Location: index.php?service=Users&function=connect");
+				exit();
+				
 			}
 			else {
-				$this->form['login'] = $_POST["login"];
-				$this->form['password'] = $_POST["password"];
-				$this->form['mail'] = $_POST["mail"];
-				
-				/* Formulaire */
-				$this->controllerTemplate = "Users_Create.template.html";
-			
+				$this->error = Form::toStringErrors($errors);
+				$this->form->complete($_POST);
 			}
 			
 		}
-		else {
-			/* Formulaire */
-			$this->controllerTemplate = "Users_Create.template.html";
-		}
-		
+
 	}
 	
 	public function modify() {
@@ -73,36 +64,33 @@ class Users extends Controller {
 		$this->controllerTemplate = "Users_Modify.template.html";
 		
 		if(isset($_POST)) {
-			
-			$valid = false;
+
 			$user = $_SESSION['user'];
+	
+			/* Préparation des tests sur le formulaire : */
+			$this->form = new Form();
+			$this->form->addField("mail");
+			$this->form->addField("password");
+			$this->form->addField("oldPassword");
+			$this->form->addCheck('mail', new MailCheck());
+			$check = new MultiNotNullCheck("Si vous souhaitez changer de mot de passe, veuillez indiquer 
+			<br/> l'ancien ET le nouveau mot de passe.");
+			$this->form->addCheck('password', $check);
+			$this->form->addCheck('oldPassword', $check);
 			
-			if(!empty($_POST['oldPassword']) && empty($_POST['password'])) {
-				$this->error = "Veuillez saisir un nouveau mot de passe";
-				$valid = false;
-			}
-			else if(empty($_POST['oldPassword']) && !empty($_POST['password'])) {
-				$this->error = "Veuillez saisir l'ancien mot de passe";
-				$valid = false;
-			}
-			else if(!empty($_POST['oldPassword']) && !empty($_POST['password'])) {
+			/* S'il n'y a pas d'erreur */
+			if(($errors = $this->form->evaluate($_POST)) === true) {
+				
+				if(empty($_POST["password"]) && empty($_POST["oldpassword"])) {
+					return;
+				}
+				
+				/* Cas où l'ancient mot de passe n'est pas valide */
 				if(crypt($_POST['oldPassword'], $user->pass) != $user->pass) {
-					$this->error = "Mot de passe incorrect";
-					$valid = false;
+					$this->setError("Mot de passe incorrect");
+					$this->form->complete($_POST);
+					return;
 				}
-				else {
-					$valid = true;
-				}
-			}
-			else if(!empty($_POST['mail']) && preg_match("/\w+@\w+\.\w+/", $_POST['mail']) == false) {
-				$this->error = "L'adresse saisie est invalide.";
-				$valid = false;
-			}
-			else if(!empty($_POST['mail']) && preg_match("/\w+@\w+\.\w+/", $_POST['mail'])) {
-				$valid = true;
-			}
-			
-			if($valid) {
 				
 				if(!empty($_POST["password"])) {
 					$user->setPass(crypt($_POST["password"]));
@@ -114,17 +102,13 @@ class Users extends Controller {
 			
 				$user->update();
 				
-				$this->info = "Votre compte a bien été modifié !";
+				$this->setInfo("Votre compte a bien été modifié !");
 			}
 			else {
-				if(isset($_POST["password"]))
-					$this->form['password'] = $_POST["password"];
-				if(isset($_POST["mail"]))
-					$this->form['mail'] = $_POST["mail"];
 				
-				/* Formulaire */
-				$this->controllerTemplate = "Users_Modify.template.html";
-			
+				$this->error = Form::toStringErrors($errors);
+				$this->form->complete($_POST);
+				
 			}
 			
 		}
@@ -134,51 +118,93 @@ class Users extends Controller {
 	public function connect() {
 		
 		if(isset($_POST) && !empty($_POST)) {
-			
-			$valid = true;
+
 			$user = new User();
 			
-			if(empty($_POST['login'])) {
-				$this->error = "Veuillez saisir un login.";
-				$valid = false;
-			}
-			else if(empty($_POST['password'])) {
-				$this->error = "Veuillez saisir un mot de passe.";
-				$valid = false;
-			}
+			/* Préparation des tests sur le formulaire : */
+			$formFactory = new ModelFormBuilder();
+			$formFactory->setModel($user);
+			$this->form = $formFactory->buildForm();
+			$this->form->addCheck('login', new NoEmptyCheck());
+			$this->form->addCheck('pass', new NoEmptyCheck());
 			
-			if($valid) {
+			/* S'il n'y a pas d'erreur */
+			if(($errors = $this->form->evaluate($_POST)) === true) {
 				
-				$user = $user->identify($_POST['login'], $_POST['password']);
+				/* On tente d'identifier l'utilisateur */
+				$user = $user->identify($_POST['login'], $_POST['pass']);
 				
+				/* False, c'est qu'il y a un problème */
 				if($user == false) {
-					$this->error = "Le login ou le mot de passe sont incorrect";
+					$this->setError("Le login ou le mot de passe est incorrect");
 				}
 				else {
-					$_SESSION['user'] = $user;
-					$this->info = "Connection réussie !";
 					
-					$this->includeController(new Categories());
-					$this->controllerTemplate = "Categories.template.html";
+					/* Sinon connexion ok */
+					$_SESSION['user'] = $user;
+					$this->setInfo("Connection réussie !");
+					
+					header("Location: index.php");
+					exit();
 				}
 				
 				
+			}
+			else {
+				$this->setError(Form::toStringErrors($errors));
 			}
 			
 		}
 		
 	}
 	
+	/* Déconnection d'un utilisateur */
 	public function disconnect() {
+				/* On supprime la variable "user" de la session */
 				session_unregister("user");
-				$this->info = "Déconnection réussie !";
-					
-				$this->includeController(new Categories());
-				$this->controllerTemplate = "Categories.template.html";
+				$this->setInfo("Déconnection réussie !");
+				
+				/* Retour à l'accueil */
+				header("Location: index.php");
+				exit();
 	}
 
 	public function getForm() {
 		return $this->form;
+	}
+	
+}
+
+class MultiNotNullCheck extends FormCheck {
+	
+	private $last;
+	private $msg;
+	
+	public function __construct($msg) {
+		$this->last = 0;
+		$this->msg = $msg;
+	}
+	
+	public function check($value) {
+		
+		$b = !empty($value) && !preg_match("/^\s+$/", $value);
+		
+		if(!$b && $this->last <= 0) {
+			$this->last = -1;
+			return true;
+		}
+		
+		if($b && $this->last >= 0) {
+			$this->last = 1;
+			return true;
+		}
+		
+		return false;
+		
+	}
+	
+	public function errorMessage() {
+		return $this->msg;
 	}
 	
 }

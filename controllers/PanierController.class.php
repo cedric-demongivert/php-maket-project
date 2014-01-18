@@ -78,8 +78,9 @@ class PanierController extends Controller {
 	}
 	
 	public function validate() {
+
 		if (isset($_SESSION['user'])) {
-			echo "Coucou";
+
 			$article = new Article();
 			$commande = new Commande();
 			$commande->setIdUser($_SESSION['user']->getId());

@@ -1,75 +1,71 @@
 {% include 'header.template.html' %}
 
-<table id="mainBlock">
-	<tr>
-		<td id="leftBlock"> 
-		
-			{% include 'menu.template.html' %}
-		
-		</td>
-				
-		<td id="rightBlock"> 
-
+		<div id="data">
 			<h1> Gestion des commandes : </h1>
-
+			<br/>
 			<h2> Liste des commandes non trait&eacute;es : </h2>
 				
 			{% set commandList = commandes.invalidCommands %}
 			{% if commandList|length > 0 %}
-			<table class="dataTable">
-					<tr>
-						<th>ID</th>
-						<th>LOGIN CLIENT</th>
-						<th>TOTAL</th>
-					</tr>
+			<div class="commandes">
+					<div class="commandes_th">
+						<div class="id">ID</div>
+						<div class="login">LOGIN CLIENT</div>
+						<div class="total">TOTAL</div>
+					</div>
 				{% for command in commandList %}
-					<tr>
-						<td id="id">{{ command.id }}</td>
-						<td>{{ command.user.login }}</td>
-						<td>{{ command.total }}</td>
-						<td id="functions"> 
-							<a href="index.php?service=Commandes&function=valid&id_command={{ command.id }}">+ valider</a><br/>
-							<a href="index.php?service=Commandes&function=details&id_command={{ command.id }}">+ détails</a>
-						</td>
-					</tr>
+					<div class="commande">
+						<div class="id">{{ command.id }}</div>
+						<div class="login">{{ command.user.login }}</div>
+						<div class="total">{{ command.total }}</div>
+						<a href="index.php?service=Commandes&function=valid&id_command={{ command.id }}">
+							<div class="function"> 
+								valider
+							</div>
+						</a>
+						<a href="index.php?service=Commandes&function=details&id_command={{ command.id }}">
+							<div class="function"> 
+								d&eacute;tails
+							</div>
+						</a>
+					</div>
 				{% endfor %}
-			</table>
+			</div>
 			{% else %}
 			
-				<i> Aucune commande non traitée renseignée en base </i>
+				<div class="center"><i> Aucune commande non traitée renseignée en base </i></div>
 			
 			{% endif %}
-			
+			<br/>
 			<h2> Liste des commandes trait&eacute;es : </h2>
 			
 			{% set commandList = commandes.validCommands %}
 			{% if commandList|length > 0 %}
-			<table class="dataTable">
-					<tr>
-						<th>ID</th>
-						<th>LOGIN CLIENT</th>
-						<th>TOTAL</th>
-					</tr>
+			<div class="commandes">
+					<div class="commandes_th">
+						<div class="id">ID</div>
+						<div class="login">LOGIN CLIENT</div>
+						<div class="total">TOTAL</div>
+					</div>
 				{% for command in commandList %}
-					<tr>
-						<td id="id">{{ command.id }}</td>
-						<td>{{ command.user.login }}</td>
-						<td>{{ command.total }}</td>
-						<td id="functions"> 
-							<a href="index.php?service=Commandes&function=details&id_command={{ command.id }}">+ détails</a>
-						</td>
-					</tr>
+					<div class="commande">
+						<div class="id">{{ command.id }}</div>
+						<div class="login">{{ command.user.login }}</div>
+						<div class="total">{{ command.total }}</div>
+						<a href="index.php?service=Commandes&function=details&id_command={{ command.id }}">
+							<div class="function" style="width:34%;"> 
+								d&eacute;tails
+							</div>
+						</a>
+					</div>
 				{% endfor %}
-			</table>
+			</div>
 			{% else %}
 			
-				<i> Aucune commande traitée renseignée en base </i>
+				<div class="center"><i> Aucune commande traitée renseignée en base </i></div>
 			
 			{% endif %}
 
-		</td>
-		
-	</tr>
-</table>
+		</div>
 
 {% include 'footer.template.html' %}

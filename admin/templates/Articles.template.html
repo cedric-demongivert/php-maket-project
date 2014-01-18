@@ -1,48 +1,36 @@
 {% include 'header.template.html' %}
 
-<table id="mainBlock">
-	<tr>
-		<td id="leftBlock"> 
-		
-			{% include 'menu.template.html' %}
-		
-		</td>
-				
-		<td id="rightBlock"> 
-
+		<div id="data">
 			<h1> Gestion des stocks : </h1>
-			
+			<br/>
 			<h2> Articles en rupture de stock : </h2>
 			
 				
 			{% set articlesData = articles.articles %}
 			{% if articlesData|length > 0 %}
-			<table class="dataTable">
-					<tr>
-						<th>ID</th>
-						<th>NOM</th>
-						<th>NOMBRE</th>
-						<th>CATEGORIE</th>
-						<th>ACTIONS</th>
-					</tr>
+			<div class="articles">
+					<div class="articles_th">
+						<div class="id">ID</div>
+						<div class="nom">NOM</div>
+						<div class="prix_stock">PRIX / NOMBRE</div>
+					</div>
 				{% for article in articlesData %}
-					<tr>
-						<td id="id">{{ article.id }}</td>
-						<td>{{ article.nom }}</td>
-						<td>{{ article.nombre }}</td>
-						<td>{{ article.categorie }}</td>
-						<td id="functions"> 
-							<form id="reapro_article" method="post" action="index.php?service=Articles&function=reappro&article_id={{ article.data.id }}">
-								<input type="text" name="nombre" value="" />
-								<input type="submit" value="réapprovisionner" />
+					<div class="article">
+						<div class="id">{{ article.id }}</div>
+						<div class="nom">{{ article.nom }}</div>
+						<div class="prix_stock">{{ article.prix }}/<b>{{ article.nombre }}</b></div>
+						<div id="function" style="width:36%; padding:4px;"> 
+							<form id="reapro_article" method="post" action="index.php?service=Articles&function=reappro&id_article={{ article.id }}">
+								<input type="text" style="width:40%;" name="nombre" value="" />
+								<input type="submit" style="padding:5px;" value="réapprovisionner" />
 							</form>
-						</td>
-					</tr>
+						</div>
+					</div>
 				{% endfor %}
-			</table>
+			</div>
 			{% else %}
 			
-				<i> Aucun problème de stocks détecté </i>
+				<div class="center"><i> Aucun problème de stocks détecté </i></div>
 			
 			{% endif %}
 			<br/>
@@ -51,38 +39,64 @@
 			
 			{% set articlesData = articles.warnArticles %}
 			{% if articlesData|length > 0 %}
-			<table class="dataTable">
-					<tr>
-						<th>ID</th>
-						<th>NOM</th>
-						<th>NOMBRE</th>
-						<th>CATEGORIE</th>
-						<th>ACTIONS</th>
-					</tr>
+			<div class="articles">
+					<div class="articles_th">
+						<div class="id">ID</div>
+						<div class="nom">NOM</div>
+						<div class="prix_stock">PRIX / NOMBRE</div>
+					</div>
 				{% for article in articlesData %}
-					<tr>
-						<td id="id">{{ article.id }}</td>
-						<td>{{ article.nom }}</td>
-						<td>{{ article.nombre }}</td>
-						<td>{{ article.categorie }}</td>
-						<td id="functions"> 
+					<div class="article">
+						<div class="id">{{ article.id }}</div>
+						<div class="nom">{{ article.nom }}</div>
+						<div class="prix_stock">{{ article.prix }}/<b>{{ article.nombre }}</b></div>
+						<div id="function" style="width:36%;padding:4px;"> 
 							<form id="reapro_article" method="post" action="index.php?service=Articles&function=reappro&id_article={{ article.id }}">
-								<input type="text" name="nombre" value="" />
-								<input type="submit" value="réapprovisionner" />
+								<input type="text" style="width:40%;" name="nombre" value="" />
+								<input type="submit" style="padding:5px;" value="réapprovisionner" />
 							</form>
-						</td>
-					</tr>
+						</div>
+					</div>
 				{% endfor %}
-			</table>
+			</div>
 			{% else %}
 			
-				<i> Aucun problème de stocks détecté </i>
+				<div class="center"><i> Aucun problème de stocks détecté </i></div>
 			
 			{% endif %}
 			
-		</td>
-		
-	</tr>
-</table>
+			<br/>
+			
+			<h2> Tous les articles : </h2>
+			
+			{% set articlesData = articles.stockArticles %}
+			{% if articlesData|length > 0 %}
+			<div class="articles">
+					<div class="articles_th">
+						<div class="id">ID</div>
+						<div class="nom">NOM</div>
+						<div class="prix_stock">PRIX / NOMBRE</div>
+					</div>
+				{% for article in articlesData %}
+					<div class="article">
+						<div class="id">{{ article.id }}</div>
+						<div class="nom">{{ article.nom }}</div>
+						<div class="prix_stock">{{ article.prix }}/<b>{{ article.nombre }}</b></div>
+						<div id="function" style="width:36%;padding:4px;"> 
+							<form id="reapro_article" method="post" action="index.php?service=Articles&function=reappro&id_article={{ article.id }}">
+								<input type="text" style="width:40%;" name="nombre" value="" />
+								<input type="submit" style="padding:5px;" value="réapprovisionner" />
+							</form>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+			{% else %}
+			
+				<div class="center"><i> Aucun article en base </i></div>
+			
+			{% endif %}
+			
+		</div>
 
 {% include 'footer.template.html' %}

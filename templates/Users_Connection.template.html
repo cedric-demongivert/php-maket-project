@@ -1,17 +1,9 @@
 {% include 'header.template.html' %}
 
-<table id="mainBlock">
-	<tr>
-		<td id="leftBlock"> 
-		
-			{% include 'menu.template.html' %}
-		
-		</td>
-				
-		<td id="rightBlock"> 
+		<div id="data">
 
 			<h1> Se connecter : </h1>
-
+			<br/>
 			<form id="connect_user" method="post" action="index.php?service=Users&function=connect">
 			
 				<table class="formTable">
@@ -28,14 +20,11 @@
 						</td>
 					</tr>
 				</table>
-			
+				<br/>
 				<input type="submit" value="me connecter" />
 			
 			</form>
 			
-		</td>
-		
-	</tr>
-</table>
+		</div>
 
 {% include 'footer.template.html' %}

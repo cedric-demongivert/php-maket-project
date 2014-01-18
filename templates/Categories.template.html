@@ -1,14 +1,6 @@
 {% include 'header.template.html' %}
 
-<table id="mainBlock">
-	<tr>
-		<td id="leftBlock"> 
-		
-			{% include 'menu.template.html' %}
-		
-		</td>
-				
-		<td id="rightBlock"> 
+		<div id="data">
 		
 			{% if nav.category is not empty %}
 				<h1>Cat&eacute;gories pr&eacute;sentes dans {{ nav.category.data.nom|escape }} :</h1>
@@ -18,73 +10,86 @@
 		
 			<br/>
 			{% include 'Ariane.template.html' %}
-			
+			<br/>
 			{% if nav.categories is not empty %}
-				<table class='dataTable'>
+				<div class='categories'>
 				
 					{% for category in nav.categories %}
-				
-						<tr>
-							<td>
-								<a href="index.php?service=Categories&id_category={{ category.data.id }}">{{ category.data.nom }}</a>
-							</td>
-						</tr>
-						
+						<a href="index.php?service=Categories&id_category={{ category.data.id }}">
+						<div class='category'>
+								{{ category.data.nom }}
+						</div>
+						</a>
 					{% endfor %}
 					
-				</table>
+				</div>
 			{% else %}
 			
-				<p>Aucune cat&eacute;gories disponible.</p>
+				<div class="center"><p>Aucune cat&eacute;gories disponible.</p></div>
 				
 			{% endif %}
-		
+			<br/>
 				{% if nav.category is not empty %}
 					<h1>Articles pr&eacute;sents dans {{ nav.category.data.nom|escape }} :</h1>
 				{% else %}
 					<h1>Articles disponibles :</h1>
 				{% endif %}
 				
+				<br/>
 				{% if nav.articles|length > 0 %}
-				<table class='dataTable'>
+				<div class='articles'>
 				{% for article in nav.articles %}
-					<tr>
-						<td>
-							{{ article.data.id }}
-						</td>
-						<td>
-							<img width="150px" src="img/{{ article.data.image }}" />
-						</td>
-						<td>
-							{{ article.data.nom }}
-							{% if article.data.remise > 0 %}
-								<span class="remise">- {{ article.data.remise }} % !</span>
-							{% endif %}
-							{% if article.data.remise > 60 %}
-								<br/><br/><span class="remise_label">Le choix du rock'n'poussin !</span>
-							{% endif %}
-						</td>
-						<td>
-							{{ article.data.prix*(1 - article.data.remise/100.0) }}
-							{% if article.data.remise > 0 %}
-								<br/><span class="remise_prix">- {{ article.data.prix*(article.data.remise/100.0) }} </span>
-							{% endif %}
-						</td>
-						<td>
-							<a href="index.php?service=PanierController&function=ajouter&id_article={{ article.data.id }}">+Ajouter au panier</a>
-						</td>
-					</tr>				
+					<div class='article'>
+						<div class="nom">
+							<table>
+								<tr>
+									<td>
+										<img height="100px" src="img/{{ article.data.image }}" />
+									</td>
+									<td class="center">
+										{{ article.data.nom }}
+										{% if article.data.remise > 0 %}
+											<br/><br/><span class="remise">- {{ article.data.remise }} % !</span>
+										{% endif %}
+										{% if article.data.remise > 60 %}
+											<br/><br/><span class="remise_label">Le choix du rock'n'poussin !</span>
+										{% endif %}
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="prix">
+							<table width="100%">
+								<tr>
+									<td height="100px" class="center">
+										<span class="label_prix">{{ article.data.prix*(1 - article.data.remise/100.0) }}</span>
+										{% if article.data.remise > 0 %}
+											<br/><span class="remise_prix">- {{ article.data.prix*(article.data.remise/100.0) }} </span>
+										{% endif %}
+									</td>
+								</tr>
+							</table>
+						</div>
+						<a href="index.php?service=PanierController&function=ajouter&id_article={{ article.data.id }}">
+							<div class="function">
+								<table>
+									<tr>
+										<td height="100px">
+											Ajouter au panier
+										</td>
+									</tr>
+								</table>
+							</div>
+						</a>
+					</div>				
 				{% endfor %}
-				</table>
+				</div>
 				{% else %}
 					
-					<p>Aucun articles disponnibles.</p>
+					<div class="center"><p>Aucun articles disponnibles.</p></div>
 					
 				{% endif %}
 		
-		</td>
-		
-	</tr>
-</table>
+		</div>
 
 {% include 'footer.template.html' %}

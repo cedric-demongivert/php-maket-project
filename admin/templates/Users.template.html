@@ -1,21 +1,13 @@
 {% include 'header.template.html' %}
 
-<table id="mainBlock">
-	<tr>
-		<td id="leftBlock"> 
-		
-			{% include 'menu.template.html' %}
-		
-		</td>
-				
-		<td id="rightBlock"> 
+		<div id="data">
 
 			<h1> Utilisateurs : </h1>
 			
 			{% set userSuppr = users.remove %}
 			
 			{% if userSuppr is not empty %}
-			
+			<br/>
 			<h2> Êtes-vous sûr de vouloir supprimer cet utilisateur ? </h2>
 			
 			<table class="dataTable">
@@ -39,45 +31,53 @@
 			</table>
 			
 			{% endif %}
-			
+			<br/>
 			<h2> Liste des utilisateurs : </h2>
 				
 			{% set usersData = users.users %}
 			{% if usersData|length > 0 %}
-			<table class="dataTable">
-					<tr>
-						<th>ID</th>
-						<th>LOGIN</th>
-						<th>MAIL</th>
-						<th>NOMBRE DE COMMANDES</th>
-					</tr>
+			<div class="users">
+					<div class="users_th">
+						<div class="id">ID</div>
+						<div class="login">LOGIN</div>
+						<div class="mail">MAIL</div>
+						<div class="nb">COMMANDES</div>
+					</div>
 				{% for user in usersData %}
-					<tr>
-						<td>{{ user.data.id }}</td>
-						<td>{{ user.data.login }}</td>
-						<td>{{ user.data.mail }}</td>
-						<td>{{ user.commands|length }}</td>
-						<td> 
-							<a href="index.php?service=Users&function=delete&id_user={{ user.data.id }}">+ supprimer</a>
-							
+					<div class="user">
+						<div class="id">{{ user.data.id }}</div>
+						<div class="login">{{ user.data.login }}</div>
+						<div class="mail">{{ user.data.mail }}</div>
+						<div class="nb">{{ user.commands|length }}</div>
+						<a href="index.php?service=Users&function=delete&id_user={{ user.data.id }}">
+							<div class="function"> 
+								supprimer
+							</div>
+						</a>
+						 
 							{% if user.data.admin == 0 %}
-								<br/><a href="index.php?service=Users&function=admin&id_user={{ user.data.id }}&admin">+ passer en compte admin</a>
+								<a href="index.php?service=Users&function=admin&id_user={{ user.data.id }}&admin">
+									<div class="function">
+										+ admin
+									</div>
+								</a>
 							{% else %}
-								<br/><a href="index.php?service=Users&function=admin&id_user={{ user.data.id }}&noadmin">+ supprimer le compte admin</a>
+								<a href="index.php?service=Users&function=admin&id_user={{ user.data.id }}&noadmin">
+									<div class="function">
+										- admin
+									</div>
+								</a>
 							{% endif %}
-						</td>
-					</tr>
+						</div>
+						
 				{% endfor %}
-			</table>
+			</div>
 			{% else %}
 			
 				<i> Aucun compte utilisateurs enregistré en base </i>
 			
 			{% endif %}
 
-		</td>
-		
-	</tr>
-</table>
+		</div>
 
 {% include 'footer.template.html' %}

@@ -8,7 +8,15 @@
 	
 <body>
 
-	<div id="header">- MON SITE DE COMMERCE EN LIGNE -</div>
+	<div id="header">
+		
+		<img src="../img/header.png" id="header_deco_left"/>
+		
+		La cave du rock'n'poussin
+		
+		<img src="../img/headerflip.png" id="header_deco_right"/>
+		
+	</div>
 
 	{% if controller.error is not empty %}
 	<div class="errorBlock">{{ controller.error|raw }}</div>
@@ -18,4 +26,8 @@
 	<div class="infoBlock">{{ controller.info|raw }}</div>
 	{% endif %}
 
-	<div id="bodyData">
+	<div id="body">
+	
+		<div id="menu">
+			{% include 'menu.template.html' %}
+		</div>

@@ -1,16 +1,8 @@
 {% include 'header.template.html' %}
 
-<table id="mainBlock">
-	<tr>
-		<td id="leftBlock"> 
-		
-			{% include 'menu.template.html' %}
-		
-		</td>
+		<div id="data">
 				
 		{% set category = nav.category %}
-				
-		<td id="rightBlock"> 
 
 			<h1> Supprimer la catégorie {{ category.data.id }}, {{ category.data.nom }} : </h1>
 			
@@ -77,9 +69,6 @@
 			<br/>
 			<br/>
 			Si vous souhaitez réellement supprimer cette catégorie, cliquez <a href="index.php?service=Categories&function=delete&id_category={{ category.data.id }}&force">ici</a>
-		</td>
-
-	</tr>
-</table>
+		</div>
 
 {% include 'footer.template.html' %}

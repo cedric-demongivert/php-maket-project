@@ -179,10 +179,7 @@ class Articles extends Controller {
 		
 		if(isset($_GET['id_article'])) {
 			
-			$this->title = "Supprimer un article";
-			$this->ariane->setFunction("Supprimer un article","index.php?service=Articles&function=delete&id_article={$_GET['id_article']}");
-			
-			if(isset($_POST['nombre']) && preg_match("/[0-9]+/", $_POST['nombre']) == 1) {
+			if(isset($_POST['nombre']) && preg_match("/^[0-9]+$/", $_POST['nombre'])) {
 				
 				$article = $this->getArticle();
 				
@@ -351,6 +348,14 @@ class Articles extends Controller {
 		else {
 			return null;
 		}
+		
+	}
+	
+	public function getStockArticles() {
+		
+		$articles = new Article();
+		
+		return Model::toData($articles->select("removed = 0 ORDER BY nombre ASC"));
 		
 	}
 	

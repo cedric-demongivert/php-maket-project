@@ -1,14 +1,6 @@
 {% include 'header.template.html' %}
 
-<table id="mainBlock">
-	<tr>
-		<td id="leftBlock"> 
-		
-			{% include 'menu.template.html' %}
-		
-		</td>
-				
-		<td id="rightBlock"> 
+		<div id="data">
 
 			<h1> Modifier une catégorie : </h1>
 			
@@ -22,7 +14,7 @@
 			
 				<table class="formTable">
 					<tr>
-						<td>Nom de la nouvelle catégorie : </td>	
+						<td>Nom de la nouvelle catégorie <span class="formImportant">*</span> : </td>	
 						<td>
 							<input type="text" name="nom" id="name" value="{{ modified.data.nom }}"/>
 						</td>
@@ -52,9 +44,6 @@
 			
 			</form>
 			
-		</td>
-		
-	</tr>
-</table>
+		</div>
 
 {% include 'footer.template.html' %}

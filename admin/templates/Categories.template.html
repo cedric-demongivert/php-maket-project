@@ -1,19 +1,10 @@
 {% include 'header.template.html' %}
 
-<table id="mainBlock">
-	<tr>
-		<td id="leftBlock"> 
-		
-			{% include 'menu.template.html' %}
-		
-		</td>
-				
-		<td id="rightBlock"> 
-
+	<div id="data">
 			<h1> Gérer mes catégories et mes articles : </h1>
 			
 			<br/>
-			{% include 'Ariane.template.html' %}
+				{% include 'Ariane.template.html' %}
 			<br/>
 			
 			<h2>Catégories présentes dans : {{ nav.category.data.nom }}</h2>
@@ -21,63 +12,73 @@
 			{% set categories = nav.categories %}
 			
 			{% if categories|length > 0 %}
-			<table class="dataTable">
+			<div class="categories">
 				{% for category in categories %}
-					<tr>
-						<td id="id">{{ category.data.id }}</td>
-						<td><a href="index.php?service=Categories&id_category={{ category.data.id }}">{{ category.data.nom }}</a></td>
-						<td id="functions"> 
-							<a href="index.php?service=Categories&function=modify&id_category={{ category.data.id }}"> + modifier </a> <br/> 
-							<a href="index.php?service=Categories&function=delete&id_category={{ category.data.id }}">+ supprimer </a><br/> 
-						</td>
-					</tr>
+					<div class="category">
+						<div class="id"> {{ category.data.id }} </div>
+						<a href="index.php?service=Categories&id_category={{ category.data.id }}">
+							<div class="name">{{ category.data.nom }}</div>
+						</a>
+						<a href="index.php?service=Categories&function=modify&id_category={{ category.data.id }}"> 
+							<div class="function"> 
+								modifier
+							</div>
+						</a> 
+						<a href="index.php?service=Categories&function=delete&id_category={{ category.data.id }}"> 
+							<div class="function"> 
+								supprimer
+							</div>
+						</a> 
+					</div>
 				{% endfor %}
-			</table>
+			</div>
 			{% else %}
-				<i> Il n'y a aucune catégorie dans cette catégorie </i>
-				<br/>
+				<div class="center">
+					<i> Il n'y a aucune catégorie dans cette catégorie </i>
+				</div>
 			{% endif %}
 			
 			<br/>
 			
-			<a href="index.php?service=Categories&function=create&id_category={{ nav.category.data.id }}">+ Ajouter une nouvelle catégorie dans {{ nav.category.data.nom }}</a>
-		
+			<div class="center"><a href="index.php?service=Categories&function=create&id_category={{ nav.category.data.id }}">+ Ajouter une nouvelle catégorie dans {{ nav.category.data.nom }}</a></div>
+			
+			<br/>
+			<br/>
 			<h2>Articles présents dans : {{ nav.category.data.nom }}</h2>
 			
 			{% set articles = nav.articles %}
 			
 			{% if articles|length > 0 %}
-			<table class="dataTable">
-					<tr>
-						<th>ID</th>
-						<th>NOM</th>
-						<th>PRIX</th>
-						<th>NOMBRE</th>
-					</tr>
+			<div class="articles">
+					<div class="articles_th">
+						<div class="id">ID</div>
+						<div class="nom">NOM</div>
+						<div class="prix_stock">PRIX / STOCK</div>
+					</div>
 				{% for article in articles %}
-					<tr>
-						<td id="id"> {{ article.data.id }}</td>
-						<td>{{ article.data.nom }}</td>
-						<td>{{ article.data.prix }}</td>
-						<td>{{ article.data.nombre }}</td>
-						<td id="functions"> 
-							<a href="index.php?service=Articles&function=modify&id_category={{ nav.category.data.id }}&id_article={{ article.data.id }}"> + modifier </a> <br/> 
-							<a href="index.php?service=Articles&function=delete&id_category={{ nav.category.data.id }}&id_article={{ article.data.id }}"> + supprimer </a> <br/> 
-							<!--  <a href="index.php?service=Articles&function=see&id={{ article.id }}">+ informations </a> -->
-						</td>
-					</tr>
+					<div class="article">
+						<div class="id"> {{ article.data.id }}</div>
+						<div class="nom">{{ article.data.nom }}</div>
+						<div class="prix_stock">{{ article.data.prix }} / <b>{{ article.data.nombre }}</b></div>
+						<a href="index.php?service=Articles&function=modify&id_category={{ nav.category.data.id }}&id_article={{ article.data.id }}">
+							<div class="function"> 
+								modifier
+							</div>
+						</a>
+						<a href="index.php?service=Articles&function=delete&id_category={{ nav.category.data.id }}&id_article={{ article.data.id }}">
+							<div class="function"> 
+								supprimer 
+							</div>
+						</a>
+					</div>
 				{% endfor %}
-			</table>
+			</div>
 			{% else %}
+			<div class="center">
 				<i> Il n'y a aucun article dans cette catégorie </i>
-				<br/>
+			</div>
 			{% endif %}
 			<br/>
-			<a href="index.php?service=Articles&function=create&id_category={{ nav.category.data.id }}">+ Ajouter un article dans {{ nav.category.data.nom }}</a>
-		
-		</td>
-		
-	</tr>
-</table>
-
+			<div class="center"><a href="index.php?service=Articles&function=create&id_category={{ nav.category.data.id }}">+ Ajouter un article dans {{ nav.category.data.nom }}</a></div>
+	</div>
 {% include 'footer.template.html' %}

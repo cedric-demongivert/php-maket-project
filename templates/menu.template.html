@@ -1,12 +1,12 @@
 <h1>Menu</h1>
 
-<a href="index.php">Sélectionner articles</a> <br/>
-<a href="index.php?service=PanierController">Mon panier</a> <br/>
+<a href="index.php"><div class="menu_item">Sélectionner articles</div></a>
+<a href="index.php?service=PanierController"><div class="menu_item">Mon panier</div></a>
 
 {% if user is not empty %} 
-<a href="index.php?service=Users&function=modify">Modifier mon compte</a> <br/>
-<a href="index.php?service=Users&function=disconnect">Me déconnecter</a> <br/>
+<a href="index.php?service=Users&function=modify"><div class="menu_item">Modifier mon compte</div></a>
+<a href="index.php?service=Users&function=disconnect"><div class="menu_item">Me déconnecter</div></a>
 {% else %}
-<a href="index.php?service=Users">Me connecter</a> <br/>
-<a href="index.php?service=Users&function=create">M'inscrire</a> <br/>
+<a href="index.php?service=Users"><div class="menu_item">Me connecter</div></a>
+<a href="index.php?service=Users&function=create"><div class="menu_item">M'inscrire</div></a>
 {% endif %}

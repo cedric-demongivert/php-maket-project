@@ -1,73 +1,79 @@
 {% include 'header.template.html' %}
 
-<table id='mainBlock'>
-	<tr>
-		<td id="leftBlock">
+		<div id="data">
 		
-			{% include 'menu.template.html' %}
-		
-		</td>
-		<td id='rightBlock'>
-		
+			<h1>Mon panier : </h1>
+			<br/>
 			{% if panier.articles|length > 0 %}
-				<table class='dataTable'>
+				<div class='items'>
 				
-					<tr>
-						<th>
+					<div class="items_th">
+						<div class="nom">
 							Produit(s)
-						</th>
-						<th>
-							
-						</th>
-						<th>
-							Prix unitaire
-						</th>
-						<th>
-							Quantit&eacute;e
-						</th>
-						<th>
+						</div>
+						<div class="prix_stock">
+							Prix unitaire / Quantit&eacute;e
+						</div>
+						<div class="prix_total">
 							Prix total
-						</th>
-						<th>
-							Op&eacute;rations
-						</th>
-					</tr>
+						</div>
+					</div>
 					{% set total = 0 %}
 					{% for panieritem in panier.articles %}
 					
-						<tr>
-							<td>
-								<img width="150px" src="img/{{ panieritem.image }}" />
-							</td>
-							<td>
-								{{ panieritem.nom|escape }}
-								{% if panieritem.remise > 0 %}
-									<br/><span class="remise_label">- {{ panieritem.remise }} % !</span>
-								{% endif %}
-							</td>
-							<td>
-								{{ panieritem.prix*(1 - panieritem.remise/100.0) }}
-								{% set prix = panieritem.prix*(1 - panieritem.remise/100.0) %}
-								{% if panieritem.remise > 0 %}
-								<br/><span class="remise_prix">- {{ panieritem.prix*(panieritem.remise/100.0) }} </span>
-								{% endif %}
-							</td>
-							<td>
-								{{ panieritem.nombre }}
-							</td>
-							<td>
-								{% set total = total + (panieritem.nombre * prix) %}
-								{{ panieritem.nombre * prix }}
-							</td>
-							<td>
-								<form action="index.php?service=PanierController&function=addQuantity&id_article={{ panieritem.id }}" method="POST">
-									 <input style="width:180px;" type="text" name="nombre" placeholder="Entier n&eacute;gatif pour retirer"/> <input type="SUBMIT" value="Ajouter"/>
-								</form>
-								<a href='index.php?service=PanierController&function=remove&id_article={{ panieritem.id }}'>+Supprimer</a>
-							</td>
-						</tr>
+						<div class="item">
+							<div class="nom">
+								<table>
+									<tr>
+										<td>
+											<img height="100px" src="img/{{ panieritem.image }}" />
+										</td>
+										<td class="center">
+											{{ panieritem.nom|escape }}
+											{% if panieritem.remise > 0 %}
+												<br/><span class="remise_label">- {{ panieritem.remise }} % !</span>
+											{% endif %}
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="prix_stock">
+								<table height="105px" width="100%">
+									<tr>
+										<td class="center">
+											{{ panieritem.prix*(1 - panieritem.remise/100.0) }} / <b>{{ panieritem.nombre }}</b>
+											{% set prix = panieritem.prix*(1 - panieritem.remise/100.0) %}
+											{% if panieritem.remise > 0 %}
+											<br/><span class="remise_prix">- {{ panieritem.prix*(panieritem.remise/100.0) }} </span>
+											{% endif %}
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="prix_total">
+								<table height="105px" width="100%">
+									<tr><td class="center">
+									{% set total = total + (panieritem.nombre * prix) %}
+									{{ panieritem.nombre * prix }}
+									</td></tr>
+								</table>
+							</div>
+							<div class="modif">
+								
+								<table height="105px">
+									<tr>
+										<td>
+											<form action="index.php?service=PanierController&function=addQuantity&id_article={{ panieritem.id }}" method="POST">
+												 <input style="width:180px;" type="text" name="nombre" placeholder="Entier n&eacute;gatif pour retirer"/> <input type="SUBMIT" value="Ajouter"/>
+											</form>
+										</td>
+									</tr>
+								</table>
+								<!-- <a href='index.php?service=PanierController&function=remove&id_article={{ panieritem.id }}'>+Supprimer</a> -->
+							</div>
+						</div>
 					{% endfor %}
-				</table>
+				</div>
 				{% if app.request.get('modif') == 1 %}
 				
 					<table class='dataTable'>
@@ -87,7 +93,7 @@
 					</table>
 				
 				{% endif %}
-				<table class='dataTable'>
+				<table style="margin-left:5%;margin-right:5%;width:90%;border-top:solid 1px #222222;">
 					<tr>
 						<th>
 							Prix total de la commande : 
@@ -104,8 +110,6 @@
 				</table>
 			{% endif %}
 			
-		</td>
-	</tr>
-</table>
+		</div>
 
 {% include 'footer.template.html' %}

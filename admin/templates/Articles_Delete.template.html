@@ -1,16 +1,8 @@
 {% include 'header.template.html' %}
 
-<table id="mainBlock">
-	<tr>
-		<td id="leftBlock"> 
-		
-			{% include 'menu.template.html' %}
-		
-		</td>
-				
+		<div id="data">
+
 		{% set article = articles.article.data %}
-				
-		<td id="rightBlock"> 
 
 			<h1> Supprimer l'article {{ article.id }}, {{ article.nom }} : </h1>
 			<br/>
@@ -36,9 +28,6 @@
 			<br/>
 			<br/>
 			Si vous souhaitez réellement supprimer cet article, cliquez <a href="index.php?service=Articles&function=delete&id_category={{ article.idCategorie }}&id_article={{ article.id }}&force">ici</a>
-		</td>
-
-	</tr>
-</table>
+		</div>
 
 {% include 'footer.template.html' %}

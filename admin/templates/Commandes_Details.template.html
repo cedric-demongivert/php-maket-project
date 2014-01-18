@@ -1,53 +1,41 @@
 {% include 'header.template.html' %}
 
-<table id="mainBlock">
-	<tr>
-		<td id="leftBlock"> 
-		
-			{% include 'menu.template.html' %}
-		
-		</td>
-				
-		<td id="rightBlock"> 
+		<div id="data">
 
 			{% set commande = commandes.commande %}
-			<h1> Commande n°{{ commande.id }}, de {{ commande.user.login }} : </h1>
-
-			<div style="width:100%; text-align:left;margin-left:30px;">
-				<a href="index.php?service=Commandes"><< retour</a>
-			</div>
+			<h1> Commande n°{{ commande.id }}, par {{ commande.user.login }} : </h1>
+			
+			<br/>
 			
 			<h2> Liste des produits commandés : </h2>
 				
 			{% if commande.reservations|length > 0 %}
-			<table class="dataTable">
-					<tr>
-						<th>ID</th>
-						<th>NOM DU PRODUIT</th>
-						<th>NOMBRE</th>
-						<th>TOTAL</th>
-					</tr>
+			<div class="reservations">
+					<div class="reservations_th">
+						<div class="id">ID</div>
+						<div class="nom">NOM DU PRODUIT</div>
+						<div class="nombre">NOMBRE</div>
+						<div class="total">TOTAL</div>
+					</div>
 				{% for reservation in commande.reservations %}
-					<tr>
-						<td id="id">{{ reservation.id }}</td>
-						<td>{{ reservation.article.nom }}</td>
-						<td>{{ reservation.nombre }}</td>
-						<td>{{ reservation.prix }}</td>
-					</tr>
+					<div class="reservation">
+						<div class="id">{{ reservation.id }}</div>
+						<div class="nom">{{ reservation.article.nom }}</div>
+						<div class="nombre">{{ reservation.nombre }}</div>
+						<div class="total">{{ reservation.prix }}</div>
+					</div>
 				{% endfor %}
-					<tr>
-						<th id="id"></th>
-						<th></td>
-						<th>Total : </th>
-						<td>{{ commande.total }}</td>
-					</tr>
-			</table>
+					<div class="reservation">
+						<div class="id" style="border:none;background-color:#ffffff;"></div>
+						<div class="nom" style="border:none;background-color:#ffffff;"></div>
+						<div class="nombre" style="margin-left:4px;">Total : </div>
+						<div class="total">{{ commande.total }}</div>
+					</div>
+			</div>
 			{% else %}
-				<i> Aucune réservation dans la commande, ça énerve le rock'n'poussin ça ! </i>
+				<div class="center"><i> Aucune réservation dans la commande, ça énerve le rock'n'poussin ça ! </i></div>
 			{% endif %}
-		</td>
 		
-	</tr>
-</table>
+		</div>
 
 {% include 'footer.template.html' %}

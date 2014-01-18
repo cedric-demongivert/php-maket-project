@@ -1,28 +1,27 @@
 @CHARSET "UTF-8";
 
+/* ------------------------------------ */
+/* 			PAGE GENERAL 				*/
+/* ------------------------------------ */
 body {
 
-	background-color: #eeeeee;
-	text-align:center;
+	background-color: #dddddd;
 	
 	padding-top:80px;	
 	
 }
 
-.formImportant {
-	color: #ff0000;
-	font-weight: bold;
-}
+
 
 #header {
 	top: 0px;
 	left: 0px;
 	width: 100%;
 
-	background-color: #5d5d5d;
+	background-color: #ffffff;
 	position:absolute;	
 	text-align:center;
-	border-bottom:solid 1px #ffffff;
+	border-bottom:solid 1px #bbbbbb;
 	padding-top: 20px;
 	padding-bottom: 20px;
 	
@@ -30,84 +29,652 @@ body {
 	font-size:40px;
 }
 
-#bodyData {
-
-	background-color: #ffffff;
-	width:88%;
-	padding-top:20px;
-	padding-bottom:20px;
-	margin-left:6%;	
-	margin-top: 10px;
-	border-radius:10px;
-	border:solid 1px #aeaeae;
+#header_deco_left {
+	
+	position:absolute;
+	top:0px;
+	left: 10%;
+	height:100%;
 	
 }
 
+#header_deco_right {
+	
+	position:absolute;
+	top:0px;
+	right: 10%;
+	height:100%;
+	
+}
+
+#menu {
+
+	float:left;
+	margin-left:2%;
+	margin-right:2%;
+	width:26%;	
+	
+}
+
+#data {
+	margin-left:30%;
+	width:68%;	
+	background-color: #ffffff;
+	padding-bottom:30px;
+}
+
+#body {
+
+	width:100%;
+	padding-top:20px;
+	padding-bottom:20px;
+	margin-top: 10px;
+	/*border-radius:10px;*/
+	/*border:solid 1px #aeaeae;*/
+	
+}
+
+/* ------------------------------------ */
+/* 			PAGE TITRES 				*/
+/* ------------------------------------ */
 h1 {
 	
 	color:#aeaeae;
-	font-size: x-large;
-	border-bottom: solid 1px #aeaeae;
-	margin-left : 10px;
-	margin-right: 10px;
-	margin-top:5px;
-	margin-bottom:5px;
+	background-color:#ffffff;
+	font-size: xx-large;
+	
+	border-top: solid 1px #cccccc;
+	border-left: solid 1px #cccccc;
+	border-right: solid 1px #cccccc;
+	border-bottom: solid 2px #bbbbbb;
+	
 	padding-bottom : 3px;
+	padding-left:20px;
+	
+	margin-top:0px;
+	margin-bottom:0px;
+	
+	width:auto;
+	
+	background-image: url("../../img/menu.png");
+	background-position:100% -20px;
+	background-repeat: no-repeat;
 	
 }
 
-.dataTable {
+h2 {
 
-	width:100%;
-	border-radius:10px;
-	border:solid 1px #222222;
-		
+	margin-left:20px;
+	margin-right:20px;
+	margin-top:0px;
+	color:#222222;
+	border-bottom:solid 1px #222222;
+	text-align:center;
+	
 }
 
-.dataTable #functions {
-	width:200px;	
+/* ------------------------------------ */
+/* 			MENU		 				*/
+/* ------------------------------------ */
+.menu_item {
+	
+	background-color:#ffffff;
+	color:#222222;
+	padding:10px;
+	font-weight: bold;
+	border-bottom:solid 1px #cccccc;
+	
 }
 
-.dataTable #id {
-	width:50px;	
+.menu_item:hover {
+	
+	background-color:#5555ff;
+	color:#ffffff;
+	border-bottom:solid 1px #222288;
+	
 }
 
-.dataTable td {
+#menu a {
+	text-decoration: none;	
+}
 
-	border-radius:10px;
+/* ------------------------------------ */
+/* 			ARIANE		 				*/
+/* ------------------------------------ */
+#ariane {
+
+	width:auto;
+	color:#222222;
+	text-align:left;
+	height:30px;
+	background-color:#ffffff;	
+	margin-right:20px;
+	margin-left:20px;
+	padding-top:10px;
+	border:solid 1px #cccccc;
+	
+}
+
+#ariane a {
+
+	color: #222222;
+	background-color:#ffffff;
+	
+	text-decoration:none;
+	font-weight:bold;
+	
+	height:20px;
+	
 	padding:5px;
+	padding-left:10px;
+	padding-right:10px;
+
+	margin-right:10px;
+	margin-left:10px;
 		
 }
 
-.dataTable tr:nth-child(2n) td {
+#ariane a:HOVER {
+	background-color:#5555ff;
+	color:#ffffff;
+}
 
-	background-color:#222222;
-	color:#efefef;
+/* ------------------------------------ */
+/* 			CATEGORIES	 				*/
+/* ------------------------------------ */
+
+.categories {
+
+	margin-left:5%;
+	margin-right:5%;	
+	width:90%;
+
+}
+
+.categories a {
+
+	text-decoration: none;
 		
 }
 
-.dataTable tr:nth-child(2n) a {
+.categories .category {
+	width:100%;
+	margin-bottom:5px;
+}
 
-	color:#efefef;
+.categories .id {
+	
+	width:10%;
+	padding:10px;
+	text-align:center;
+	border:solid 1px #222222;
+	border-radius:0px 10px 0px 10px;
+	display:inline-block;
+	
+}
+
+.categories .name {
+	
+	width:45%;
+	text-align:center;
+	display:inline-block;
+	padding:10px;
+	font-weight: bold;
+	color:#222222;
+	border:solid 1px #222222;
+	border-radius:0px 10px 0px 10px;
+	
+}
+
+.categories .category:hover .name {
+
+	text-align:center;
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+
+	
+}
+
+.categories .category:hover .id {
+
+	text-align:center;
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+
+	
+}
+
+.categories .function:hover {
+
+	text-align:center;
+	background-color:#55cc55;
+	border:solid 1px #228855;
+	color:#ffffff;
+
+	
+}
+
+.categories .function {
+	
+	text-align:center;
+	display:inline-block;
+	width:15%;
+	color:#222222;
+	padding:10px;
+	border:solid 1px #222222;
+	border-radius:0px 10px 0px 10px;
+	font-weight: bold;
+	
+}
+
+/* ------------------------------------ */
+/* 			TEXT		 				*/
+/* ------------------------------------ */
+.center {
+	
+	width:100%;
+	text-align:center;
 		
+}
+
+/* ------------------------------------ */
+/* 			ARTICLES	 				*/
+/* ------------------------------------ */
+.articles {
+
+	margin-left:5%;
+	margin-right:5%;	
+	width:90%;
+	
+	color:#222222;
+	
+}
+
+.articles .articles_th div {
+	text-align:center;
+	padding:10px;
+	display:inline-block;
+	font-weight: bold;
+}
+
+.articles .article {
+	margin-bottom:5px;	
+}
+
+.articles .article div {
+	padding:10px;
+	border:solid 1px #222222;
+	border-radius:0px 10px 0px 10px;
+	display:inline-block;
+	text-align:center;
+}
+
+.articles .function:hover {
+
+	background-color:#55cc55;
+	border:solid 1px #228855;
+	color:#ffffff;
+	
+}
+
+.articles .article:hover .nom {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.articles .article:hover .prix_stock {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.articles .article:hover .id {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.articles a {
+	text-decoration: none;
+	color:#222222;
+}
+
+.articles .id {
+	width:6%;
+}
+
+.articles .nom {
+	width:30%;
+}
+
+.articles .function {
+	font-weight: bold;	
+	width:15%;
+}
+
+.articles .prix_stock {
+	width:15%;
+}
+
+/* ------------------------------------ */
+/* 			COMMANDES	 				*/
+/* ------------------------------------ */
+.commandes {
+
+	margin-left:5%;
+	margin-right:5%;	
+	width:90%;
+	
+	color:#222222;
+	
+}
+
+.commandes .commandes_th div {
+	text-align:center;
+	padding:10px;
+	display:inline-block;
+	font-weight: bold;
+}
+
+.commandes .commande {
+	margin-bottom:5px;	
+}
+
+.commandes .commande div {
+	padding:10px;
+	border:solid 1px #222222;
+	border-radius:0px 10px 0px 10px;
+	display:inline-block;
+	text-align:center;
+}
+
+.commandes .function:hover {
+
+	background-color:#55cc55;
+	border:solid 1px #228855;
+	color:#ffffff;
+	
+}
+
+.commandes .commande:hover .id {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.commandes .commande:hover .login {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.commandes .commande:hover .total {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.commandes a {
+	text-decoration: none;
+	color:#222222;
+}
+
+.commandes .id {
+	width:6%;
+}
+
+.commandes .login {
+	width:31%;
+}
+
+.commandes .function {
+	font-weight: bold;	
+	width:15%;
+}
+
+.commandes .total {
+	width:16%;
+}
+
+/* ------------------------------------ */
+/* 			RESERVATIONS 				*/
+/* ------------------------------------ */
+.reservations {
+
+	margin-left:5%;
+	margin-right:5%;	
+	width:90%;
+	
+	color:#222222;
+	
+}
+
+.reservations .reservations_th div {
+	text-align:center;
+	padding:10px;
+	display:inline-block;
+	font-weight: bold;
+}
+
+.reservations .reservation {
+	margin-bottom:5px;	
+}
+
+.reservations .reservation div {
+	padding:10px;
+	border:solid 1px #222222;
+	border-radius:0px 10px 0px 10px;
+	display:inline-block;
+	text-align:center;
+}
+
+.reservations .reservation:hover .id {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.reservations .reservation:hover .nom {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.reservations .reservation:hover .total {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.reservations .reservation:hover .nombre {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.reservations a {
+	text-decoration: none;
+	color:#222222;
+}
+
+.reservations .id {
+	width:10%;
+}
+
+.reservations .nom {
+	width:40%;
+}
+
+.reservations .nombre {
+	width:17%;
+}
+
+.reservations .total {
+	width:17%;
+}
+
+/* ------------------------------------ */
+/* 			USERS		 				*/
+/* ------------------------------------ */
+.users {
+
+	margin-left:5%;
+	margin-right:5%;	
+	width:90%;
+	
+	color:#222222;
+	
+}
+
+.users .users_th div {
+	text-align:center;
+	padding:10px;
+	display:inline-block;
+	font-weight: bold;
+}
+
+.users .user {
+	margin-bottom:5px;	
+}
+
+.users .user div {
+	padding:10px;
+	border:solid 1px #222222;
+	border-radius:0px 10px 0px 10px;
+	display:inline-block;
+	text-align:center;
+}
+
+.users .user:hover .id {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.users .user:hover .login {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.users .user:hover .mail {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.users .user:hover .nb {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.users a {
+	text-decoration: none;
+	color:#222222;
+}
+
+.users .id {
+	width:5%;
+}
+
+.users .login {
+	width:12%;
+}
+
+.users .mail {
+	width:25%;
+}
+
+.users .nb {
+	width:5%;
+}
+
+.users .function {
+	font-weight: bold;	
+	width:15%;
+}
+
+.users .function:hover {
+
+	background-color:#55cc55;
+	border:solid 1px #228855;
+	color:#ffffff;
+	
+}
+
+/* ------------------------------------ */
+/* 			FORM		 				*/
+/* ------------------------------------ */
+form {
+	text-align:center;	
 }
 
 .formTable {
 
-	width:100%;
+	width:90%;
+	margin-left:5%;
+	margin-right:5%;
+	text-align:center;
 		
 }
 
 .formTable td {
 
-	border-radius:10px;
+	border-radius:0px 10px 0px 10px;
 	padding:5px;
 		
 }
 
 .formTable tr td:first-child {
 	
-	background-color:#eeeeee;
+	border:solid 1px #222222;
+	color:#666666;
+	
+}
+
+.formTable tr:hover td:first-child {
+	
+	background-color:#5555ff;
+	border:solid 1px #222288;
+	color:#ffffff;
+	
+}
+
+.formTable tr td:nth-child(n+2) {
+	
+	border:solid 1px #cccccc;
 	color:#666666;
 	
 }
@@ -116,32 +683,78 @@ h1 {
 	width:100%;
 }
 
-#leftBlock {
+input[type=text] {
+	/*background-color: #efefef;*/
+	/*border-radius: 10px;
+	border-bottom: solid 1px #cccccc;
+	border-left: none;
+	border-right: none;
+	border-top: solid 1px #cccccc;*/
 	
-	width:25%;
-	border-right:solid 1px #aeaeae;
-	vertical-align: top;
+	border:0px;
+	border-bottom:solid 1px #cccccc;
+	
+	padding-left: 10px;
+	padding-right: 10px;
+	width:90%;
+	height:25px;
+}
+
+input[type=password] {
+	/*background-color: #efefef;*/
+	/*border-radius: 10px;
+	border-bottom: solid 1px #cccccc;
+	border-left: none;
+	border-right: none;
+	border-top: solid 1px #cccccc;*/
+	
+	border:0px;
+	border-bottom:solid 1px #cccccc;
+	
+	padding-left: 10px;
+	padding-right: 10px;
+	width:90%;
+	height:25px;
+}
+
+input[type=submit] {
+
+	padding:10px;
+	border:solid 1px #222222;
+	border-radius:0px 10px 0px 10px;
+	cursor: pointer;
+	background-color:#ffffff;
+	color:#222222;
+	font-weight: bold;
 	
 }
 
-#rightBlock {
-	
-	width:75%;
-	vertical-align: top;
+input[type=submit]:hover {
+
+	background-color:#55cc55;
+	border:solid 1px #228855;
+	color:#ffffff;
 	
 }
 
-#mainBlock {
-
-	width:100%;	
-	
+.formImportant {
+	color: #ff0000;
+	font-weight: bold;
 }
-	
+
+/* ------------------------------------ */
+/* 			AUTRE		 				*/
+/* ------------------------------------ */
+
+
+/* ------------------------------------ */
+/* 			ERROR / INFO 				*/
+/* ------------------------------------ */
+
 .errorBlock {
 	
 	margin:auto;
 	margin-top:20px;
-	margin-bottom:20px;
 	width:95%;	
 	background-color: #ffdddd;
 	border-radius:10px;
@@ -152,39 +765,10 @@ h1 {
 	
 }
 
-#ariane {
-
-	width:100%;
-	text-align:left;
-	height:20px;	
-	
-}
-
-#ariane a {
-
-	color:#efefef;
-	text-decoration:none;
-	height:20px;
-	padding:5px;
-	padding-left:10px;
-	padding-right:10px;
-	background-color:#888899;
-	border-radius:10px;
-	height:20px;
-	margin-right:10px;
-	margin-left:10px;
-		
-}
-
-#ariane a:HOVER {
-	background-color:#222233;
-}
-
 .infoBlock {
 	
 	margin:auto;
 	margin-top:20px;
-	margin-bottom:20px;
 	width:95%;	
 	background-color: #ddddff;
 	border-radius:10px;
@@ -193,32 +777,4 @@ h1 {
 	border-bottom:solid 3px #5555dd;
 	color:#5555dd;
 	
-}
-
-input[type=text] {
-	/*background-color: #efefef;*/
-	border-radius: 10px;
-	border-bottom: solid 1px #cccccc;
-	border-left: none;
-	border-right: none;
-	border-top: solid 1px #cccccc;
-	
-	padding-left: 10px;
-	padding-right: 10px;
-	width:90%;
-	height:25px;
-}
-
-input[type=password] {
-	/*background-color: #efefef;*/
-	border-radius: 10px;
-	border-bottom: solid 1px #cccccc;
-	border-left: none;
-	border-right: none;
-	border-top: solid 1px #cccccc;
-	
-	padding-left: 10px;
-	padding-right: 10px;
-	width:90%;
-	height:25px;
 }

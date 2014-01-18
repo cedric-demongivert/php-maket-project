@@ -53,10 +53,22 @@
 							{{ article.data.id }}
 						</td>
 						<td>
-							{{ article.data.nom }}
+							<img width="150px" src="img/{{ article.data.image }}" />
 						</td>
 						<td>
-							{{ article.data.prix }}
+							{{ article.data.nom }}
+							{% if article.data.remise > 0 %}
+								<span class="remise">- {{ article.data.remise }} % !</span>
+							{% endif %}
+							{% if article.data.remise > 60 %}
+								<br/><br/><span class="remise_label">Le choix du rock'n'poussin !</span>
+							{% endif %}
+						</td>
+						<td>
+							{{ article.data.prix*(1 - article.data.remise/100.0) }}
+							{% if article.data.remise > 0 %}
+								<br/><span class="remise_prix">- {{ article.data.prix*(article.data.remise/100.0) }} </span>
+							{% endif %}
 						</td>
 						<td>
 							<a href="index.php?service=PanierController&function=ajouter&id_article={{ article.data.id }}">+Ajouter au panier</a>

@@ -207,3 +207,32 @@ input[type=password] {
 	width:90%;
 	height:25px;
 }
+
+.remise {
+
+	color:#ff0000;
+	font-weight: bold;
+	font-size:20px;	
+	margin-left:30px;
+	border:solid 1px #ff0000;
+	padding:2px;
+	
+}
+
+.remise_label {
+
+	color:#ff0000;
+	font-weight: bold;
+	font-size:16px;	
+	border-bottom:solid 1px #ff0000;
+	padding:2px;
+	
+}
+
+.remise_prix {
+
+	color:#ff0000;
+	font-weight: bold;
+	font-size:10px;	
+	
+}

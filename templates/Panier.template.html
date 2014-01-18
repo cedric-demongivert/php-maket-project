@@ -17,6 +17,9 @@
 							Produit(s)
 						</th>
 						<th>
+							
+						</th>
+						<th>
 							Prix unitaire
 						</th>
 						<th>
@@ -34,21 +37,31 @@
 					
 						<tr>
 							<td>
-								{{ panieritem.nom|escape }}
+								<img width="150px" src="img/{{ panieritem.image }}" />
 							</td>
 							<td>
-								{{ panieritem.prix }}
+								{{ panieritem.nom|escape }}
+								{% if panieritem.remise > 0 %}
+									<br/><span class="remise_label">- {{ panieritem.remise }} % !</span>
+								{% endif %}
+							</td>
+							<td>
+								{{ panieritem.prix*(1 - panieritem.remise/100.0) }}
+								{% set prix = panieritem.prix*(1 - panieritem.remise/100.0) %}
+								{% if panieritem.remise > 0 %}
+								<br/><span class="remise_prix">- {{ panieritem.prix*(panieritem.remise/100.0) }} </span>
+								{% endif %}
 							</td>
 							<td>
 								{{ panieritem.nombre }}
 							</td>
 							<td>
-								{% set total = total + (panieritem.nombre * panieritem.prix) %}
-								{{ panieritem.nombre * panieritem.prix }}
+								{% set total = total + (panieritem.nombre * prix) %}
+								{{ panieritem.nombre * prix }}
 							</td>
 							<td>
 								<form action="index.php?service=PanierController&function=addQuantity&id_article={{ panieritem.id }}" method="POST">
-									<input type="SUBMIT" value="Ajouter"/> <input style="width:70%;" type="text" name="nombre" placeholder="Entier n&eacute;gatif pour retirer"/>
+									 <input style="width:180px;" type="text" name="nombre" placeholder="Entier n&eacute;gatif pour retirer"/> <input type="SUBMIT" value="Ajouter"/>
 								</form>
 								<a href='index.php?service=PanierController&function=remove&id_article={{ panieritem.id }}'>+Supprimer</a>
 							</td>

@@ -37,7 +37,7 @@ class Category extends Model {
 	public function getSpecificArticles() {
 		
 		$articleFact = new Article();
-		return $articleFact->select("idCategorie = ".$this->getId()." AND removed = 0");
+		return $articleFact->select("idCategorie = ".$this->getId()." AND removed = 0 ORDER BY remise DESC");
 		
 	}
 	

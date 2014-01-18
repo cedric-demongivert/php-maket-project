@@ -79,8 +79,8 @@ class PanierController extends Controller {
 	
 	public function validate() {
 
-		if (isset($_SESSION['user'])) {
-
+		if (isset($_SESSION['user']) && $this->getModifState() == 0) {
+			
 			$article = new Article();
 			$commande = new Commande();
 			$commande->setIdUser($_SESSION['user']->getId());
@@ -90,6 +90,7 @@ class PanierController extends Controller {
 			foreach ($_SESSION['panier']->getItems() as $item) {
 				$article = $article->selectById($item->getIdArticle());
 				if ($item->getQuantity() > $article->getNombre()) {
+					$commande->delete();
 					header('Location: index.php?service=PanierController&modif=1');
 					exit();
 				}
@@ -103,6 +104,7 @@ class PanierController extends Controller {
 			}
 			
 			$_SESSION['panier'] = new Panier();
+			$this->setInfo("Votre commande a bien été enregistrée ! ");
 			header('Location: index.php?service=PanierController');
 		} else {
 			header('Location: index.php?service=Users');
@@ -110,16 +112,26 @@ class PanierController extends Controller {
 		}
 	}
 	
+	public function getModifState() {
+		
+		if(!isset($_GET['modif'])) {
+			return 0;
+		}
+		
+		return $_GET['modif'];
+	}
+	
 	public function modif() {
 		$article = new Article();
 		foreach ($_SESSION['panier']->getItems() as $item) {
-			$article->selectById($item->getIdArticle());
+			$article = $article->selectById($item->getIdArticle());
 			if ($item->getQuantity() > $article->getNombre()) {
-				$_SESSION['panier']->remove($item);
+				$_SESSION['panier']->remove($article->getId());
+				$_SESSION['panier']->addItem($article->getId(), $article->getNombre());
 			}
 		}
-		header("Location: index.php?service=PanierController");
-		exit();
+		/*header("Location: index.php?service=PanierController");
+		exit();*/
 	}
 	
 }

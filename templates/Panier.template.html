@@ -74,18 +74,18 @@
 						</div>
 					{% endfor %}
 				</div>
-				{% if app.request.get('modif') == 1 %}
+				{% if panier.modifState == 1 %}
 				
 					<table class='dataTable'>
 						<tr>
 							<th>Un ou plusieurs des produits de votre panier n'est pas disponible dans les 
-								quantit&eacute; indiqu&eacute;. Voulez-vous les supprimmer ? 
+								quantit&eacute; indiqu&eacute;. Voulez-vous les réajuster au maximum possible ? 
 							</th>
 							<td>
-								<form action="index.php?service=PanierController&function=modif">
+								<form method="post" action="index.php?service=PanierController&function=modif">
 									<input type="SUBMIT" value="Valider"/>
 								</form>
-								<form action="index.php?service=PanierController">
+								<form method="post" action="index.php?service=PanierController">
 									<input type="SUBMIT" value="Refuser"/>
 								</form>
 							</td>

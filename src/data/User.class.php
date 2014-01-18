@@ -16,7 +16,7 @@ class User extends Model {
 	
 	public function identify($login, $pass) {
 		
-		$result = $this->select("login = ".Model::$bdd->quote($login)."");
+		$result = $this->select("login = ".Model::$bdd->quote($login)." AND removed = 0");
 
 		if(sizeof($result) != 0) {
 			

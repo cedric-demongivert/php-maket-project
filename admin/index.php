@@ -12,7 +12,12 @@ session_start();
 
 /* Il faut être admin pour accéder : */
 if(!isset($_SESSION['user']) || !$_SESSION['user']->getAdmin()) {
-	header("Location: ../index.php?service=Users&function=connect");
+	if(isset($_SESSION['user'])) {
+		header("Location: ../index.php");
+	}
+	else {
+		header("Location: ../index.php?service=Users&function=connect");
+	}
 	exit();
 }
 

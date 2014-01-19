@@ -39,7 +39,7 @@
 				{% if nav.articles|length > 0 %}
 				<div class='articles'>
 				{% for article in nav.articles %}
-					<div class='article'>
+					<div class='article {% if article.data.nombre <= 0 %} rupture {% endif %}'>
 						<div class="nom">
 							<table>
 								<tr>
@@ -48,11 +48,15 @@
 									</td>
 									<td class="center">
 										{{ article.data.nom }}
-										{% if article.data.remise > 0 %}
-											<br/><br/><span class="remise">- {{ article.data.remise }} % !</span>
-										{% endif %}
-										{% if article.data.remise > 60 %}
-											<br/><br/><span class="remise_label">Le choix du rock'n'poussin !</span>
+										{% if article.data.nombre <= 0 %}
+											<br/><br/><span class="rupture_label">RUPTURE DE STOCK</span>
+										{% else %}
+											{% if article.data.remise > 0 %}
+												<br/><br/><span class="remise">- {{ article.data.remise }} % !</span>
+											{% endif %}
+											{% if article.data.remise > 60 %}
+												<br/><br/><span class="remise_label">Le choix du rock'n'poussin !</span>
+											{% endif %}
 										{% endif %}
 									</td>
 								</tr>
@@ -70,6 +74,7 @@
 								</tr>
 							</table>
 						</div>
+						{% if article.data.nombre > 0 %}
 						<a href="index.php?service=PanierController&function=ajouter&id_article={{ article.data.id }}">
 							<div class="function">
 								<table>
@@ -81,6 +86,7 @@
 								</table>
 							</div>
 						</a>
+						{% endif %}
 					</div>				
 				{% endfor %}
 				</div>

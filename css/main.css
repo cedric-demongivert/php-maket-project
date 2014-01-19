@@ -298,6 +298,27 @@ h2 {
 	
 }
 
+.articles .rupture div {
+
+	background-color:#efefef;	
+	
+}
+
+.articles .article:hover .rupture_label {
+	
+	color:#ffffff;
+	border:solid 1px #ffffff;
+	
+}
+
+.articles .article .rupture_label {
+	
+	color:#aaaaaa;
+	border:solid 1px #aaaaaa;
+	padding:3px;
+	
+}
+
 .articles .article:hover .remise_label {
 	
 	color:#ffffff;

@@ -163,11 +163,11 @@ class Users extends Controller {
 	/* Déconnection d'un utilisateur */
 	public function disconnect() {
 				/* On supprime la variable "user" de la session */
-				session_unregister("user");
+				$_SESSION["user"] = null;
 				$this->setInfo("Déconnection réussie !");
 				
 				/* Retour à l'accueil */
-				header("Location: index.php");
+				header("Location: index.php?service=Categories");
 				exit();
 	}
 
